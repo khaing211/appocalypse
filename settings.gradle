@@ -1,2 +1,4 @@
 include 'grep'
 include 'install-java'
+include 'responsive-test'
+include 'webpage-screenshot'
