@@ -1,5 +1,9 @@
 apply from: "$rootDir/gradle/groovyProject.gradle"
+apply plugin: 'application'
 
 dependencies {
 	compile group: 'org.ow2.asm', name: 'asm-all', version: asmVersion
+	compile group: 'org.apache.commons', name: 'commons-vfs2', version: commonsVfsVersion
 }
+
+mainClassName = 'com.github.appocalypse.grep.Grep'

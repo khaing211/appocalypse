@@ -10,6 +10,7 @@ ext {
 	gebVersion = '0.10.0'
 	
 	asmVersion = '5.0.3'
+	commonsVfsVersion = '2.0'
 }
 
 apply from: 'gradle/wrapper.gradle'
