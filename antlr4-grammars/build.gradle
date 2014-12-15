@@ -1,7 +1,9 @@
 apply from: "$rootDir/gradle/javaProject.gradle"
+apply plugin: 'eclipse'
 
 configurations {
 	antlr4
+	compile.extendsFrom antlr4
 }
 
 dependencies {
@@ -9,6 +11,22 @@ dependencies {
 }
 
 task antlr4Transpile(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
-	source = files(".")
+	source = files('grammars')
+	javaPackage = 'com.github.appocalypse.grammars.expr'
 	antlr4Classpath = configurations.antlr4
+}
+
+compileJava {
+	source = antlr4Transpile
+}
+
+eclipse {
+	classpath {
+		file {
+			withXml {
+				def node = it.asNode()
+				node.appendNode('classpathentry', [kind: 'src', path: 'build/tmp/antlr4Transpile'])
+			}
+		}
+	}
 }
