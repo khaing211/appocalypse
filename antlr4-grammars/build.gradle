@@ -10,22 +10,24 @@ dependencies {
 	antlr4 group: 'org.antlr', name: 'antlr4', version: '4.3'
 }
 
-task antlr4Transpile(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
-	source = files('grammars')
+task transpileExpr(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
+	source = files('grammars/expr')
 	javaPackage = 'com.github.appocalypse.grammars.expr'
 	antlr4Classpath = configurations.antlr4
 }
 
 compileJava {
-	source = antlr4Transpile
+	source = tasks.withType(com.github.appocalypse.build.antlr4.Antlr4Transpile)
 }
+
 
 eclipse {
 	classpath {
 		file {
 			withXml {
 				def node = it.asNode()
-				node.appendNode('classpathentry', [kind: 'src', path: 'build/tmp/antlr4Transpile'])
+				// TODO: fix this dynamically
+				node.appendNode('classpathentry', [kind: 'src', path: 'build/tmp/transpileExpr'])
 			}
 		}
 	}
