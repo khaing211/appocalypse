@@ -1,0 +1,14 @@
+apply from: "$rootDir/gradle/javaProject.gradle"
+
+configurations {
+	antlr4
+}
+
+dependencies {
+	antlr4 group: 'org.antlr', name: 'antlr4', version: '4.3'
+}
+
+task antlr4Transpile(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
+	source = files(".")
+	antlr4Classpath = configurations.antlr4
+}
