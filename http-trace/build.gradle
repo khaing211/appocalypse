@@ -1,0 +1,13 @@
+apply from: "$rootDir/gradle/groovyProject.gradle"
+apply plugin: 'application'
+apply from: "$rootDir/gradle/oneJar.gradle"
+
+dependencies {
+	compile group: 'org.apache.httpcomponents', name: 'httpclient', version: httpclientVersion
+}
+
+mainClassName = 'com.github.appocalypse.httptrace.HttpTrace'
+
+task oneJar(type: OneJar) {
+	mainClass = 'com.github.appocalypse.httptrace.HttpTrace'
+}
