@@ -4,10 +4,11 @@ apply from: "$rootDir/gradle/oneJar.gradle"
 
 dependencies {
 	compile group: 'org.apache.httpcomponents', name: 'httpclient', version: httpcomponentsVersion
+	compile group: 'org.apache.httpcomponents', name: 'fluent-hc', version: httpcomponentsVersion
 }
 
-mainClassName = 'com.github.appocalypse.httptrace.HttpTrace'
+mainClassName = 'com.github.appocalypse.rest.ShowMap'
 
 task oneJar(type: OneJar) {
-	mainClass = 'com.github.appocalypse.httptrace.HttpTrace'
+	mainClass = 'com.github.appocalypse.rest.ShowMap'
 }
