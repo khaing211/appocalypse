@@ -1,3 +1,4 @@
+package com.github.appocalypse;
 import groovy.transform.TupleConstructor
 
 import org.apache.commons.vfs2.FileName

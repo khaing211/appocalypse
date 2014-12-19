@@ -1,4 +1,4 @@
-package com.github.appocalypse.httptrace
+package com.github.appocalypse
 
 import org.apache.http.HttpRequest
 import org.apache.http.HttpResponse
@@ -11,7 +11,8 @@ import org.apache.http.impl.client.HttpClients
 import org.apache.http.impl.client.LaxRedirectStrategy
 import org.apache.http.protocol.HttpContext
 
-/*
+
+/**
  * TraceHttpRedirect prints out all http 302 redirect when access a url
  */
 class HttpTrace {

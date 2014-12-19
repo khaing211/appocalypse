@@ -1,7 +1,12 @@
 apply from: "$rootDir/gradle/groovyProject.gradle"
+apply from: "$rootDir/gradle/oneJar.gradle"
 
 dependencies {
 	compile group: 'org.gebish', name: 'geb-core', version: gebVersion
 	compile group: 'org.seleniumhq.selenium', name: 'selenium-support', version: seleniumVersion
 	compile group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version: seleniumVersion
+}
+
+task oneJar(type: OneJar) {
+	mainClass = 'com.github.appocalypse.TakeScreenshot'
 }

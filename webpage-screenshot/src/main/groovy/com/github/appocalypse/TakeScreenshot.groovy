@@ -1,4 +1,5 @@
 package com.github.appocalypse
+
 import geb.Browser
 import geb.Configuration
 import geb.report.ScreenshotReporter
@@ -9,7 +10,7 @@ import java.lang.Thread.UncaughtExceptionHandler
 
 class TakeScreenshot {
 	static void main(args) {
-		final def cli = new CliBuilder(usage: 'TakeScreenShot i.e. groovy TakeScreenshot.groovy -u http://google.com -i')
+		final def cli = new CliBuilder(usage: 'TakeScreenShot -u http://google.com -i')
 		cli.h( longOpt: 'help', required: false, 'show usage information' )
 		cli.u( longOpt: 'url', argName: 'u', required: true, args: 1, 'absolute url path i.e. http://google.com' )
 		cli.d( longOpt: 'dir', argName: 'd', required: false, args: 1, 'screenshot stored dir i.e. /tmp default to current directory')
