@@ -1,0 +1,27 @@
+apply from: "$rootDir/gradle/javaProject.gradle"
+apply from: "$rootDir/gradle/oneJar.gradle"
+
+dependencies {
+	compile group: 'org.apache.commons', name: 'commons-vfs2', version: commonsVfsVersion
+	compile group: 'commons-io', name: 'commons-io', version: commonsIoVersion
+}
+
+
+task buildLs(type: OneJar) {
+	mainClass = 'com.github.appocalypse.Ls'
+	archiveName = 'ls.jar'
+}
+
+task buildCat(type: OneJar) {
+	mainClass = 'com.github.appocalypse.Cat'
+	archiveName = 'cat.jar'
+}
+
+task buildGrep(type: OneJar) {
+	mainClass = 'com.github.appocalypse.Grep'
+	archiveName = 'grep.jar'
+}
+
+task buildAll { }
+
+buildAll.dependsOn tasks.withType(OneJar)

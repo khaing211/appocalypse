@@ -6,13 +6,22 @@ ext {
 	wrapperVersion = '2.2.1'
 	groovyVersion = '2.3.8'
 	ivyVersion = '2.3.0'
+	
 	commonsCliVersion = '1.2'
+	commonsIoVersion = '2.4'
+	
 	httpcomponentsVersion = '4.3.5'
 	
+	// org.seleniumhq.selenium:
 	seleniumVersion = '2.44.0'
+	
+	// org.gebish:
 	gebVersion = '0.10.0'
 	
+	// org.ow2.asm:
 	asmVersion = '5.0.3'
+	
+	// org.apache.commons:commons-vfs2
 	commonsVfsVersion = '2.0'
 }
 
