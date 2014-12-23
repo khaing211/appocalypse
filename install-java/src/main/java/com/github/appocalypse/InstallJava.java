@@ -9,20 +9,51 @@ import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.http.client.fluent.Request;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class InstallJava {
+	final static private Logger LOG = LoggerFactory.getLogger(InstallJava.class);
+	
 	public static void main(String[] args) throws Exception {
-		//String jdkVersion = args[0];
-		//String osVersion = args[1];
-		InputStream downloadStream = Request.Get("http://download.oracle.com/otn-pub/java/jdk/7u65-b17/jdk-7u65-linux-i586.tar.gz")
+		if (args.length != 5) {
+			LOG.error("Please pass in <jdkMajorVersion> <jdkMinorVersion> <jdkBuildNumber> <osVersion> <outputDirectory>");
+			return;
+		}
+		
+		// Example: 7,65,17,linux-i586,.
+		final String jdkMajorVersion = args[0];
+		final String jdkMinorVersion = args[1];
+		final String jdkBuildNumber = args[2];
+		final String osVersion = args[3];
+		final File outputDirectory = new File(args[4]);
+		
+		if (outputDirectory.exists() && outputDirectory.isFile()) {
+			LOG.error("{} is not a directory", outputDirectory.getCanonicalPath());
+			return;
+		}
+		
+		if (outputDirectory.exists() && !outputDirectory.canWrite()) {
+			LOG.error("{} is not writeable", outputDirectory.getCanonicalPath());
+			return;
+		}
+		
+		if (!outputDirectory.exists() && !outputDirectory.mkdirs()) {
+			LOG.error("Unable to mkdirs {}", outputDirectory.getCanonicalPath());
+			return;
+		}
+		
+		final String downloadUrl = String.format("http://download.oracle.com/otn-pub/java/jdk/%su%s-b%s/jdk-%su%s-%s.tar.gz", 
+				jdkMajorVersion, jdkMinorVersion, jdkBuildNumber, jdkMajorVersion, jdkMinorVersion, osVersion);
+		
+		InputStream downloadStream = Request.Get(downloadUrl)
 			.addHeader("Cookie", "gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie")
 			.execute()
 			.returnContent()
 			.asStream();
 		
-		System.out.println("Download completed");
+		LOG.info("Reading download stream");
 		
 		GzipCompressorInputStream gzIn = new GzipCompressorInputStream(downloadStream);
 		
@@ -32,12 +63,12 @@ public class InstallJava {
 				archiveEntry != null; 
 				archiveEntry = archiveInputStream.getNextTarEntry()) {
 			
-			System.out.println(archiveEntry.getName());
+			LOG.info(archiveEntry.getName());
 			
-			if (!archiveEntry.isDirectory()) {
-				File file = new File(archiveEntry.getName());
+			if (archiveEntry.isFile()) {
+				File file = new File(outputDirectory, archiveEntry.getName());
 				file.getParentFile().mkdirs();
-				FileUtils.copyInputStreamToFile(new LimitedInputStream(archiveInputStream), file);				
+				FileUtils.copyInputStreamToFile(new LimitedInputStream(archiveInputStream), file);	
 			} 
 		}
 	}
