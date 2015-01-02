@@ -24,6 +24,9 @@ ext {
 	
 	// org.apache.commons:commons-vfs2
 	commonsVfsVersion = '2.0'
+	
+	tinkerpop3Version = '3.0.0.M6'
+	jlineVersion = '2.12'
 }
 
 apply from: 'gradle/wrapper.gradle'
