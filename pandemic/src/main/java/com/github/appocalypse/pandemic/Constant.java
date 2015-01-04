@@ -42,5 +42,18 @@ public interface Constant {
 		final public static String KINSHASA = "Kinshasa";
 		final public static String KHARTOUM = "Khartoum";
 		final public static String JOHANNESBURG = "Johannesburg";
+		final public static String ALGIERS = "Algiers";
+		final public static String CAIRO = "Cairo";
+		final public static String ISTANBUL = "Istanbul";
+		final public static String MOSCOW = "Moscow";
+		final public static String BAGHDAD = "Baghdad";
+		final public static String TEHRAN = "Tehran";
+		final public static String RIYADH = "Riyadh";
+		final public static String KARACHI = "Karachi";
+		final public static String DELHI = "Delhi";
+		final public static String KOLKATA = "Kolkata";
+		final public static String MUMBAI = "Mumbai";
+		final public static String CHENNAI = "Chennai";
+		
 	}
 }
