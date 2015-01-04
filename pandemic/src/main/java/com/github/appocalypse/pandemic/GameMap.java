@@ -15,9 +15,16 @@ public class GameMap {
 		this.internalGameMap = gameMap;
 	}
 	
-	public int getResearchStationCount() {
-		// TODO:
-		return 0;
+	public long getResearchStationCount() {
+		return internalGameMap.V().has(Constant.RESEARCH_STATION, Boolean.TRUE).count().next();
+	}
+	
+	public long getCitiesCount() {
+		return internalGameMap.V().count().next();
+	}
+	
+	public long getCitiesCount(String color) {
+		return internalGameMap.V().has(Constant.REGION, color).count().next();
 	}
 	
 	static public GameMap newGameMap() {
