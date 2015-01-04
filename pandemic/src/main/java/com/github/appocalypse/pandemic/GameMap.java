@@ -98,6 +98,7 @@ public class GameMap {
 		connect(washington, montreal);
 		connect(chicago, montreal);
 		connect(chicago, atlanta);
+		connect(chicago, losAngeles);
 		connect(sanFrancisco, chicago);
 		connect(newYork, montreal);
 		connect(newYork, washington);
