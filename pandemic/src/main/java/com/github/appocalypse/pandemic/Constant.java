@@ -22,5 +22,14 @@ public interface Constant {
 		final public static String WASHINGTON = "Washington";
 		final public static String CHICAGO = "Chicago";
 		final public static String MONTREAL = "Montreal";
+		final public static String NEW_YORK = "New York";
+		final public static String SAN_FRANCISCO = "San Francisco";
+		final public static String LONDON = "London";
+		final public static String ESSEN = "Essen";
+		final public static String PARIS = "Paris";
+		final public static String MADRID = "Madrid";
+		final public static String MILAN = "Milan";
+		final public static String ST_PETERSBURG = "St. Petersburg";
+		
 	}
 }

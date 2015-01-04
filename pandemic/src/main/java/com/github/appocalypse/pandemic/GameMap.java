@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import com.github.appocalypse.pandemic.Constant.City;
 import com.github.appocalypse.pandemic.Constant.RegionColor;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableMap;
 import com.tinkerpop.gremlin.process.T;
 import com.tinkerpop.gremlin.structure.Graph;
@@ -30,13 +31,30 @@ public class GameMap {
 		Vertex chicago = createNewCity(City.CHICAGO, RegionColor.BLUE, gameMap);
 		Vertex montreal = createNewCity(City.MONTREAL, RegionColor.BLUE, gameMap);
 		Vertex washington = createNewCity(City.WASHINGTON, RegionColor.BLUE, gameMap);
-		
+		Vertex sanFrancisco = createNewCity(City.SAN_FRANCISCO, RegionColor.BLUE, gameMap);
+		Vertex newYork = createNewCity(City.NEW_YORK, RegionColor.BLUE, gameMap);
+		Vertex london = createNewCity(City.LONDON, RegionColor.BLUE, gameMap);
+		Vertex essen = createNewCity(City.ESSEN, RegionColor.BLUE, gameMap);
+		Vertex stPetersburg = createNewCity(City.ST_PETERSBURG, RegionColor.BLUE, gameMap);
+		Vertex paris = createNewCity(City.PARIS, RegionColor.BLUE, gameMap);
+		Vertex milan = createNewCity(City.MILAN, RegionColor.BLUE, gameMap);
+		Vertex madrid = createNewCity(City.MADRID, RegionColor.BLUE, gameMap);
 		
 		// connect cities together
 		connect(atlanta, washington);
 		connect(washington, montreal);
 		connect(chicago, montreal);
 		connect(chicago, atlanta);
+		connect(sanFrancisco, chicago);
+		connect(newYork, montreal);
+		connect(newYork, washington);
+		connect(newYork, london);
+		connect(newYork, madrid);
+		connect(london, paris);
+		connect(london, madrid);
+		connect(paris, essen);
+		connect(paris, milan);
+		connect(stPetersburg, essen);
 		
 		// add a research station at atlanta
 		atlanta.property(Constant.RESEARCH_STATION, Boolean.TRUE);
@@ -57,5 +75,10 @@ public class GameMap {
 				Constant.YELLOW_DISASE, Integer.valueOf(0),
 				Constant.REGION, regionColor,
 				Constant.RESEARCH_STATION, Boolean.FALSE);
+	}
+
+	@VisibleForTesting
+	Graph getInternalGameMap() {
+		return internalGameMap;
 	}
 }
