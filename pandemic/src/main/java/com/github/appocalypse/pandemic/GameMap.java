@@ -1,8 +1,11 @@
 package com.github.appocalypse.pandemic;
 
+import java.util.List;
+
 import com.github.appocalypse.pandemic.Constant.City;
 import com.github.appocalypse.pandemic.Constant.RegionColor;
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.Lists;
 import com.tinkerpop.gremlin.process.T;
 import com.tinkerpop.gremlin.structure.Graph;
 import com.tinkerpop.gremlin.structure.Vertex;
@@ -25,6 +28,14 @@ public class GameMap {
 	
 	public long getCitiesCount(String color) {
 		return internalGameMap.V().has(Constant.REGION, color).count().next();
+	}
+	
+	public List<String> getNeighborCities(String city) {
+		List<String> neighborCities = Lists.newArrayList();
+
+		internalGameMap.v(city).outE(Constant.ADJACENT).inV().dedup().forEachRemaining(v -> neighborCities.add(v.label()));
+
+		return neighborCities;
 	}
 	
 	static public GameMap newGameMap() {
@@ -167,7 +178,7 @@ public class GameMap {
 		connect(shanghai, beijing);
 		connect(shanghai, seoul);
 		connect(seoul, beijing);
-		
+
 		// add a research station at atlanta
 		atlanta.property(Constant.RESEARCH_STATION, Boolean.TRUE);
 		
@@ -180,7 +191,8 @@ public class GameMap {
 	}
 	
 	static private Vertex createNewCity(String city, String regionColor, Graph gameMap) {
-		return gameMap.addVertex(T.label, city, 
+		return gameMap.addVertex(T.id, city, 
+				T.label, city,
 				Constant.RED_DISEASE, Integer.valueOf(0), 
 				Constant.BLACK_DISEASE, Integer.valueOf(0),
 				Constant.BLUE_DISEASE, Integer.valueOf(0), 
