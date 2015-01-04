@@ -62,6 +62,19 @@ public class GameMap {
 		Vertex chennai = createNewCity(City.CHENNAI, RegionColor.BLACK, gameMap);
 		Vertex cairo = createNewCity(City.CAIRO, RegionColor.BLACK, gameMap);
 		
+		Vertex bangkok = createNewCity(City.BANGKOK, RegionColor.RED, gameMap);
+		Vertex jakarta = createNewCity(City.JAKARTA, RegionColor.RED, gameMap);
+		Vertex hongKong = createNewCity(City.HONG_KONG, RegionColor.RED, gameMap);
+		Vertex taipei = createNewCity(City.TAIPEI, RegionColor.RED, gameMap);
+		Vertex hoChiMinhCity = createNewCity(City.HO_CHI_MINH_CITY, RegionColor.RED, gameMap);
+		Vertex manila = createNewCity(City.MANILA, RegionColor.RED, gameMap);
+		Vertex sydney = createNewCity(City.SYDNEY, RegionColor.RED, gameMap);
+		Vertex osaka = createNewCity(City.OSAKA, RegionColor.RED, gameMap);
+		Vertex shanghai = createNewCity(City.SHANGHAI, RegionColor.RED, gameMap);
+		Vertex tokyo = createNewCity(City.TOKYO, RegionColor.RED, gameMap);
+		Vertex beijing = createNewCity(City.BEIJING, RegionColor.RED, gameMap);
+		Vertex seoul = createNewCity(City.SEOUL, RegionColor.RED, gameMap);
+		
 		// connect cities together
 		connect(atlanta, washington);
 		connect(washington, montreal);
@@ -120,6 +133,33 @@ public class GameMap {
 		connect(delhi, chennai);
 		connect(mumbai, chennai);
 		connect(kolkata, chennai);
+		connect(kolkata, bangkok);
+		connect(kolkata, hongKong);
+		connect(chennai, jakarta);
+		connect(chennai, bangkok);
+		connect(sanFrancisco, tokyo);
+		connect(sanFrancisco, manila);
+		connect(losAngeles, sydney);
+		connect(bangkok, jakarta);
+		connect(bangkok, hongKong);
+		connect(bangkok, hoChiMinhCity);
+		connect(jakarta, hoChiMinhCity);
+		connect(jakarta, sydney);
+		connect(hoChiMinhCity, hongKong);
+		connect(hoChiMinhCity, manila);
+		connect(manila, sydney);
+		connect(manila, taipei);
+		connect(hongKong, manila);
+		connect(hongKong, shanghai);
+		connect(hongKong, taipei);
+		connect(taipei, shanghai);
+		connect(taipei, osaka);
+		connect(osaka, tokyo);
+		connect(tokyo, seoul);
+		connect(tokyo, shanghai);
+		connect(shanghai, beijing);
+		connect(shanghai, seoul);
+		connect(seoul, beijing);
 		
 		// add a research station at atlanta
 		atlanta.property(Constant.RESEARCH_STATION, Boolean.TRUE);
