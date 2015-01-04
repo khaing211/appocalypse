@@ -1,12 +1,8 @@
 package com.github.appocalypse.pandemic;
 
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
-
 import com.github.appocalypse.pandemic.Constant.City;
 import com.github.appocalypse.pandemic.Constant.RegionColor;
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.ImmutableMap;
 import com.tinkerpop.gremlin.process.T;
 import com.tinkerpop.gremlin.structure.Graph;
 import com.tinkerpop.gremlin.structure.Vertex;
@@ -40,6 +36,19 @@ public class GameMap {
 		Vertex milan = createNewCity(City.MILAN, RegionColor.BLUE, gameMap);
 		Vertex madrid = createNewCity(City.MADRID, RegionColor.BLUE, gameMap);
 		
+		Vertex losAngeles = createNewCity(City.LOS_ANGELES, RegionColor.YELLOW, gameMap);
+		Vertex mexicoCity = createNewCity(City.MEXICO_CITY, RegionColor.YELLOW, gameMap);
+		Vertex miami = createNewCity(City.MIAMI, RegionColor.YELLOW, gameMap);
+		Vertex bogota = createNewCity(City.BOGOTA, RegionColor.YELLOW, gameMap);
+		Vertex lima = createNewCity(City.LIMA, RegionColor.YELLOW, gameMap);
+		Vertex santiago = createNewCity(City.SANTIAGO, RegionColor.YELLOW, gameMap);
+		Vertex buenosAires = createNewCity(City.BUENOS_AIRES, RegionColor.YELLOW, gameMap);
+		Vertex saoPaulo = createNewCity(City.SAO_PAULO, RegionColor.YELLOW, gameMap);
+		Vertex lagos = createNewCity(City.LAGOS, RegionColor.YELLOW, gameMap);
+		Vertex kinshasa = createNewCity(City.KINSHASA, RegionColor.YELLOW, gameMap);
+		Vertex khartoum = createNewCity(City.KHARTOUM, RegionColor.YELLOW, gameMap);
+		Vertex johannesburg = createNewCity(City.JOHANNESBURG, RegionColor.YELLOW, gameMap);
+		
 		// connect cities together
 		connect(atlanta, washington);
 		connect(washington, montreal);
@@ -55,6 +64,25 @@ public class GameMap {
 		connect(paris, essen);
 		connect(paris, milan);
 		connect(stPetersburg, essen);
+		connect(sanFrancisco, losAngeles);
+		connect(losAngeles, mexicoCity);
+		connect(mexicoCity, miami);
+		connect(mexicoCity, chicago);
+		connect(miami, atlanta);
+		connect(miami, washington);
+		connect(miami, bogota);
+		connect(bogota, lima);
+		connect(santiago, lima);
+		connect(bogota, buenosAires);
+		connect(bogota, saoPaulo);
+		connect(saoPaulo, madrid);
+		connect(saoPaulo, lagos);
+		connect(lagos, kinshasa);
+		connect(lagos, khartoum);
+		connect(kinshasa, khartoum);
+		connect(johannesburg, kinshasa);
+		connect(johannesburg, khartoum);
+		
 		
 		// add a research station at atlanta
 		atlanta.property(Constant.RESEARCH_STATION, Boolean.TRUE);

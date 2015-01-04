@@ -30,6 +30,17 @@ public interface Constant {
 		final public static String MADRID = "Madrid";
 		final public static String MILAN = "Milan";
 		final public static String ST_PETERSBURG = "St. Petersburg";
-		
+		final public static String LOS_ANGELES = "Los Angeles";
+		final public static String MEXICO_CITY = "Mexico City";
+		final public static String MIAMI = "Miami";
+		final public static String BOGOTA = "Bogota";
+		final public static String LIMA = "Lima";
+		final public static String SANTIAGO = "Santiago";
+		final public static String BUENOS_AIRES = "Buenos Aires";
+		final public static String SAO_PAULO = "Sao Paulo";
+		final public static String LAGOS = "Lagos";
+		final public static String KINSHASA = "Kinshasa";
+		final public static String KHARTOUM = "Khartoum";
+		final public static String JOHANNESBURG = "Johannesburg";
 	}
 }
