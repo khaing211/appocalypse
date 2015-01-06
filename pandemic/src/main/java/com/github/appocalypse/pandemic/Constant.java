@@ -17,7 +17,7 @@ public interface Constant {
 		final public static String BLACK = "black";
 	}
 	
-	public static interface City {
+	public static interface CityName {
 		final public static String ATLANTA = "Atlanta";
 		final public static String WASHINGTON = "Washington";
 		final public static String CHICAGO = "Chicago";

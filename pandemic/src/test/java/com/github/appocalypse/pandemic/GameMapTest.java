@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.github.appocalypse.pandemic.Constant.CityName;
 import com.github.appocalypse.pandemic.Constant.RegionColor;
 
 public class GameMapTest {
@@ -43,5 +44,10 @@ public class GameMapTest {
 	@Test
 	public void testNumberOfRedCities() {
 		assertEquals("Number of red cities should be 12", 12, gameMap.getCitiesCount(RegionColor.RED));
+	}
+	
+	@Test
+	public void testHasResearchStation() {
+		assertTrue("Atlanta should have a research station", gameMap.hasResearchStation(CityName.ATLANTA));
 	}
 }

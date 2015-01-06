@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.github.appocalypse.pandemic.Constant.City;
+import com.github.appocalypse.pandemic.Constant.CityName;
 
 public class DirectConnectivityTest {
 
@@ -25,241 +25,241 @@ public class DirectConnectivityTest {
 	
 	@Test
 	public void testAtlanta() {
-		assertNeighbors(City.ATLANTA, City.CHICAGO, City.WASHINGTON, City.MIAMI);
+		assertNeighbors(CityName.ATLANTA, CityName.CHICAGO, CityName.WASHINGTON, CityName.MIAMI);
 	}
 
 	@Test
 	public void testMiami() {
-		assertNeighbors(City.MIAMI, City.ATLANTA, City.MEXICO_CITY, City.WASHINGTON, City.BOGOTA);
+		assertNeighbors(CityName.MIAMI, CityName.ATLANTA, CityName.MEXICO_CITY, CityName.WASHINGTON, CityName.BOGOTA);
 	}
 	
 	@Test
 	public void testWashington() {
-		assertNeighbors(City.WASHINGTON, City.ATLANTA, City.MIAMI, City.MONTREAL, City.NEW_YORK);
+		assertNeighbors(CityName.WASHINGTON, CityName.ATLANTA, CityName.MIAMI, CityName.MONTREAL, CityName.NEW_YORK);
 	}
 	
 	@Test
 	public void testChicago() {
-		assertNeighbors(City.CHICAGO, City.MEXICO_CITY, City.LOS_ANGELES, City.MONTREAL, City.ATLANTA, City.SAN_FRANCISCO);
+		assertNeighbors(CityName.CHICAGO, CityName.MEXICO_CITY, CityName.LOS_ANGELES, CityName.MONTREAL, CityName.ATLANTA, CityName.SAN_FRANCISCO);
 	}
 	
 	@Test
 	public void testLosAngeles() {
-		assertNeighbors(City.LOS_ANGELES, City.CHICAGO, City.SAN_FRANCISCO, City.MEXICO_CITY, City.SYDNEY);
+		assertNeighbors(CityName.LOS_ANGELES, CityName.CHICAGO, CityName.SAN_FRANCISCO, CityName.MEXICO_CITY, CityName.SYDNEY);
 	}
 	
 	@Test
 	public void testMontreal() {
-		assertNeighbors(City.MONTREAL, City.CHICAGO, City.WASHINGTON, City.NEW_YORK);
+		assertNeighbors(CityName.MONTREAL, CityName.CHICAGO, CityName.WASHINGTON, CityName.NEW_YORK);
 	}
 	
 	@Test
 	public void testNewYork() {
-		assertNeighbors(City.NEW_YORK, City.MONTREAL, City.WASHINGTON, City.LONDON, City.MADRID);
+		assertNeighbors(CityName.NEW_YORK, CityName.MONTREAL, CityName.WASHINGTON, CityName.LONDON, CityName.MADRID);
 	}
 	
 	@Test
 	public void testMexicoCity() {
-		assertNeighbors(City.MEXICO_CITY, City.MIAMI, City.LOS_ANGELES, City.CHICAGO, City.BOGOTA, City.LIMA);
+		assertNeighbors(CityName.MEXICO_CITY, CityName.MIAMI, CityName.LOS_ANGELES, CityName.CHICAGO, CityName.BOGOTA, CityName.LIMA);
 	}
 	
 	@Test
 	public void testSanFrancisco() {
-		assertNeighbors(City.SAN_FRANCISCO, City.CHICAGO, City.LOS_ANGELES, City.TOKYO, City.MANILA);
+		assertNeighbors(CityName.SAN_FRANCISCO, CityName.CHICAGO, CityName.LOS_ANGELES, CityName.TOKYO, CityName.MANILA);
 	}
 	
 	@Test
 	public void testLondon() {
-		assertNeighbors(City.LONDON, City.NEW_YORK, City.MADRID, City.PARIS, City.ESSEN);
+		assertNeighbors(CityName.LONDON, CityName.NEW_YORK, CityName.MADRID, CityName.PARIS, CityName.ESSEN);
 	}
 	
 	@Test
 	public void testMadrid() {
-		assertNeighbors(City.MADRID, City.LONDON, City.NEW_YORK, City.PARIS, City.SAO_PAULO, City.ALGIERS);
+		assertNeighbors(CityName.MADRID, CityName.LONDON, CityName.NEW_YORK, CityName.PARIS, CityName.SAO_PAULO, CityName.ALGIERS);
 	}
 	
 	@Test
 	public void testParis() {
-		assertNeighbors(City.PARIS, City.LONDON, City.ESSEN, City.MILAN, City.MADRID, City.ALGIERS);
+		assertNeighbors(CityName.PARIS, CityName.LONDON, CityName.ESSEN, CityName.MILAN, CityName.MADRID, CityName.ALGIERS);
 	}
 	
 	@Test
 	public void testEssen() {
-		assertNeighbors(City.ESSEN, City.LONDON, City.PARIS, City.MILAN, City.ST_PETERSBURG);
+		assertNeighbors(CityName.ESSEN, CityName.LONDON, CityName.PARIS, CityName.MILAN, CityName.ST_PETERSBURG);
 	}
 	
 	@Test
 	public void testMilan() {
-		assertNeighbors(City.MILAN, City.ESSEN, City.PARIS, City.ISTANBUL);
+		assertNeighbors(CityName.MILAN, CityName.ESSEN, CityName.PARIS, CityName.ISTANBUL);
 	}
 	
 	@Test
 	public void testStPetersburg() {
-		assertNeighbors(City.ST_PETERSBURG, City.MOSCOW, City.ESSEN, City.ISTANBUL);
+		assertNeighbors(CityName.ST_PETERSBURG, CityName.MOSCOW, CityName.ESSEN, CityName.ISTANBUL);
 	}
 	
 	@Test
 	public void testMoscow() {
-		assertNeighbors(City.MOSCOW, City.ST_PETERSBURG, City.TEHRAN, City.ISTANBUL);
+		assertNeighbors(CityName.MOSCOW, CityName.ST_PETERSBURG, CityName.TEHRAN, CityName.ISTANBUL);
 	}
 	
 	@Test
 	public void testIstanbul() {
-		assertNeighbors(City.ISTANBUL, City.MILAN, City.ST_PETERSBURG, City.MOSCOW, City.BAGHDAD, City.ALGIERS, City.CAIRO);
+		assertNeighbors(CityName.ISTANBUL, CityName.MILAN, CityName.ST_PETERSBURG, CityName.MOSCOW, CityName.BAGHDAD, CityName.ALGIERS, CityName.CAIRO);
 	}
 	
 	@Test
 	public void testAlgiers() {
-		assertNeighbors(City.ALGIERS, City.ISTANBUL, City.CAIRO, City.PARIS, City.MADRID);
+		assertNeighbors(CityName.ALGIERS, CityName.ISTANBUL, CityName.CAIRO, CityName.PARIS, CityName.MADRID);
 	}
 	
 	@Test
 	public void testCairo() {
-		assertNeighbors(City.CAIRO, City.ALGIERS, City.ISTANBUL, City.BAGHDAD, City.RIYADH, City.KHARTOUM);
+		assertNeighbors(CityName.CAIRO, CityName.ALGIERS, CityName.ISTANBUL, CityName.BAGHDAD, CityName.RIYADH, CityName.KHARTOUM);
 	}
 	
 	@Test
 	public void testRiyadh() {
-		assertNeighbors(City.RIYADH, City.CAIRO, City.BAGHDAD, City.KARACHI);
+		assertNeighbors(CityName.RIYADH, CityName.CAIRO, CityName.BAGHDAD, CityName.KARACHI);
 	}
 	
 	@Test
 	public void testBaghdad() {
-		assertNeighbors(City.BAGHDAD, City.CAIRO, City.ISTANBUL, City.RIYADH, City.KARACHI, City.TEHRAN);
+		assertNeighbors(CityName.BAGHDAD, CityName.CAIRO, CityName.ISTANBUL, CityName.RIYADH, CityName.KARACHI, CityName.TEHRAN);
 	}
 	
 	@Test
 	public void testTehran() {
-		assertNeighbors(City.TEHRAN, City.MOSCOW, City.BAGHDAD, City.DELHI, City.KARACHI);
+		assertNeighbors(CityName.TEHRAN, CityName.MOSCOW, CityName.BAGHDAD, CityName.DELHI, CityName.KARACHI);
 	}
 	
 	@Test
 	public void testKarachi() {
-		assertNeighbors(City.KARACHI, City.RIYADH, City.BAGHDAD, City.TEHRAN, City.DELHI, City.MUMBAI);
+		assertNeighbors(CityName.KARACHI, CityName.RIYADH, CityName.BAGHDAD, CityName.TEHRAN, CityName.DELHI, CityName.MUMBAI);
 	}
 	
 	@Test
 	public void testDelhi() {
-		assertNeighbors(City.DELHI, City.TEHRAN, City.KARACHI, City.MUMBAI, City.KOLKATA, City.CHENNAI);
+		assertNeighbors(CityName.DELHI, CityName.TEHRAN, CityName.KARACHI, CityName.MUMBAI, CityName.KOLKATA, CityName.CHENNAI);
 	}
 	
 	@Test
 	public void testMumbai() {
-		assertNeighbors(City.MUMBAI, City.DELHI, City.KARACHI, City.CHENNAI);
+		assertNeighbors(CityName.MUMBAI, CityName.DELHI, CityName.KARACHI, CityName.CHENNAI);
 	}
 	
 	@Test
 	public void testChennai() {
-		assertNeighbors(City.CHENNAI, City.DELHI, City.MUMBAI, City.KOLKATA, City.BANGKOK, City.JAKARTA);
+		assertNeighbors(CityName.CHENNAI, CityName.DELHI, CityName.MUMBAI, CityName.KOLKATA, CityName.BANGKOK, CityName.JAKARTA);
 	}
 	
 	@Test
 	public void testKolkata() {
-		assertNeighbors(City.KOLKATA, City.DELHI, City.CHENNAI, City.BANGKOK, City.HONG_KONG);
+		assertNeighbors(CityName.KOLKATA, CityName.DELHI, CityName.CHENNAI, CityName.BANGKOK, CityName.HONG_KONG);
 	}
 	
 	@Test
 	public void testBangkok() {
-		assertNeighbors(City.BANGKOK, City.KOLKATA, City.CHENNAI, City.HONG_KONG, City.HO_CHI_MINH_CITY, City.JAKARTA);
+		assertNeighbors(CityName.BANGKOK, CityName.KOLKATA, CityName.CHENNAI, CityName.HONG_KONG, CityName.HO_CHI_MINH_CITY, CityName.JAKARTA);
 	}
 	
 	@Test
 	public void testJakarta() {
-		assertNeighbors(City.JAKARTA, City.BANGKOK, City.CHENNAI, City.HO_CHI_MINH_CITY, City.SYDNEY);
+		assertNeighbors(CityName.JAKARTA, CityName.BANGKOK, CityName.CHENNAI, CityName.HO_CHI_MINH_CITY, CityName.SYDNEY);
 	}
 	
 	@Test
 	public void testHongKong() {
-		assertNeighbors(City.HONG_KONG, City.KOLKATA, City.HO_CHI_MINH_CITY, City.BANGKOK, City.SHANGHAI, City.TAIPEI, City.MANILA);
+		assertNeighbors(CityName.HONG_KONG, CityName.KOLKATA, CityName.HO_CHI_MINH_CITY, CityName.BANGKOK, CityName.SHANGHAI, CityName.TAIPEI, CityName.MANILA);
 	}
 	
 	@Test
 	public void testHoChiMinhCity() {
-		assertNeighbors(City.HO_CHI_MINH_CITY, City.BANGKOK, City.HONG_KONG, City.JAKARTA, City.MANILA);
+		assertNeighbors(CityName.HO_CHI_MINH_CITY, CityName.BANGKOK, CityName.HONG_KONG, CityName.JAKARTA, CityName.MANILA);
 	}
 	
 	@Test
 	public void testManila() {
-		assertNeighbors(City.MANILA, City.HONG_KONG, City.TAIPEI, City.HO_CHI_MINH_CITY, City.SYDNEY, City.SAN_FRANCISCO);
+		assertNeighbors(CityName.MANILA, CityName.HONG_KONG, CityName.TAIPEI, CityName.HO_CHI_MINH_CITY, CityName.SYDNEY, CityName.SAN_FRANCISCO);
 	}
 	
 	@Test
 	public void testSydney() {
-		assertNeighbors(City.SYDNEY, City.MANILA, City.JAKARTA, City.LOS_ANGELES);
+		assertNeighbors(CityName.SYDNEY, CityName.MANILA, CityName.JAKARTA, CityName.LOS_ANGELES);
 	}
 	
 	@Test
 	public void testTaipei() {
-		assertNeighbors(City.TAIPEI, City.MANILA, City.HONG_KONG, City.OSAKA, City.SHANGHAI);
+		assertNeighbors(CityName.TAIPEI, CityName.MANILA, CityName.HONG_KONG, CityName.OSAKA, CityName.SHANGHAI);
 	}
 	
 	@Test
 	public void testShanghai() {
-		assertNeighbors(City.SHANGHAI, City.HONG_KONG, City.TAIPEI, City.TOKYO, City.SEOUL, City.BEIJING);
+		assertNeighbors(CityName.SHANGHAI, CityName.HONG_KONG, CityName.TAIPEI, CityName.TOKYO, CityName.SEOUL, CityName.BEIJING);
 	}
 	
 	@Test
 	public void testOsaka() {
-		assertNeighbors(City.OSAKA, City.TOKYO, City.TAIPEI);
+		assertNeighbors(CityName.OSAKA, CityName.TOKYO, CityName.TAIPEI);
 	}
 	
 	@Test
 	public void testTokyo() {
-		assertNeighbors(City.TOKYO, City.SEOUL, City.SHANGHAI, City.OSAKA, City.SAN_FRANCISCO);
+		assertNeighbors(CityName.TOKYO, CityName.SEOUL, CityName.SHANGHAI, CityName.OSAKA, CityName.SAN_FRANCISCO);
 	}
 	
 	@Test
 	public void testSeoul() {
-		assertNeighbors(City.SEOUL, City.TOKYO, City.BEIJING, City.SHANGHAI);
+		assertNeighbors(CityName.SEOUL, CityName.TOKYO, CityName.BEIJING, CityName.SHANGHAI);
 	}
 	
 	@Test
 	public void testBeijing() {
-		assertNeighbors(City.BEIJING, City.SEOUL, City.SHANGHAI);
+		assertNeighbors(CityName.BEIJING, CityName.SEOUL, CityName.SHANGHAI);
 	}
 	
 	@Test
 	public void testBogota() {
-		assertNeighbors(City.BOGOTA, City.MIAMI, City.MEXICO_CITY, City.LIMA, City.SAO_PAULO, City.BUENOS_AIRES);
+		assertNeighbors(CityName.BOGOTA, CityName.MIAMI, CityName.MEXICO_CITY, CityName.LIMA, CityName.SAO_PAULO, CityName.BUENOS_AIRES);
 	}
 	
 	@Test
 	public void testLima() {
-		assertNeighbors(City.LIMA, City.BOGOTA, City.MEXICO_CITY, City.SANTIAGO);
+		assertNeighbors(CityName.LIMA, CityName.BOGOTA, CityName.MEXICO_CITY, CityName.SANTIAGO);
 	}
 	
 	@Test
 	public void testSantiago() {
-		assertNeighbors(City.SANTIAGO, City.LIMA);
+		assertNeighbors(CityName.SANTIAGO, CityName.LIMA);
 	}
 	
 	@Test
 	public void testBuenosAires() {
-		assertNeighbors(City.BUENOS_AIRES, City.BOGOTA, City.SAO_PAULO);
+		assertNeighbors(CityName.BUENOS_AIRES, CityName.BOGOTA, CityName.SAO_PAULO);
 	}
 	
 	@Test
 	public void testSaoPaulo() {
-		assertNeighbors(City.SAO_PAULO, City.BOGOTA, City.BUENOS_AIRES, City.MADRID, City.LAGOS);
+		assertNeighbors(CityName.SAO_PAULO, CityName.BOGOTA, CityName.BUENOS_AIRES, CityName.MADRID, CityName.LAGOS);
 	}
 	
 	@Test
 	public void testLagos() {
-		assertNeighbors(City.LAGOS, City.SAO_PAULO, City.KHARTOUM, City.KINSHASA);
+		assertNeighbors(CityName.LAGOS, CityName.SAO_PAULO, CityName.KHARTOUM, CityName.KINSHASA);
 	}
 	
 	@Test
 	public void testKinshasa() {
-		assertNeighbors(City.KINSHASA, City.LAGOS, City.KHARTOUM, City.JOHANNESBURG);
+		assertNeighbors(CityName.KINSHASA, CityName.LAGOS, CityName.KHARTOUM, CityName.JOHANNESBURG);
 	}
 	
 	@Test
 	public void testKhartoum() {
-		assertNeighbors(City.KHARTOUM, City.LAGOS, City.KINSHASA, City.JOHANNESBURG, City.CAIRO);
+		assertNeighbors(CityName.KHARTOUM, CityName.LAGOS, CityName.KINSHASA, CityName.JOHANNESBURG, CityName.CAIRO);
 	}
 	
 	@Test
 	public void testJohannesburg() {
-		assertNeighbors(City.JOHANNESBURG, City.KINSHASA, City.KHARTOUM);
+		assertNeighbors(CityName.JOHANNESBURG, CityName.KINSHASA, CityName.KHARTOUM);
 	}
 }

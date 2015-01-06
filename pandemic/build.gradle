@@ -8,7 +8,7 @@ dependencies {
 	compile group: 'com.tinkerpop', name: 'gremlin-algorithm', version: tinkerpop3Version
 	
 	compile group: 'jline', name: 'jline', version: jlineVersion
-	
+	compile group: 'commons-cli', name: 'commons-cli', version: commonsCliVersion
 }
 
 task buildPandemic(type: OneJar) {

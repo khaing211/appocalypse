@@ -2,7 +2,7 @@ package com.github.appocalypse.pandemic;
 
 import java.util.List;
 
-import com.github.appocalypse.pandemic.Constant.City;
+import com.github.appocalypse.pandemic.Constant.CityName;
 import com.github.appocalypse.pandemic.Constant.RegionColor;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
@@ -38,60 +38,68 @@ public class GameMap {
 		return neighborCities;
 	}
 	
+	public void placeResearchStation(String city) {
+		internalGameMap.v(city).value(Constant.RESEARCH_STATION , Boolean.TRUE);
+	}
+	
+	public boolean hasResearchStation(String city) {
+		return internalGameMap.v(city).<Boolean>value(Constant.RESEARCH_STATION);
+	}
+	
 	static public GameMap newGameMap() {
 		final Graph gameMap = TinkerGraph.open();
 
-		Vertex atlanta = createNewCity(City.ATLANTA, RegionColor.BLUE, gameMap);
-		Vertex chicago = createNewCity(City.CHICAGO, RegionColor.BLUE, gameMap);
-		Vertex montreal = createNewCity(City.MONTREAL, RegionColor.BLUE, gameMap);
-		Vertex washington = createNewCity(City.WASHINGTON, RegionColor.BLUE, gameMap);
-		Vertex sanFrancisco = createNewCity(City.SAN_FRANCISCO, RegionColor.BLUE, gameMap);
-		Vertex newYork = createNewCity(City.NEW_YORK, RegionColor.BLUE, gameMap);
-		Vertex london = createNewCity(City.LONDON, RegionColor.BLUE, gameMap);
-		Vertex essen = createNewCity(City.ESSEN, RegionColor.BLUE, gameMap);
-		Vertex stPetersburg = createNewCity(City.ST_PETERSBURG, RegionColor.BLUE, gameMap);
-		Vertex paris = createNewCity(City.PARIS, RegionColor.BLUE, gameMap);
-		Vertex milan = createNewCity(City.MILAN, RegionColor.BLUE, gameMap);
-		Vertex madrid = createNewCity(City.MADRID, RegionColor.BLUE, gameMap);
+		Vertex atlanta = createNewCity(CityName.ATLANTA, RegionColor.BLUE, gameMap);
+		Vertex chicago = createNewCity(CityName.CHICAGO, RegionColor.BLUE, gameMap);
+		Vertex montreal = createNewCity(CityName.MONTREAL, RegionColor.BLUE, gameMap);
+		Vertex washington = createNewCity(CityName.WASHINGTON, RegionColor.BLUE, gameMap);
+		Vertex sanFrancisco = createNewCity(CityName.SAN_FRANCISCO, RegionColor.BLUE, gameMap);
+		Vertex newYork = createNewCity(CityName.NEW_YORK, RegionColor.BLUE, gameMap);
+		Vertex london = createNewCity(CityName.LONDON, RegionColor.BLUE, gameMap);
+		Vertex essen = createNewCity(CityName.ESSEN, RegionColor.BLUE, gameMap);
+		Vertex stPetersburg = createNewCity(CityName.ST_PETERSBURG, RegionColor.BLUE, gameMap);
+		Vertex paris = createNewCity(CityName.PARIS, RegionColor.BLUE, gameMap);
+		Vertex milan = createNewCity(CityName.MILAN, RegionColor.BLUE, gameMap);
+		Vertex madrid = createNewCity(CityName.MADRID, RegionColor.BLUE, gameMap);
 		
-		Vertex losAngeles = createNewCity(City.LOS_ANGELES, RegionColor.YELLOW, gameMap);
-		Vertex mexicoCity = createNewCity(City.MEXICO_CITY, RegionColor.YELLOW, gameMap);
-		Vertex miami = createNewCity(City.MIAMI, RegionColor.YELLOW, gameMap);
-		Vertex bogota = createNewCity(City.BOGOTA, RegionColor.YELLOW, gameMap);
-		Vertex lima = createNewCity(City.LIMA, RegionColor.YELLOW, gameMap);
-		Vertex santiago = createNewCity(City.SANTIAGO, RegionColor.YELLOW, gameMap);
-		Vertex buenosAires = createNewCity(City.BUENOS_AIRES, RegionColor.YELLOW, gameMap);
-		Vertex saoPaulo = createNewCity(City.SAO_PAULO, RegionColor.YELLOW, gameMap);
-		Vertex lagos = createNewCity(City.LAGOS, RegionColor.YELLOW, gameMap);
-		Vertex kinshasa = createNewCity(City.KINSHASA, RegionColor.YELLOW, gameMap);
-		Vertex khartoum = createNewCity(City.KHARTOUM, RegionColor.YELLOW, gameMap);
-		Vertex johannesburg = createNewCity(City.JOHANNESBURG, RegionColor.YELLOW, gameMap);
+		Vertex losAngeles = createNewCity(CityName.LOS_ANGELES, RegionColor.YELLOW, gameMap);
+		Vertex mexicoCity = createNewCity(CityName.MEXICO_CITY, RegionColor.YELLOW, gameMap);
+		Vertex miami = createNewCity(CityName.MIAMI, RegionColor.YELLOW, gameMap);
+		Vertex bogota = createNewCity(CityName.BOGOTA, RegionColor.YELLOW, gameMap);
+		Vertex lima = createNewCity(CityName.LIMA, RegionColor.YELLOW, gameMap);
+		Vertex santiago = createNewCity(CityName.SANTIAGO, RegionColor.YELLOW, gameMap);
+		Vertex buenosAires = createNewCity(CityName.BUENOS_AIRES, RegionColor.YELLOW, gameMap);
+		Vertex saoPaulo = createNewCity(CityName.SAO_PAULO, RegionColor.YELLOW, gameMap);
+		Vertex lagos = createNewCity(CityName.LAGOS, RegionColor.YELLOW, gameMap);
+		Vertex kinshasa = createNewCity(CityName.KINSHASA, RegionColor.YELLOW, gameMap);
+		Vertex khartoum = createNewCity(CityName.KHARTOUM, RegionColor.YELLOW, gameMap);
+		Vertex johannesburg = createNewCity(CityName.JOHANNESBURG, RegionColor.YELLOW, gameMap);
 		
-		Vertex algiers = createNewCity(City.ALGIERS, RegionColor.BLACK, gameMap);
-		Vertex istanbul = createNewCity(City.ISTANBUL, RegionColor.BLACK, gameMap);
-		Vertex moscow = createNewCity(City.MOSCOW, RegionColor.BLACK, gameMap);
-		Vertex tehran = createNewCity(City.TEHRAN, RegionColor.BLACK, gameMap);
-		Vertex baghdad = createNewCity(City.BAGHDAD, RegionColor.BLACK, gameMap);
-		Vertex karachi = createNewCity(City.KARACHI, RegionColor.BLACK, gameMap);
-		Vertex riyadh = createNewCity(City.RIYADH, RegionColor.BLACK, gameMap);
-		Vertex mumbai = createNewCity(City.MUMBAI, RegionColor.BLACK, gameMap);
-		Vertex delhi = createNewCity(City.DELHI, RegionColor.BLACK, gameMap);
-		Vertex kolkata = createNewCity(City.KOLKATA, RegionColor.BLACK, gameMap);
-		Vertex chennai = createNewCity(City.CHENNAI, RegionColor.BLACK, gameMap);
-		Vertex cairo = createNewCity(City.CAIRO, RegionColor.BLACK, gameMap);
+		Vertex algiers = createNewCity(CityName.ALGIERS, RegionColor.BLACK, gameMap);
+		Vertex istanbul = createNewCity(CityName.ISTANBUL, RegionColor.BLACK, gameMap);
+		Vertex moscow = createNewCity(CityName.MOSCOW, RegionColor.BLACK, gameMap);
+		Vertex tehran = createNewCity(CityName.TEHRAN, RegionColor.BLACK, gameMap);
+		Vertex baghdad = createNewCity(CityName.BAGHDAD, RegionColor.BLACK, gameMap);
+		Vertex karachi = createNewCity(CityName.KARACHI, RegionColor.BLACK, gameMap);
+		Vertex riyadh = createNewCity(CityName.RIYADH, RegionColor.BLACK, gameMap);
+		Vertex mumbai = createNewCity(CityName.MUMBAI, RegionColor.BLACK, gameMap);
+		Vertex delhi = createNewCity(CityName.DELHI, RegionColor.BLACK, gameMap);
+		Vertex kolkata = createNewCity(CityName.KOLKATA, RegionColor.BLACK, gameMap);
+		Vertex chennai = createNewCity(CityName.CHENNAI, RegionColor.BLACK, gameMap);
+		Vertex cairo = createNewCity(CityName.CAIRO, RegionColor.BLACK, gameMap);
 		
-		Vertex bangkok = createNewCity(City.BANGKOK, RegionColor.RED, gameMap);
-		Vertex jakarta = createNewCity(City.JAKARTA, RegionColor.RED, gameMap);
-		Vertex hongKong = createNewCity(City.HONG_KONG, RegionColor.RED, gameMap);
-		Vertex taipei = createNewCity(City.TAIPEI, RegionColor.RED, gameMap);
-		Vertex hoChiMinhCity = createNewCity(City.HO_CHI_MINH_CITY, RegionColor.RED, gameMap);
-		Vertex manila = createNewCity(City.MANILA, RegionColor.RED, gameMap);
-		Vertex sydney = createNewCity(City.SYDNEY, RegionColor.RED, gameMap);
-		Vertex osaka = createNewCity(City.OSAKA, RegionColor.RED, gameMap);
-		Vertex shanghai = createNewCity(City.SHANGHAI, RegionColor.RED, gameMap);
-		Vertex tokyo = createNewCity(City.TOKYO, RegionColor.RED, gameMap);
-		Vertex beijing = createNewCity(City.BEIJING, RegionColor.RED, gameMap);
-		Vertex seoul = createNewCity(City.SEOUL, RegionColor.RED, gameMap);
+		Vertex bangkok = createNewCity(CityName.BANGKOK, RegionColor.RED, gameMap);
+		Vertex jakarta = createNewCity(CityName.JAKARTA, RegionColor.RED, gameMap);
+		Vertex hongKong = createNewCity(CityName.HONG_KONG, RegionColor.RED, gameMap);
+		Vertex taipei = createNewCity(CityName.TAIPEI, RegionColor.RED, gameMap);
+		Vertex hoChiMinhCity = createNewCity(CityName.HO_CHI_MINH_CITY, RegionColor.RED, gameMap);
+		Vertex manila = createNewCity(CityName.MANILA, RegionColor.RED, gameMap);
+		Vertex sydney = createNewCity(CityName.SYDNEY, RegionColor.RED, gameMap);
+		Vertex osaka = createNewCity(CityName.OSAKA, RegionColor.RED, gameMap);
+		Vertex shanghai = createNewCity(CityName.SHANGHAI, RegionColor.RED, gameMap);
+		Vertex tokyo = createNewCity(CityName.TOKYO, RegionColor.RED, gameMap);
+		Vertex beijing = createNewCity(CityName.BEIJING, RegionColor.RED, gameMap);
+		Vertex seoul = createNewCity(CityName.SEOUL, RegionColor.RED, gameMap);
 		
 		// connect cities together
 		connect(atlanta, washington);
@@ -190,7 +198,7 @@ public class GameMap {
 		connect(seoul, beijing);
 
 		// add a research station at atlanta
-		atlanta.property(Constant.RESEARCH_STATION, Boolean.TRUE);
+		atlanta.value(Constant.RESEARCH_STATION, Boolean.TRUE);
 		
 		return new GameMap(gameMap);
 	}
@@ -201,14 +209,14 @@ public class GameMap {
 	}
 	
 	static private Vertex createNewCity(String city, String regionColor, Graph gameMap) {
-		return gameMap.addVertex(T.id, city, 
-				T.label, city,
-				Constant.RED_DISEASE, Integer.valueOf(0), 
-				Constant.BLACK_DISEASE, Integer.valueOf(0),
-				Constant.BLUE_DISEASE, Integer.valueOf(0), 
-				Constant.YELLOW_DISASE, Integer.valueOf(0),
-				Constant.REGION, regionColor,
-				Constant.RESEARCH_STATION, Boolean.FALSE);
+		Vertex vertex = gameMap.addVertex(T.id, city, T.label, city);
+		vertex.property(Constant.RED_DISEASE, Integer.valueOf(0));
+		vertex.property(Constant.BLACK_DISEASE, Integer.valueOf(0));
+		vertex.property(Constant.BLUE_DISEASE, Integer.valueOf(0));
+		vertex.property(Constant.YELLOW_DISASE, Integer.valueOf(0));
+		vertex.property(Constant.REGION, regionColor);
+		vertex.property(Constant.RESEARCH_STATION, Boolean.FALSE);
+		return vertex;
 	}
 
 	@VisibleForTesting
