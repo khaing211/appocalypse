@@ -1,5 +1,6 @@
 package com.github.appocalypse.pandemic;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
@@ -27,14 +28,15 @@ public class Board {
 	}
 	
 	static public Board createPandemicBoard() {
-		ImmutableList<City> cities = ImmutableList.<City>builder()
-				.add(Cities.ATLANTA)
-				.build();
+		ImmutableList.Builder<City> cities = ImmutableList.<City>builder();
+
+		Arrays.stream(Cities.values()).forEach(city -> cities.add(city));
 		
 		ImmutableListMultimap<City, City> connectivity = ImmutableListMultimap.<City, City>builder()
-				.putAll(Cities.ATLANTA, Cities.WASHINGTON, Cities.CHICAGO, Cities.MEXICO_CITY)
+				.putAll(Cities.ATLANTA, Cities.WASHINGTON, Cities.CHICAGO, Cities.MIAMI)
+				.putAll(Cities.CHICAGO, Cities.MONTREAL, Cities.ATLANTA, Cities.MEXICO_CITY, Cities.LOS_ANGELES, Cities.SAN_FRANCISCO)
 				.build();
 		
-		return new Board(cities, connectivity);
+		return new Board(cities.build(), connectivity);
 	}
 }
