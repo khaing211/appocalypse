@@ -13,10 +13,8 @@ public class PandemicConsole {
 	public void run() throws IOException {
 		final ConsoleReader reader = new ConsoleReader();
 		reader.setPrompt("pandemic> ");
-		
-		final List<Completer> completors = new LinkedList<Completer>();
-		
-		completors.forEach(completer -> reader.addCompleter(completer));
+
+		completers().forEach(completer -> reader.addCompleter(completer));
 		
 		final PrintWriter out = new PrintWriter(reader.getOutput());
 		
@@ -26,5 +24,12 @@ public class PandemicConsole {
 			
 			out.flush();
 		}
+	}
+	
+	private List<Completer> completers() {
+		final List<Completer> completers = new LinkedList<Completer>();
+		completers.add(new CitesCompleter());
+		
+		return completers;
 	}
 }
