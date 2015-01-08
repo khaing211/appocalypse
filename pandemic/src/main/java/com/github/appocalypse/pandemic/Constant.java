@@ -44,7 +44,7 @@ public interface Constant {
 		final public static String JAKARTA = "Jakarta";
 		final public static String HO_CHI_MINH_CITY = "Ho Chi Minh City";
 		final public static String BANGKOK = "Bangkok";
-		final public static String HONG_KONG = " Hong Kong";
+		final public static String HONG_KONG = "Hong Kong";
 		final public static String MANILA = "Manila";
 		final public static String TAIPEI = "Taipei";
 		final public static String OSAKA = "Osaka";
