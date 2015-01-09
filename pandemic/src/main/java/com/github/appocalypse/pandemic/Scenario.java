@@ -1,5 +1,6 @@
 package com.github.appocalypse.pandemic;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 /**
@@ -13,19 +14,17 @@ import com.google.common.collect.ImmutableMap;
  * discard player cards
  * discard infect cards
  * remove from play cards
+ * infection rate
+ * outbreak count
  */
 public class Scenario {
+	final private Board board;
 	final private ImmutableMap<City, CityStats> cityStats;
 	final private ImmutableMap<Player, City> locations;
-	final private Player activePlayer;
-	
-	public Scenario(ImmutableMap<City, CityStats> cityStats, 
-			ImmutableMap<Player, City> locations,
-			Player activePlayer) {
-		this.cityStats = cityStats;
-		this.locations = locations;
-		this.activePlayer = activePlayer;
-	}
+	final private ImmutableList<City> discardInfectedCard;
+	final private TurnKeeper turnKeeper;
+	final private InfectionRateCounter infectionRateCounter;
+	final private OutbreakCounter outbreakCounter;
 	
 	public long getResearchStationCount() {
 		return cityStats.entrySet().stream().parallel()
@@ -52,4 +51,55 @@ public class Scenario {
 		return cityStats.getOrDefault(city, CityStats.empty()).getYellowDiseaseCount();
 	}
 	
+	public int getDieaseCubeCount(RegionColor regionColor) {
+		return Constant.MAX_COUNT_PER_DISEASE - getDiseaseCount(regionColor);
+	}
+	
+	public int getDiseaseCount(RegionColor regionColor) {
+		// TODO:
+		return 0;
+	}
+	
+	public int getUndrawnCityPlayerCardCount(RegionColor regionColor) {
+		// TODO:
+		return 0;
+	}
+	
+	public Player getCurrentPlayer() {
+		return turnKeeper.current();
+	}
+	
+	public int getCurrentInfectionRate() {
+		return infectionRateCounter.current();
+	}
+	
+	public int getCurrentOutbreakCount() {
+		return outbreakCounter.current();
+	}
+	
+	// Immutable change
+	public Scenario increaseOutbreakCount() {
+		// TODO:
+		return this;
+	}
+	
+	public Scenario(Builder builder) {
+		this.board = builder.board;
+		this.cityStats = builder.cityStats;
+		this.locations = builder.locations;
+		this.turnKeeper = builder.turnKeeper;
+		this.infectionRateCounter = builder.infectionRateCounter;
+		this.outbreakCounter = builder.outbreakCounter;
+		this.discardInfectedCard = builder.discardInfectedCard;
+	}
+	
+	public static class Builder {
+		private Board board;
+		private ImmutableMap<City, CityStats> cityStats;
+		private ImmutableMap<Player, City> locations;
+		private ImmutableList<City> discardInfectedCard;
+		private TurnKeeper turnKeeper;
+		private InfectionRateCounter infectionRateCounter;
+		private OutbreakCounter outbreakCounter;
+	}
 }
