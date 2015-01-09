@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import com.github.appocalypse.guava.extra.GuavaCollectors;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
+import com.google.common.collect.ImmutableMultimap;
 
 public class Board {
 	final private ImmutableListMultimap<City, City> connectivity;
@@ -31,6 +32,16 @@ public class Board {
 		return connectivity.get(city);
 	}
 	
+	public ImmutableMultimap<Integer, City> getCityConnectivityRank() {
+		return connectivity.asMap()
+				.entrySet()
+				.parallelStream()
+				.collect(Collectors.toMap(Entry::getKey, entry -> entry.getValue().size()))
+				.entrySet()
+				.parallelStream()
+				.collect(GuavaCollectors.immutableMultimap(Entry::getValue, Entry::getKey));
+	}
+	
 	public ImmutableList<City> getMostConnectCities() {
 		Map<City, Integer> connectityRank = connectivity.asMap()
 				.entrySet()
@@ -39,14 +50,14 @@ public class Board {
 		
 		Integer topConnectivityRank = connectityRank.entrySet()
 				.parallelStream()
-				.sorted(Comparator.comparing(Entry::getValue))
+				.sorted(Comparator.comparingInt(Entry<City, Integer>::getValue).reversed())
 				.findFirst()
-				.map(Entry::getValue)
+				.map(Entry<City, Integer>::getValue)
 				.orElse(0);
 		
 		return connectityRank.entrySet()
 			.parallelStream()
-			.filter(entry -> { return entry.getValue() > topConnectivityRank; })
+			.filter(entry -> { return entry.getValue() == topConnectivityRank; })
 			.map(Entry::getKey)
 			.collect(GuavaCollectors.immutableList());
 	}

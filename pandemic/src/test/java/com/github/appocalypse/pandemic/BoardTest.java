@@ -1,8 +1,13 @@
 package com.github.appocalypse.pandemic;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMultimap;
 
 public class BoardTest {
 
@@ -31,5 +36,26 @@ public class BoardTest {
 	@Test
 	public void testNumberOfRedCities() {
 		assertEquals("Number of red cities should be 12", 12, board.getCitiesCount(RegionColor.RED));
+	}
+	
+	@Test
+	public void testTopConnectedCities() {
+		ImmutableList<City> cities = board.getMostConnectCities();
+		assertEquals(2, cities.size());
+		assertTrue(cities.contains(Cities.HONG_KONG));
+		assertTrue(cities.contains(Cities.ISTANBUL));
+	}
+	
+	@Test
+	public void testConnectivityRank() {
+		ImmutableMultimap<Integer, City> connectivityRank = board.getCityConnectivityRank();
+		assertFalse("Should have no cities that has no connection", connectivityRank.containsKey(0));
+		
+		System.out.println(connectivityRank.get(1));
+		System.out.println(connectivityRank.get(2));
+		System.out.println(connectivityRank.get(3));
+		System.out.println(connectivityRank.get(4));
+		System.out.println(connectivityRank.get(5));
+		System.out.println(connectivityRank.get(6));
 	}
 }
