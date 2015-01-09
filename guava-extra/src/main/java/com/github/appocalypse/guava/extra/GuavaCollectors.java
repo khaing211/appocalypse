@@ -18,9 +18,12 @@ package com.github.appocalypse.guava.extra;
 import static java.util.stream.Collector.Characteristics.UNORDERED;
 
 import java.util.Comparator;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 import java.util.stream.Collector;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSortedSet;
 
@@ -34,7 +37,7 @@ import com.google.common.collect.ImmutableSortedSet;
 public final class GuavaCollectors {
 	/** Collect a stream of elements into an {@link ImmutableList}. */
 	public static <T> Collector<T, ImmutableList.Builder<T>, ImmutableList<T>> immutableList() {
-		return Collector.of(ImmutableList.Builder<T>::new,
+		return Collector.of(ImmutableList::<T>builder,
 				ImmutableList.Builder<T>::add, 
 				(l, r) -> l.addAll(r.build()),
 				ImmutableList.Builder<T>::build);
@@ -42,7 +45,7 @@ public final class GuavaCollectors {
 
 	/** Collect a stream of elements into an {@link ImmutableSet}. */
 	public static <T> Collector<T, ImmutableSet.Builder<T>, ImmutableSet<T>> immutableSet() {
-		return Collector.of(ImmutableSet.Builder<T>::new,
+		return Collector.of(ImmutableSet::<T>builder,
 				ImmutableSet.Builder<T>::add, 
 				(l, r) -> l.addAll(r.build()),
 				ImmutableSet.Builder<T>::build, UNORDERED);
@@ -70,12 +73,33 @@ public final class GuavaCollectors {
 				ImmutableSortedSet.Builder<T>::build);
 	}
 	
-	/** Collect a stream of elements into an {@link ImmutableSortedSet}. */
+	/** 
+	 * Collect a stream of elements into an {@link ImmutableSortedSet}.
+	 * Using comparator
+	 * */
 	public static <T> Collector<T, ImmutableSortedSet.Builder<T>, ImmutableSortedSet<T>> immutableSortedSet(Comparator<T> comparator) {
 		return Collector.of(() -> ImmutableSortedSet.orderedBy(comparator),
 				ImmutableSortedSet.Builder<T>::add, 
 				(l, r) -> l.addAll(r.build()),
 				ImmutableSortedSet.Builder<T>::build);
+	}
+	
+	/**
+	 * @param <T> the type of the input elements
+     * @param <K> the output type of the key mapping function
+     * @param <U> the output type of the value mapping function
+	 */
+	public static <T, K, U> Collector<T, ImmutableMultimap.Builder<K, U>, ImmutableMultimap<K, U>> immutableMultimap(
+			Function<? super T, ? extends K> keyMapper,
+            Function<? super T, ? extends U> valueMapper) {
+		
+		BiConsumer<ImmutableMultimap.Builder<K, U>, T> accumulator
+        	= (builder, element) -> builder.put(keyMapper.apply(element), valueMapper.apply(element));
+		
+		return Collector.of(ImmutableMultimap::<K, U>builder, 
+				accumulator, 
+				(l, r) -> l.putAll(r.build()), 
+				ImmutableMultimap.Builder<K, U>::build);
 	}
 	
 	private GuavaCollectors() {
