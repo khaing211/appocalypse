@@ -1,9 +1,12 @@
 package com.github.appocalypse.pandemic;
 
-import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
+import com.github.appocalypse.guava.extra.GuavaCollectors;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
 
@@ -29,7 +32,23 @@ public class Board {
 	}
 	
 	public ImmutableList<City> getMostConnectCities() {
-		return null;
+		Map<City, Integer> connectityRank = connectivity.asMap()
+				.entrySet()
+				.parallelStream()
+				.collect(Collectors.toMap(Entry::getKey, entry -> entry.getValue().size()));
+		
+		Integer topConnectivityRank = connectityRank.entrySet()
+				.parallelStream()
+				.sorted(Comparator.comparing(Entry::getValue))
+				.findFirst()
+				.map(Entry::getValue)
+				.orElse(0);
+		
+		return connectityRank.entrySet()
+			.parallelStream()
+			.filter(entry -> { return entry.getValue() > topConnectivityRank; })
+			.map(Entry::getKey)
+			.collect(GuavaCollectors.immutableList());
 	}
 	
 	static public Board createPandemicBoard() {

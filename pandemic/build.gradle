@@ -4,6 +4,7 @@ apply from: "$rootDir/gradle/oneJar.gradle"
 dependencies {
 	compile group: 'jline', name: 'jline', version: jlineVersion
 	compile group: 'commons-cli', name: 'commons-cli', version: commonsCliVersion
+	compile project(':guava-extra')
 }
 
 task buildPandemic(type: OneJar) {
