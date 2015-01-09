@@ -23,8 +23,10 @@ import java.util.function.Function;
 import java.util.stream.Collector;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableSortedMap;
 import com.google.common.collect.ImmutableSortedSet;
 
 /**
@@ -55,7 +57,9 @@ public final class GuavaCollectors {
 	 * Collect a stream of elements into an {@link ImmutableSortedSet}. 
 	 * Using natural order
 	 */
-	public static <T extends Comparable<?>> Collector<T, ImmutableSortedSet.Builder<T>, ImmutableSortedSet<T>> immutableSortedSet() {
+	public static <T extends Comparable<?>> Collector<T, ImmutableSortedSet.Builder<T>, ImmutableSortedSet<T>> 
+			immutableSortedSet() {
+		
 		return Collector.of(ImmutableSortedSet::<T>naturalOrder,
 				ImmutableSortedSet.Builder<T>::add, 
 				(l, r) -> l.addAll(r.build()),
@@ -66,7 +70,9 @@ public final class GuavaCollectors {
 	 * Collect a stream of elements into an {@link ImmutableSortedSet}. 
 	 * Using reverse order
 	 */
-	public static <T extends Comparable<?>> Collector<T, ImmutableSortedSet.Builder<T>, ImmutableSortedSet<T>> immutableSortedSetReverseOrder() {
+	public static <T extends Comparable<?>> Collector<T, ImmutableSortedSet.Builder<T>, ImmutableSortedSet<T>> 
+			immutableSortedSetReverseOrder() {
+		
 		return Collector.of(ImmutableSortedSet::<T>reverseOrder,
 				ImmutableSortedSet.Builder<T>::add, 
 				(l, r) -> l.addAll(r.build()),
@@ -77,7 +83,9 @@ public final class GuavaCollectors {
 	 * Collect a stream of elements into an {@link ImmutableSortedSet}.
 	 * Using comparator
 	 * */
-	public static <T> Collector<T, ImmutableSortedSet.Builder<T>, ImmutableSortedSet<T>> immutableSortedSet(Comparator<T> comparator) {
+	public static <T> Collector<T, ImmutableSortedSet.Builder<T>, ImmutableSortedSet<T>> 
+			immutableSortedSet(Comparator<T> comparator) {
+		
 		return Collector.of(() -> ImmutableSortedSet.orderedBy(comparator),
 				ImmutableSortedSet.Builder<T>::add, 
 				(l, r) -> l.addAll(r.build()),
@@ -85,21 +93,104 @@ public final class GuavaCollectors {
 	}
 	
 	/**
+	 * Collect a stream of elements into an {@link ImmutableMultimap}.
+	 * 
 	 * @param <T> the type of the input elements
      * @param <K> the output type of the key mapping function
-     * @param <U> the output type of the value mapping function
+     * @param <V> the output type of the value mapping function
 	 */
-	public static <T, K, U> Collector<T, ImmutableMultimap.Builder<K, U>, ImmutableMultimap<K, U>> immutableMultimap(
-			Function<? super T, ? extends K> keyMapper,
-            Function<? super T, ? extends U> valueMapper) {
+	public static <T, K, V> Collector<T, ImmutableMultimap.Builder<K, V>, ImmutableMultimap<K, V>> 
+		immutableMultimap(Function<? super T, ? extends K> keyMapper, Function<? super T, ? extends V> valueMapper) {
 		
-		BiConsumer<ImmutableMultimap.Builder<K, U>, T> accumulator
+		BiConsumer<ImmutableMultimap.Builder<K, V>, T> accumulator
         	= (builder, element) -> builder.put(keyMapper.apply(element), valueMapper.apply(element));
 		
-		return Collector.of(ImmutableMultimap::<K, U>builder, 
+		return Collector.of(ImmutableMultimap::<K, V>builder, 
 				accumulator, 
 				(l, r) -> l.putAll(r.build()), 
-				ImmutableMultimap.Builder<K, U>::build);
+				ImmutableMultimap.Builder<K, V>::build);
+	}
+	
+	/**
+	 * Collect a stream of elements into an {@link ImmutableMap}.
+	 * Conflict key would result in override
+	 * 
+	 * @param <T> the type of the input elements
+     * @param <K> the output type of the key mapping function
+     * @param <V> the output type of the value mapping function
+	 */
+	public static <T, K, V> Collector<T, ImmutableMap.Builder<K, V>, ImmutableMap<K,V>> 
+		immutableMap(Function<? super T, ? extends K> keyMapper, Function<? super T, ? extends V> valueMapper) {
+		
+		BiConsumer<ImmutableMap.Builder<K, V>, T> accumulator
+    		= (builder, element) -> builder.put(keyMapper.apply(element), valueMapper.apply(element));
+    	
+		return Collector.of(ImmutableMap::<K, V>builder, 
+				accumulator, 
+				(l, r) -> l.putAll(r.build()), 
+				ImmutableMap.Builder<K, V>::build);
+	}
+	
+	/** 
+	 * Collect a stream of elements into an {@link ImmutableSortedMap}. 
+	 * Using natural order
+	 * 
+	 * @param <T> the type of the input elements
+     * @param <K> the output type of the key mapping function
+     * @param <V> the output type of the value mapping function
+	 */
+	public static <T, K extends Comparable<?>, V> Collector<T, ImmutableSortedMap.Builder<K, V>, ImmutableSortedMap<K, V>> 
+		immutableSortedMap(Function<? super T, ? extends K> keyMapper, Function<? super T, ? extends V> valueMapper) {
+		
+		BiConsumer<ImmutableSortedMap.Builder<K, V>, T> accumulator
+			= (builder, element) -> builder.put(keyMapper.apply(element), valueMapper.apply(element));
+		
+		return Collector.of(ImmutableSortedMap::<K, V>naturalOrder,
+				accumulator, 
+				(l, r) -> l.putAll(r.build()),
+				ImmutableSortedMap.Builder<K, V>::build);
+	}
+	
+	/** 
+	 * Collect a stream of elements into an {@link ImmutableSortedMap}. 
+	 * Using reverse order
+	 * 
+	 * @param <T> the type of the input elements
+     * @param <K> the output type of the key mapping function
+     * @param <V> the output type of the value mapping function
+	 */
+	public static <T, K extends Comparable<?>, V> Collector<T, ImmutableSortedMap.Builder<K, V>, ImmutableSortedMap<K, V>> 
+			immutableSortedMapReverseOrder(Function<? super T, ? extends K> keyMapper, 
+			Function<? super T, ? extends V> valueMapper) {
+		
+		BiConsumer<ImmutableSortedMap.Builder<K, V>, T> accumulator
+			= (builder, element) -> builder.put(keyMapper.apply(element), valueMapper.apply(element));
+		
+		return Collector.of(ImmutableSortedMap::<K, V>reverseOrder,
+				accumulator, 
+				(l, r) -> l.putAll(r.build()),
+				ImmutableSortedMap.Builder<K, V>::build);
+	}
+	
+	/** 
+	 * Collect a stream of elements into an {@link ImmutableSortedMap}. 
+	 * Using comparator
+	 * 
+	 * @param <T> the type of the input elements
+     * @param <K> the output type of the key mapping function
+     * @param <V> the output type of the value mapping function
+	 */
+	public static <T, K, V> Collector<T, ImmutableSortedMap.Builder<K, V>, ImmutableSortedMap<K, V>> 
+		immutableSortedMapReverseOrder(Comparator<K> comparator, Function<? super T, ? extends K> keyMapper, 
+				Function<? super T, ? extends V> valueMapper) {
+		
+		BiConsumer<ImmutableSortedMap.Builder<K, V>, T> accumulator
+			= (builder, element) -> builder.put(keyMapper.apply(element), valueMapper.apply(element));
+		
+		return Collector.of(() -> ImmutableSortedMap.<K,V>orderedBy(comparator),
+				accumulator, 
+				(l, r) -> l.putAll(r.build()),
+				ImmutableSortedMap.Builder<K, V>::build);
 	}
 	
 	private GuavaCollectors() {
