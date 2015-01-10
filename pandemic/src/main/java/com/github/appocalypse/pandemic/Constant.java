@@ -4,6 +4,22 @@ public interface Constant {
 	final public static int MAX_COUNT_PER_DISEASE = 24;
 	final public static int MAX_OUTBREAK_COUNT = 8;
 	
+	public static interface RoleLabel {
+		final public static String MEDIC = "Medic";
+		final public static String OPERATIONS_EXPERT = "Operations Expert";
+		final public static String DISPATCHER = "Dispatcher";
+		final public static String SCIENTIST = "Scientist";
+		final public static String RESEARCHER = "Researcher";
+		final public static String CONTINGENCY_PLANNER = "Contingency Planner";
+		final public static String QUARANTINE_SPECIALIST = "Quarantine Specialist";
+		final public static String FIELD_OPERATIVE = "Field Operative";
+		final public static String GENERALIST = "Generalist";
+		final public static String CONTAINMENT_SPECIALIST = "Containment Specialist";
+		final public static String EPIDEMIOLOGIST = "Epidemiologist";
+		final public static String ARCHIVIST =  "Archivist";
+		final public static String TROUBLESHOOTER = "Troubleshooter";
+	}
+	
 	public static interface CityName {
 		final public static String ATLANTA = "Atlanta";
 		final public static String WASHINGTON = "Washington";

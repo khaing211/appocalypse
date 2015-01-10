@@ -13,7 +13,6 @@ public class TurnKeeper {
 	}
 	
 	public static TurnKeeper inOrder(Player... players) {
-		if (players.length == 0) throw new IllegalArgumentException("Number of players cannot be zero");
 		return new TurnKeeper(0, players);
 	}
 	
