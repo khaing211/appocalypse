@@ -1,6 +1,8 @@
 package com.github.appocalypse.pandemic;
 
-import com.github.appocalypse.pandemic.role.Role;
+import java.util.Arrays;
+import java.util.Optional;
+
 import com.google.common.collect.ImmutableList;
 
 public class TurnKeeper {
@@ -28,15 +30,7 @@ public class TurnKeeper {
 		return ImmutableList.copyOf(players);
 	}
 	
-	public TurnKeeper swapRole(Role oldRole, Role newRole) {
-		Player[] newPlayers = new Player[players.length];
-		for (int i = 0; i < players.length; i++) {
-			if (players[i].getRole().getLabel().equals(oldRole.getLabel())) {
-				newPlayers[i] = players[i].swapRole(newRole);
-			} else {
-				newPlayers[i] = players[i];
-			}
-		}
-		return new TurnKeeper(counter, newPlayers);
+	public Optional<Player> getPlayerByName(String name) {
+		return Arrays.stream(players).filter(player -> player.getName().equals(name)).findAny();
 	}
 }

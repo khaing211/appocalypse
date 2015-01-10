@@ -24,7 +24,7 @@ import com.google.common.collect.ImmutableMap;
 public class Scenario {
 	final private Board board;
 	final private ImmutableMap<City, CityStats> cityStats;
-	final private ImmutableMap<Player, City> locations;
+	final private ImmutableMap<Player, PlayerStats> playerStats;
 	final private ImmutableList<InfectionCard> discardInfectedCards;
 	final private ImmutableList<PlayerCard> discardPlayerCards;
 	final private ImmutableList<Card> removeFromPlayCards;
@@ -90,6 +90,16 @@ public class Scenario {
 		return copyOf(this).withOutbreakCounter(getOutbreakCounter().outbreakAt(city)).build();
 	}
 	
+	// move current player
+	public Scenario move(City city) {
+		return move(getCurrentPlayer(), city);
+	}
+	
+	public Scenario move(Player player, City city) {
+		// TODO
+		return null;
+	}
+	
 	/**
 	 * Getters
 	 */
@@ -101,8 +111,8 @@ public class Scenario {
 		return cityStats;
 	}
 
-	public ImmutableMap<Player, City> getLocations() {
-		return locations;
+	public ImmutableMap<Player, PlayerStats> getPlayerStats() {
+		return playerStats;
 	}
 
 	public ImmutableList<InfectionCard> getDiscardInfectedCards() {
@@ -135,7 +145,7 @@ public class Scenario {
 	private Scenario(Builder builder) {
 		this.board = Optional.ofNullable(builder.board).orElse(Board.createPandemicBoard());
 		this.cityStats = Optional.ofNullable(builder.cityStats).orElse(ImmutableMap.of()) ;
-		this.locations = Optional.ofNullable(builder.locations).orElse(ImmutableMap.of());
+		this.playerStats = Optional.ofNullable(builder.playerStats).orElse(ImmutableMap.of());
 		this.turnKeeper = Optional.ofNullable(builder.turnKeeper).orElse(TurnKeeper.inOrder());
 		this.infectionRateCounter = Optional.ofNullable(builder.infectionRateCounter).orElse(InfectionRateCounter.initial());
 		this.outbreakCounter = Optional.ofNullable(builder.outbreakCounter).orElse(OutbreakCounter.zero());
@@ -152,7 +162,7 @@ public class Scenario {
 		return new Builder()
 			.withBoard(scenario.getBoard())
 			.withCityStats(scenario.getCityStats())
-			.withLocations(scenario.getLocations())
+			.withPlayerStats(scenario.getPlayerStats())
 			.withTurnKeeper(scenario.getTurnKeeper())
 			.withInfectionRateCounter(scenario.getInfectionRateCounter())
 			.withOutbreakCounter(scenario.getOutbreakCounter())
@@ -174,7 +184,7 @@ public class Scenario {
 	public static class Builder {
 		private Board board;
 		private ImmutableMap<City, CityStats> cityStats;
-		private ImmutableMap<Player, City> locations;
+		private ImmutableMap<Player, PlayerStats> playerStats;
 		private ImmutableList<InfectionCard> discardInfectedCards;
 		private ImmutableList<PlayerCard> discardPlayerCards;
 		private ImmutableList<Card> removeFromPlayCards;
@@ -192,8 +202,8 @@ public class Scenario {
 			return this;
 		}
 		
-		public Builder withLocations(ImmutableMap<Player, City> locations) {
-			this.locations = locations;
+		public Builder withPlayerStats(ImmutableMap<Player, PlayerStats> playerStats) {
+			this.playerStats = playerStats;
 			return this;
 		}
 		

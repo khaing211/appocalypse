@@ -1,27 +1,43 @@
 package com.github.appocalypse.pandemic;
 
-import com.github.appocalypse.pandemic.card.PlayerCard;
-import com.github.appocalypse.pandemic.role.Role;
-import com.google.common.collect.ImmutableList;
-
 public class Player {
-	final private Role role;
-	final private ImmutableList<PlayerCard> hand;
+	final private String name;
 	
-	public Player(Role role, ImmutableList<PlayerCard> hand) {
-		this.hand = hand;
-		this.role = role;
+	private Player(String name) {
+		this.name = name;
 	}
 	
-	public int getCardInHandCount() {
-		return hand.size();
+	public String getName() {
+		return name;
 	}
 	
-	public Role getRole() {
-		return role;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
 	}
-	
-	public Player swapRole(Role newRole) {
-		return new Player(newRole, hand);
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Player other = (Player) obj;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Player [name=" + name + "]";
 	}
 }
