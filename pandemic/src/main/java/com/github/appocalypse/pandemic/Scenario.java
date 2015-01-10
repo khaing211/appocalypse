@@ -83,12 +83,16 @@ public class Scenario {
 		return outbreakCounter.current();
 	}
 	
-	// Immutable change
+	/**
+	 * Immutable change short hand to create new scenario
+	 */
 	public Scenario outbreakAt(City city) {
-		// TODO:
-		return this;
+		return copyOf(this).withOutbreakCounter(getOutbreakCounter().outbreakAt(city)).build();
 	}
 	
+	/**
+	 * Getters
+	 */
 	public Board getBoard() {
 		return board;
 	}
@@ -121,6 +125,13 @@ public class Scenario {
 		return outbreakCounter;
 	}
 	
+	public ImmutableList<PlayerCard> getDiscardPlayerCards() {
+		return discardPlayerCards;
+	}
+	
+	/**
+	 * Builder methods
+	 */
 	private Scenario(Builder builder) {
 		this.board = Optional.ofNullable(builder.board).orElse(Board.createPandemicBoard());
 		this.cityStats = Optional.ofNullable(builder.cityStats).orElse(ImmutableMap.of()) ;
@@ -138,7 +149,16 @@ public class Scenario {
 	}
 	
 	public static Builder copyOf(Scenario scenario) {
-		return new Builder();
+		return new Builder()
+			.withBoard(scenario.getBoard())
+			.withCityStats(scenario.getCityStats())
+			.withLocations(scenario.getLocations())
+			.withTurnKeeper(scenario.getTurnKeeper())
+			.withInfectionRateCounter(scenario.getInfectionRateCounter())
+			.withOutbreakCounter(scenario.getOutbreakCounter())
+			.withDiscardInfectCards(scenario.getDiscardInfectedCards())
+			.withDiscardPlayerCards(scenario.getDiscardPlayerCards())
+			.withRemoveFromPlayCards(scenario.getRemoveFromPlayCards());
 	}
 	
 	/**
@@ -179,6 +199,11 @@ public class Scenario {
 		
 		public Builder withDiscardInfectCards(ImmutableList<InfectionCard> discardInfectCards) {
 			this.discardInfectedCards = discardInfectCards;
+			return this;
+		}
+		
+		public Builder withDiscardPlayerCards(ImmutableList<PlayerCard> discardPlayerCards) {
+			this.discardPlayerCards = discardPlayerCards;
 			return this;
 		}
 		
