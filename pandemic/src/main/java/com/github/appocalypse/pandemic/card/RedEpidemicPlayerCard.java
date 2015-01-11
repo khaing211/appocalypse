@@ -1,6 +1,5 @@
 package com.github.appocalypse.pandemic.card;
 
-import com.github.appocalypse.pandemic.Card;
 
 public class RedEpidemicPlayerCard extends EpidemicPlayerCard implements Card {
 	@Override

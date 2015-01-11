@@ -1,6 +1,5 @@
 package com.github.appocalypse.pandemic.card;
 
-import com.github.appocalypse.pandemic.Card;
 import com.github.appocalypse.pandemic.City;
 
 public class InfectionCard implements Card {

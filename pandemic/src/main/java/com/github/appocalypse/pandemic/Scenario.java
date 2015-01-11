@@ -1,9 +1,12 @@
 package com.github.appocalypse.pandemic;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 
+import com.github.appocalypse.pandemic.card.Card;
 import com.github.appocalypse.pandemic.card.InfectionCard;
 import com.github.appocalypse.pandemic.card.PlayerCard;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
@@ -83,6 +86,15 @@ public class Scenario {
 		return outbreakCounter.current();
 	}
 	
+	public boolean hasPlayer(Player player) {
+		return turnKeeper.all().stream().filter(Predicate.isEqual(player)).findAny().isPresent();
+	}
+	
+	public boolean isGameOver() {
+		// TODO:
+		return false;
+	}
+	
 	/**
 	 * Immutable change short hand to create new scenario
 	 */
@@ -96,8 +108,17 @@ public class Scenario {
 	}
 	
 	public Scenario move(Player player, City city) {
-		// TODO
-		return null;
+		Preconditions.checkArgument(!hasPlayer(player), player + " does not exist");
+		Preconditions.checkArgument(!playerStats.containsKey(player), player + " does not exist");
+
+		PlayerStats playerStat = playerStats.get(player).move(city);
+		
+		ImmutableMap<Player, PlayerStats> newPlayerStats = ImmutableMap.<Player, PlayerStats>builder()
+				.putAll(playerStats)
+				.put(player, playerStat)
+				.build();
+		
+		return copyOf(this).withPlayerStats(newPlayerStats).build();
 	}
 	
 	/**

@@ -1,10 +1,5 @@
-package com.github.appocalypse.pandemic;
+package com.github.appocalypse.pandemic.card;
 
-import com.github.appocalypse.pandemic.card.EventPlayerCard;
-import com.github.appocalypse.pandemic.card.EpidemicPlayerCard;
-import com.github.appocalypse.pandemic.card.InfectionCard;
-import com.github.appocalypse.pandemic.card.PlayerCityCard;
-import com.github.appocalypse.pandemic.card.RedEpidemicPlayerCard;
 
 public interface Card {
 	
