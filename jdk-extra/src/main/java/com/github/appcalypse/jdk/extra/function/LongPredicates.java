@@ -10,4 +10,24 @@ public interface LongPredicates {
 	public static LongPredicate mod(long modulo) {
 		return i -> i % modulo == 0;
 	}
+	
+	public static LongPredicate equalsTo(long val) {
+		return i -> i == val;
+	}
+	
+	public static LongPredicate lessThan(long bound) {
+		return i -> i < bound;
+	}
+	
+	public static LongPredicate greaterThan(long bound) {
+		return i -> i > bound;
+	}
+	
+	public static LongPredicate lessThanOrEquals(long bound) {
+		return lessThan(bound).or(equalsTo(bound));
+	}
+	
+	public static LongPredicate greaterThanOrEquals(long bound) {
+		return greaterThan(bound).or(equalsTo(bound));
+	}
 }
