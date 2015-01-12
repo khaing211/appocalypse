@@ -10,6 +10,10 @@ public class AtomicModuloLong {
 		this.mod = mod;
 	}
 	
+	public long getAndIncrement() {
+		return val.updateAndGet(i -> Math.floorMod(i+1, mod));
+	}
+	
 	public long incrementAndGet() {
 		return val.updateAndGet(i -> Math.floorMod(i+1, mod));
 	}
@@ -18,11 +22,19 @@ public class AtomicModuloLong {
 		return val.get();
 	}
 	
+	public long getAndDecrement() {
+		return val.updateAndGet(i -> Math.floorMod(i-1, mod));
+	}
+	
 	public long decrementAndGet() {
 		return val.updateAndGet(i -> Math.floorMod(i-1, mod));
 	}
 	
-	public long addAndGet(long increment) {
-		return val.updateAndGet(i -> Math.floorMod(i+increment, mod));
+	public long addAndGet(long delta) {
+		return val.updateAndGet(i -> Math.floorMod(i+delta, mod));
+	}
+	
+	public long getAndAdd(long delta) {
+		return val.getAndUpdate(i -> Math.floorMod(i+delta, mod));
 	}
 }

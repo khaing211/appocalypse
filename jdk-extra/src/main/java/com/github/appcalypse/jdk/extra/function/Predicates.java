@@ -1,9 +1,14 @@
 package com.github.appcalypse.jdk.extra.function;
 
 import java.util.Arrays;
+import java.util.function.DoublePredicate;
+import java.util.function.Function;
 import java.util.function.IntPredicate;
 import java.util.function.LongPredicate;
 import java.util.function.Predicate;
+import java.util.function.ToDoubleFunction;
+import java.util.function.ToIntFunction;
+import java.util.function.ToLongFunction;
 
 public interface Predicates {
 	public static <T> Predicate<T> not(Predicate<T> predicate) {
@@ -87,7 +92,6 @@ public interface Predicates {
 	}
 	
 	/**
-	 * @param objects
 	 * @return a predicate that match any of the given objects using Object.equals()
 	 */
 	public static <T> Predicate<T> in(Object ... objects) {
@@ -97,7 +101,6 @@ public interface Predicates {
 	}
 	
 	/**
-	 * @param predicates
 	 * @return a predicate that match of given predicate (or logic)
 	 * 
 	 * Benefit of this is to combine all method reference without casting
@@ -109,13 +112,41 @@ public interface Predicates {
 	}
 	
 	/**
-	 * @param predicates
 	 * @return a predicate that match of given predicate (and logic)
 	 * 
 	 * Benefit of this is to combine all method reference without casting
 	 * Furthermore, pass no predicates result in alwaysTrue()
 	 */
+	@SafeVarargs
 	public static <T> Predicate<T> and(Predicate<T> ... predicates) {
 		return Arrays.stream(predicates).reduce(alwaysTrue(), (i, j) -> i.and(j));
+	}
+
+	/**
+	 * Test an Object by its attributes with given keyExtractor
+	 */
+	public static <U, T> Predicate<U> mapping(Function<U, T> keyExtractor, Predicate<T> predicate) {
+		return i -> predicate.test(keyExtractor.apply(i));
+	}
+	
+	/**
+	 * Test an Object by its integer attributes with given intExtractor
+	 */
+	public static <T> Predicate<T> mapping(ToIntFunction<T> intExtractor, IntPredicate predicate) {
+		return i -> predicate.test(intExtractor.applyAsInt(i));
+	}
+
+	/**
+	 * Test an Object by its long attributes with given longExtractor
+	 */
+	public static <T> Predicate<T> mapping(ToLongFunction<T> longExtractor, LongPredicate predicate) {
+		return i -> predicate.test(longExtractor.applyAsLong(i));
+	}
+	
+	/**
+	 * Test an Object by its double attributes with given longExtractor
+	 */
+	public static <T> Predicate<T> mapping(ToDoubleFunction<T> doubleExtractor, DoublePredicate predicate) {
+		return i -> predicate.test(doubleExtractor.applyAsDouble(i));
 	}
 }

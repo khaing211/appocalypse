@@ -10,6 +10,10 @@ public class AtomicModuloInteger {
 		this.mod = mod;
 	}
 	
+	public int getAndIncrement() {
+		return val.getAndUpdate(i -> Math.floorMod(i+1, mod));
+	}
+	
 	public int incrementAndGet() {
 		return val.updateAndGet(i -> Math.floorMod(i+1, mod));
 	}
@@ -18,11 +22,19 @@ public class AtomicModuloInteger {
 		return val.get();
 	}
 	
+	public int getAndDecrement() {
+		return val.getAndUpdate(i -> Math.floorMod(i-1, mod));
+	}
+	
 	public int decrementAndGet() {
 		return val.updateAndGet(i -> Math.floorMod(i-1, mod));
 	}
 	
-	public int addAndGet(int increment) {
-		return val.updateAndGet(i -> Math.floorMod(i+increment, mod));
+	public int addAndGet(int delta) {
+		return val.updateAndGet(i -> Math.floorMod(i+delta, mod));
+	}
+	
+	public int getAndAdd(int delta) {
+		return val.getAndUpdate(i -> Math.floorMod(i+delta, mod));
 	}
 }
