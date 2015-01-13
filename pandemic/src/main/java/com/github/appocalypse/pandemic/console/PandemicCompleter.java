@@ -8,7 +8,7 @@ public class PandemicCompleter implements Completer {
 
 	@Override
 	public int complete(String buffer, int cursor, List<CharSequence> candidates) {
-		candidates.add(buffer + " " + cursor);
+		candidates.add("abcdef");
 		return candidates.isEmpty() ? -1 : 0;
 	}
 

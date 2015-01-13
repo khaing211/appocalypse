@@ -1,35 +1,24 @@
 package com.github.appocalypse.pandemic;
 
+import java.util.Map;
+
+import com.google.common.collect.ImmutableMap;
+
 public class CityStats {
-	final private int redDiseaseCount;
-	final private int blueDiseaseCount;
-	final private int blackDiseaseCount;
-	final private int yellowDiseaseCount;
+	final private ImmutableMap<DiseaseColor, Integer> diseaseCount;
 	final private boolean researchStation;
 	
-	private CityStats(int redDiseaseCount, int blueDiseaseCount, 
-			int blackDiseaseCount, int yellowDiseaseCount, boolean researchStation) {
-		this.redDiseaseCount = redDiseaseCount;
-		this.blueDiseaseCount = blueDiseaseCount;
-		this.blackDiseaseCount = blackDiseaseCount;
-		this.yellowDiseaseCount = yellowDiseaseCount;
+	private CityStats(ImmutableMap<DiseaseColor, Integer> diseaseCount, boolean researchStation) {
+		this.diseaseCount = diseaseCount;
 		this.researchStation = researchStation;
 	}
 	
-	public int getRedDiseaseCount() {
-		return redDiseaseCount;
+	public ImmutableMap<DiseaseColor, Integer> getDiseaseCount() {
+		return diseaseCount;
 	}
 
-	public int getBlueDiseaseCount() {
-		return blueDiseaseCount;
-	}
-
-	public int getBlackDiseaseCount() {
-		return blackDiseaseCount;
-	}
-
-	public int getYellowDiseaseCount() {
-		return yellowDiseaseCount;
+	public int getCount(DiseaseColor diseaseColor) {
+		return diseaseCount.getOrDefault(diseaseColor, Integer.valueOf(0));
 	}
 
 	public boolean hasResearchStation() {
@@ -37,11 +26,13 @@ public class CityStats {
 	}
 	
 	public static CityStats empty() {
-		return new CityStats(0, 0, 0, 0, false);
+		return new CityStats(ImmutableMap.of(), false);
 	}
 	
 	public static Builder copy(CityStats cityStats) {
-		return builder();
+		return builder()
+				.withDiseaseCount(cityStats.getDiseaseCount())
+				.withResearchStation(cityStats.hasResearchStation());
 	}
 	
 	public static Builder builder() {
@@ -49,40 +40,26 @@ public class CityStats {
 	}
 	
 	public static class Builder {
-		private int redDiseaseCount;
-		private int blueDiseaseCount;
-		private int blackDiseaseCount;
-		private int yellowDiseaseCount;
 		private boolean researchStation;
+		private ImmutableMap.Builder<DiseaseColor, Integer> diseaseCount = ImmutableMap.builder();
 		
-		public Builder withRedDiseaseCount(int redDiseaseCount) {
-			this.redDiseaseCount = redDiseaseCount;
+		public Builder withDiseaseCount(DiseaseColor color, int count) {
+			diseaseCount.put(color, count);
 			return this;
 		}
 		
-		public Builder withBlueDiseaseCount(int blueDiseaseCount) {
-			this.blueDiseaseCount = blueDiseaseCount;
+		public Builder withDiseaseCount(Map<DiseaseColor, Integer> diseaseCount) {
+			this.diseaseCount.putAll(diseaseCount);
 			return this;
 		}
 		
-		public Builder withBlackDiseaseCount(int blackDiseaseCount) {
-			this.blackDiseaseCount = blackDiseaseCount;
-			return this;
-		}
-		
-		public Builder withYellowDiseaseCount(int yellowDieaseCount) {
-			this.yellowDiseaseCount = yellowDieaseCount;
-			return this;
-		}
-		
-		public Builder withResearchStation() {
-			this.researchStation = true;
+		public Builder withResearchStation(boolean researchStation) {
+			this.researchStation = researchStation;
 			return this;
 		}
 		
 		public CityStats build() {
-			return new CityStats(redDiseaseCount, blueDiseaseCount, blackDiseaseCount, 
-					yellowDiseaseCount, researchStation);
+			return new CityStats(diseaseCount.build(), researchStation);
 		}
 	}
 }

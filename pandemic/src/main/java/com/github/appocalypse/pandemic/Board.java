@@ -20,6 +20,14 @@ public class Board {
 		this.connectivity = connectivity;
 	}
 	
+	public ImmutableListMultimap<City, City> getConnectivity() {
+		return connectivity;
+	}
+
+	public ImmutableList<City> getCities() {
+		return cities;
+	}
+	
 	public long getCitiesCount() {
 		return cities.size();
 	}

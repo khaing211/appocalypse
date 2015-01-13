@@ -7,6 +7,7 @@ import java.util.function.Predicate;
 import com.github.appocalypse.pandemic.card.Card;
 import com.github.appocalypse.pandemic.card.InfectionCard;
 import com.github.appocalypse.pandemic.card.PlayerCard;
+import com.github.appocalypse.pandemic.card.PlayerCityCard;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -46,34 +47,33 @@ public class Scenario {
 		return cityStats.getOrDefault(city, CityStats.empty()).hasResearchStation();
 	}
 	
-	public int getRedDiseaseCount(City city) {
-		return cityStats.getOrDefault(city, CityStats.empty()).getRedDiseaseCount();
+	public int getDiseaseCount(City city, DiseaseColor color) {
+		return cityStats.getOrDefault(city, CityStats.empty()).getCount(color);
 	}
 	
-	public int getBlueDiseaseCount(City city) {
-		return cityStats.getOrDefault(city, CityStats.empty()).getBlueDiseaseCount();
+	public int getDiseaseCubeCount(DiseaseColor color) {
+		return Constant.MAX_COUNT_PER_DISEASE - getDiseaseCount(color);
 	}
 	
-	public int getBlackDiseaseCount(City city) {
-		return cityStats.getOrDefault(city, CityStats.empty()).getBlackDiseaseCount();
+	public int getDiseaseCount(DiseaseColor color) {
+		return board.getCities().stream()
+			.filter(c -> cityStats.containsKey(c))
+			.mapToInt(c -> cityStats.get(c).getCount(color))
+			.sum();
 	}
 	
-	public int getYellowDiseaseCount(City city) {
-		return cityStats.getOrDefault(city, CityStats.empty()).getYellowDiseaseCount();
-	}
-	
-	public int getDieaseCubeCount(RegionColor regionColor) {
-		return Constant.MAX_COUNT_PER_DISEASE - getDiseaseCount(regionColor);
-	}
-	
-	public int getDiseaseCount(RegionColor regionColor) {
-		// TODO:
-		return 0;
-	}
-	
-	public int getUndrawnCityPlayerCardCount(RegionColor regionColor) {
-		// TODO:
-		return 0;
+	public int getUndrawnPlayerCityCardCount(RegionColor regionColor) {
+		final Card.IntVisitor countVisitor = new Card.IntVisitor() {
+			public int visit(PlayerCityCard playerCard) {
+				return playerCard.getCity().getRegionColor().equals(regionColor) ? 1 : 0;
+			}
+		};
+		
+		final int numberOfDiscardedPlayerCityCardWithRegionColor = discardPlayerCards.stream()
+				.mapToInt(c -> c.accept(countVisitor))
+				.sum();
+		
+		return Constant.NUM_CITY_PER_REGION - numberOfDiscardedPlayerCityCardWithRegionColor;
 	}
 	
 	public Player getCurrentPlayer() {
@@ -93,8 +93,8 @@ public class Scenario {
 	}
 	
 	public boolean isGameOver() {
-		final boolean isAnyDieaseCubeCountZero = Arrays.stream(RegionColor.values())
-				.map(i -> getDieaseCubeCount(i) == 0)
+		final boolean isAnyDieaseCubeCountZero = Arrays.stream(DiseaseColor.values())
+				.map(i -> getDiseaseCubeCount(i) == 0)
 				.reduce(false, (i, j) -> i || j);
 		
 		return terminate || getCurrentOutbreakCount() >= Constant.MAX_OUTBREAK_COUNT 

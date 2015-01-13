@@ -19,7 +19,12 @@ public class InfectionCard implements Card {
 	}
 	
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(VoidVisitor visitor) {
 		visitor.visit(this);
+	}
+	
+	@Override
+	public int accept(IntVisitor visitor) {
+		return visitor.visit(this);
 	}
 }

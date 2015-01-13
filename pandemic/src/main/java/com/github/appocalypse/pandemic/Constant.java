@@ -1,13 +1,9 @@
 package com.github.appocalypse.pandemic;
 
 public interface Constant {
+	final public static int NUM_CITY_PER_REGION = 12;
 	final public static int MAX_COUNT_PER_DISEASE = 24;
 	final public static int MAX_OUTBREAK_COUNT = 8;
-	
-	public static interface Keywords {
-		final public static String QUIT = "quit";
-		final public static String BUILD = "build";
-	}
 	
 	public static interface RoleLabel {
 		final public static String MEDIC = "Medic";
