@@ -1,5 +1,6 @@
 package com.github.appocalypse.pandemic;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -34,6 +35,7 @@ public class Scenario {
 	final private TurnKeeper turnKeeper;
 	final private InfectionRateCounter infectionRateCounter;
 	final private OutbreakCounter outbreakCounter;
+	final private boolean terminate;
 	
 	public long getResearchStationCount() {
 		return cityStats.entrySet().stream().parallel()
@@ -91,8 +93,12 @@ public class Scenario {
 	}
 	
 	public boolean isGameOver() {
-		// TODO:
-		return false;
+		final boolean isAnyDieaseCubeCountZero = Arrays.stream(RegionColor.values())
+				.map(i -> getDieaseCubeCount(i) == 0)
+				.reduce(false, (i, j) -> i || j);
+		
+		return terminate || getCurrentOutbreakCount() >= Constant.MAX_OUTBREAK_COUNT 
+				|| isAnyDieaseCubeCountZero;
 	}
 	
 	/**
@@ -119,6 +125,10 @@ public class Scenario {
 				.build();
 		
 		return copyOf(this).withPlayerStats(newPlayerStats).build();
+	}
+	
+	public Scenario quit() {
+		return copyOf(this).withTerminate(true).build();
 	}
 	
 	/**
@@ -160,6 +170,10 @@ public class Scenario {
 		return discardPlayerCards;
 	}
 	
+	public boolean isTerminate() {
+		return terminate;
+	}
+	
 	/**
 	 * Builder methods
 	 */
@@ -173,6 +187,7 @@ public class Scenario {
 		this.discardInfectedCards = Optional.ofNullable(builder.discardInfectedCards).orElse(ImmutableList.of());
 		this.discardPlayerCards = Optional.ofNullable(builder.discardPlayerCards).orElse(ImmutableList.of());
 		this.removeFromPlayCards = Optional.ofNullable(builder.removeFromPlayCards).orElse(ImmutableList.of());
+		this.terminate = builder.terminate;
 	}
 	
 	public static Builder builder() {
@@ -189,7 +204,8 @@ public class Scenario {
 			.withOutbreakCounter(scenario.getOutbreakCounter())
 			.withDiscardInfectCards(scenario.getDiscardInfectedCards())
 			.withDiscardPlayerCards(scenario.getDiscardPlayerCards())
-			.withRemoveFromPlayCards(scenario.getRemoveFromPlayCards());
+			.withRemoveFromPlayCards(scenario.getRemoveFromPlayCards())
+			.withTerminate(scenario.isTerminate());
 	}
 	
 	/**
@@ -212,6 +228,12 @@ public class Scenario {
 		private TurnKeeper turnKeeper;
 		private InfectionRateCounter infectionRateCounter;
 		private OutbreakCounter outbreakCounter;
+		private boolean terminate;
+		
+		public Builder withTerminate(boolean terminate) {
+			this.terminate = terminate;
+			return this;
+		}
 		
 		public Builder withBoard(Board board) {
 			this.board = board;

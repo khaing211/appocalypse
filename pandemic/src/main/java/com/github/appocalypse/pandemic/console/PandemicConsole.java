@@ -5,6 +5,8 @@ import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.github.appocalypse.pandemic.Game;
+
 import jline.console.ConsoleReader;
 import jline.console.completer.Completer;
 
@@ -18,8 +20,12 @@ public class PandemicConsole {
 		
 		final PrintWriter out = new PrintWriter(reader.getOutput());
 		
+		final Game game = Game.newGame(); 
+		
 		String line = null;
-		while ((line = reader.readLine()) != null) {
+		while (!game.getCurrentScenario().isGameOver() &&  
+				((line = reader.readLine()) != null)) {
+			
 			out.println(line);
 			
 			out.flush();
