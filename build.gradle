@@ -17,6 +17,8 @@ ext {
 	// org.seleniumhq.selenium:
 	seleniumVersion = '2.44.0'
 	
+	phantomJsDriverVersion =  '1.2.0'
+	
 	// org.gebish:
 	gebVersion = '0.10.0'
 	
@@ -28,6 +30,8 @@ ext {
 	
 	tinkerpop3Version = '3.0.0.M6'
 	jlineVersion = '2.12'
+	
+	gmailServiceVersion = 'v1-rev19-1.19.1'
 }
 
 apply from: 'gradle/wrapper.gradle'
