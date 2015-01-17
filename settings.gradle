@@ -1,4 +1,4 @@
-include 'install-java'
+include 'installer'
 include 'responsive-test'
 include 'webpage-screenshot'
 include 'antlr4-grammars'
