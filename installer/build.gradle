@@ -1,12 +1,15 @@
 apply from: "$rootDir/gradle/javaProject.gradle"
 apply from: "$rootDir/gradle/oneJar.gradle"
 
+defaultTasks 'clean', 'buildInstaller'
+
 dependencies {
 	compile group: 'org.apache.httpcomponents', name: 'fluent-hc', version: httpcomponentsVersion
 	compile group: 'org.apache.commons', name: 'commons-compress', version: commonsCompressVersion
 	compile group: 'commons-io', name: 'commons-io', version: commonsIoVersion
+	compile group: 'commons-cli', name: 'commons-cli', version: commonsCliVersion
 }
 
-task buildInstallJava(type: OneJar) {
-	mainClass = 'com.github.appocalypse.InstallJava'
+task buildInstaller(type: OneJar) {
+	mainClass = 'com.github.appocalypse.Installer'
 }

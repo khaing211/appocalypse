@@ -13,8 +13,8 @@ import org.apache.http.client.fluent.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class InstallJava {
-	final static private Logger LOG = LoggerFactory.getLogger(InstallJava.class);
+public class Installer {
+	final static private Logger LOG = LoggerFactory.getLogger(Installer.class);
 	
 	public static void main(String[] args) throws Exception {
 		if (args.length != 5) {
