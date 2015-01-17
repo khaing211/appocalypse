@@ -5,6 +5,14 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.PosixParser;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
@@ -16,7 +24,46 @@ import org.slf4j.LoggerFactory;
 public class Installer {
 	final static private Logger LOG = LoggerFactory.getLogger(Installer.class);
 	
+	public static CommandLine usage(String[] args) throws ParseException {
+		@SuppressWarnings("static-access")
+		Option output = OptionBuilder
+				.withLongOpt("output-directory")
+				.withDescription("Directory to be extracted")
+				.hasArg()
+				.isRequired()
+				.create();
+		
+		@SuppressWarnings("static-access")
+		Option osVersion = OptionBuilder
+				.withLongOpt("os-version")
+				.withDescription("os version of java")
+				.hasArg()
+				.isRequired()
+				.create();
+		
+		Options options = new Options();
+		
+		options.addOption("h", "help", false, "print this message");
+		options.addOption("a", "archive", false, "archive to be extracted");
+
+		options.addOption(output);
+		options.addOption(osVersion);
+
+		CommandLineParser parser = new PosixParser();
+		CommandLine cmd = parser.parse( options, args);
+		
+		if (cmd.hasOption("h")) {
+			HelpFormatter formatter = new HelpFormatter();
+			formatter.printHelp( "Installer", options );
+			System.exit(0);
+		}
+		
+		return cmd;
+	}
+	
 	public static void main(String[] args) throws Exception {
+		usage(args);
+
 		if (args.length != 5) {
 			LOG.error("Please pass in <jdkMajorVersion> <jdkMinorVersion> <jdkBuildNumber> <osVersion> <outputDirectory>");
 			return;
