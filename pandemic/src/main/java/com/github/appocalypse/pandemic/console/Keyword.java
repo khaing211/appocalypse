@@ -4,13 +4,14 @@ public enum Keyword {
 	QUIT("quit"),
 	BUILD("build"),
 	MOVE("move"),
-	MOVE_PLAYER("move player"),
+	PLAYER("player"),
 	DISCOVER("discover"),
 	TREAT("treat"),
 	DISCARD("discard"),
 	INFECT("infect"),
-	DRAW_INFECTION_DECK("draw infection deck"),
-	DRAW_PLAYER_DECK("draw player deck"),
+	DRAW("draw"),
+	INFECTION("infection"),
+	DECK("deck"),
 	;
 	
 	final private String val;

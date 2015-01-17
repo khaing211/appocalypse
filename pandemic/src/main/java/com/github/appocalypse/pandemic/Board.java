@@ -47,7 +47,7 @@ public class Board {
 				.collect(Collectors.toMap(Entry::getKey, entry -> entry.getValue().size()))
 				.entrySet()
 				.parallelStream()
-				.collect(GuavaCollectors.immutableMultimap(Entry::getValue, Entry::getKey));
+				.collect(GuavaCollectors.toImmutableMultimap(Entry::getValue, Entry::getKey));
 	}
 	
 	public ImmutableList<City> getMostConnectCities() {
@@ -67,7 +67,7 @@ public class Board {
 			.parallelStream()
 			.filter(entry -> { return entry.getValue() == topConnectivityRank; })
 			.map(Entry::getKey)
-			.collect(GuavaCollectors.immutableList());
+			.collect(GuavaCollectors.toImmutableList());
 	}
 	
 	static public Board createPandemicBoard() {

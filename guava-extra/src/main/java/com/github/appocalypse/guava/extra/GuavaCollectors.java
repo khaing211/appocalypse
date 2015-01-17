@@ -38,21 +38,31 @@ import com.google.common.collect.ImmutableSortedSet;
  */
 public final class GuavaCollectors {
 	/** Collect a stream of elements into an {@link ImmutableList}. */
-	public static <T> Collector<T, ImmutableList.Builder<T>, ImmutableList<T>> immutableList() {
+	public static <T> Collector<T, ImmutableList.Builder<T>, ImmutableList<T>> toImmutableList() {
 		return Collector.of(ImmutableList::<T>builder,
 				ImmutableList.Builder<T>::add, 
 				(l, r) -> l.addAll(r.build()),
 				ImmutableList.Builder<T>::build);
 	}
 
-	/** Collect a stream of elements into an {@link ImmutableSet}. */
-	public static <T> Collector<T, ImmutableSet.Builder<T>, ImmutableSet<T>> immutableSet() {
+	public static <T> Collector<ImmutableList<T>, ImmutableList.Builder<T>, ImmutableList<T>> flattenImmutableList() {
+		return Collector.of(ImmutableList::<T>builder,
+				(builder, element) -> builder.addAll(element), 
+				(l, r) -> l.addAll(r.build()),
+				ImmutableList.Builder<T>::build);
+	}
+
+	
+	/** 
+	 * Collect a stream of elements into an {@link ImmutableSet}. 
+	 **/
+	public static <T> Collector<T, ImmutableSet.Builder<T>, ImmutableSet<T>> toImmutableSet() {
 		return Collector.of(ImmutableSet::<T>builder,
 				ImmutableSet.Builder<T>::add, 
 				(l, r) -> l.addAll(r.build()),
 				ImmutableSet.Builder<T>::build, UNORDERED);
 	}
-
+	
 	/** 
 	 * Collect a stream of elements into an {@link ImmutableSortedSet}. 
 	 * Using natural order
@@ -71,7 +81,7 @@ public final class GuavaCollectors {
 	 * Using reverse order
 	 */
 	public static <T extends Comparable<?>> Collector<T, ImmutableSortedSet.Builder<T>, ImmutableSortedSet<T>> 
-			immutableSortedSetReverseOrder() {
+			toImmutableSortedSetReverseOrder() {
 		
 		return Collector.of(ImmutableSortedSet::<T>reverseOrder,
 				ImmutableSortedSet.Builder<T>::add, 
@@ -84,7 +94,7 @@ public final class GuavaCollectors {
 	 * Using comparator
 	 * */
 	public static <T> Collector<T, ImmutableSortedSet.Builder<T>, ImmutableSortedSet<T>> 
-			immutableSortedSet(Comparator<T> comparator) {
+			toImmutableSortedSet(Comparator<T> comparator) {
 		
 		return Collector.of(() -> ImmutableSortedSet.orderedBy(comparator),
 				ImmutableSortedSet.Builder<T>::add, 
@@ -100,7 +110,7 @@ public final class GuavaCollectors {
      * @param <V> the output type of the value mapping function
 	 */
 	public static <T, K, V> Collector<T, ImmutableMultimap.Builder<K, V>, ImmutableMultimap<K, V>> 
-		immutableMultimap(Function<? super T, ? extends K> keyMapper, Function<? super T, ? extends V> valueMapper) {
+		toImmutableMultimap(Function<? super T, ? extends K> keyMapper, Function<? super T, ? extends V> valueMapper) {
 		
 		BiConsumer<ImmutableMultimap.Builder<K, V>, T> accumulator
         	= (builder, element) -> builder.put(keyMapper.apply(element), valueMapper.apply(element));
@@ -120,7 +130,7 @@ public final class GuavaCollectors {
      * @param <V> the output type of the value mapping function
 	 */
 	public static <T, K, V> Collector<T, ImmutableMap.Builder<K, V>, ImmutableMap<K,V>> 
-		immutableMap(Function<? super T, ? extends K> keyMapper, Function<? super T, ? extends V> valueMapper) {
+		toImmutableMap(Function<? super T, ? extends K> keyMapper, Function<? super T, ? extends V> valueMapper) {
 		
 		BiConsumer<ImmutableMap.Builder<K, V>, T> accumulator
     		= (builder, element) -> builder.put(keyMapper.apply(element), valueMapper.apply(element));
@@ -140,7 +150,7 @@ public final class GuavaCollectors {
      * @param <V> the output type of the value mapping function
 	 */
 	public static <T, K extends Comparable<?>, V> Collector<T, ImmutableSortedMap.Builder<K, V>, ImmutableSortedMap<K, V>> 
-		immutableSortedMap(Function<? super T, ? extends K> keyMapper, Function<? super T, ? extends V> valueMapper) {
+		toImmutableSortedMap(Function<? super T, ? extends K> keyMapper, Function<? super T, ? extends V> valueMapper) {
 		
 		BiConsumer<ImmutableSortedMap.Builder<K, V>, T> accumulator
 			= (builder, element) -> builder.put(keyMapper.apply(element), valueMapper.apply(element));
@@ -160,7 +170,7 @@ public final class GuavaCollectors {
      * @param <V> the output type of the value mapping function
 	 */
 	public static <T, K extends Comparable<?>, V> Collector<T, ImmutableSortedMap.Builder<K, V>, ImmutableSortedMap<K, V>> 
-			immutableSortedMapReverseOrder(Function<? super T, ? extends K> keyMapper, 
+			toImmutableSortedMapReverseOrder(Function<? super T, ? extends K> keyMapper, 
 			Function<? super T, ? extends V> valueMapper) {
 		
 		BiConsumer<ImmutableSortedMap.Builder<K, V>, T> accumulator
@@ -181,7 +191,7 @@ public final class GuavaCollectors {
      * @param <V> the output type of the value mapping function
 	 */
 	public static <T, K, V> Collector<T, ImmutableSortedMap.Builder<K, V>, ImmutableSortedMap<K, V>> 
-		immutableSortedMapReverseOrder(Comparator<K> comparator, Function<? super T, ? extends K> keyMapper, 
+		toImmutableSortedMapReverseOrder(Comparator<K> comparator, Function<? super T, ? extends K> keyMapper, 
 				Function<? super T, ? extends V> valueMapper) {
 		
 		BiConsumer<ImmutableSortedMap.Builder<K, V>, T> accumulator
