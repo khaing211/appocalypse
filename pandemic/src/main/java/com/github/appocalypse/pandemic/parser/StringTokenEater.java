@@ -25,7 +25,7 @@ public class StringTokenEater implements TokenEater {
 		}
 		
 		for (int i = 0; i < match.length(); i++) {
-			if (value.charAt(fromIndex + i) != match.charAt(i)) {
+			if (!charCompareIgnoreCase(value.charAt(fromIndex + i), match.charAt(i))) {
 				if (i == 0) {
 					return ImmutableList.of();
 				} else {
@@ -35,6 +35,11 @@ public class StringTokenEater implements TokenEater {
 		}
 		
 		return ImmutableList.of(new Cursor(match, fromIndex, fromIndex + match.length()));
+	}
+	
+	private boolean charCompareIgnoreCase(char left, char right) {
+		return Character.toLowerCase(left) == Character.toLowerCase(right);
+
 	}
 
 }
