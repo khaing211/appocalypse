@@ -39,5 +39,11 @@ public interface TokenEater {
 		public boolean isPartialMatch() {
 			return match.length() != endIndex - fromIndex;
 		}
+		
+		@Override
+		public String toString() {
+			return "Cursor [match=" + match + ", fromIndex=" + fromIndex
+					+ ", endIndex=" + endIndex + "]";
+		}
 	}
 }

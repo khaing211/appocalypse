@@ -15,7 +15,7 @@ public class WhitespaceTokenEater implements TokenEater {
 		}
 		
 		for (int endIndex = fromIndex; endIndex < value.length(); endIndex++) {
-			if (!Character.isSpaceChar(value.charAt(endIndex))) {
+			if (!Character.isWhitespace(value.charAt(endIndex))) {
 				if (endIndex == fromIndex) {
 					return ImmutableList.of();
 				} else {

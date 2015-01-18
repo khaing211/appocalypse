@@ -17,5 +17,60 @@ public class WhitespaceTokenEaterTest {
 		
 		assertEquals(0, cursors.size());		
 	}
+	
+	@Test
+	public void testOneWhiteSpace() {
+		TokenEater tokenEater = new WhitespaceTokenEater();
+		
+		ImmutableList<Cursor> cursors = tokenEater.eat(0, " bc");
+		
+		assertEquals(1, cursors.size());		
+		Cursor cursor = cursors.get(0);
+		assertEquals(0, cursor.getFromIndex());
+		assertEquals(1, cursor.getEndIndex());
+		assertEquals(" ", cursor.getMatch());
+		assertFalse(cursor.isPartialMatch());
+	}
+	
+	@Test
+	public void testTwoWhiteSpace() {
+		TokenEater tokenEater = new WhitespaceTokenEater();
+		
+		ImmutableList<Cursor> cursors = tokenEater.eat(0, "  c");
+		
+		assertEquals(1, cursors.size());		
+		Cursor cursor = cursors.get(0);
+		assertEquals(0, cursor.getFromIndex());
+		assertEquals(2, cursor.getEndIndex());
+		assertEquals("  ", cursor.getMatch());
+		assertFalse(cursor.isPartialMatch());
+	}
 
+	@Test
+	public void testTab() {
+		TokenEater tokenEater = new WhitespaceTokenEater();
+		
+		ImmutableList<Cursor> cursors = tokenEater.eat(0, "  \tc");
+		
+		assertEquals(1, cursors.size());		
+		Cursor cursor = cursors.get(0);
+		assertEquals(0, cursor.getFromIndex());
+		assertEquals(3, cursor.getEndIndex());
+		assertEquals("  \t", cursor.getMatch());
+		assertFalse(cursor.isPartialMatch());
+	}
+	
+	@Test
+	public void testNewline() {
+		TokenEater tokenEater = new WhitespaceTokenEater();
+		
+		ImmutableList<Cursor> cursors = tokenEater.eat(0, "  \t\nc");
+		
+		assertEquals(1, cursors.size());		
+		Cursor cursor = cursors.get(0);
+		assertEquals(0, cursor.getFromIndex());
+		assertEquals(4, cursor.getEndIndex());
+		assertEquals("  \t\n", cursor.getMatch());
+		assertFalse(cursor.isPartialMatch());
+	}
 }
