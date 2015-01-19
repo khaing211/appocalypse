@@ -3,27 +3,28 @@ package com.github.appocalypse.pandemic.parser;
 import com.google.common.collect.ImmutableList;
 
 public interface TokenEater {
-	/**
-	 * @param fromIndex to start inclusive
-	 * @param value to parse
-	 * @return cursor contains full match or not and index
-	 */
-	public ImmutableList<Cursor> eat(int fromIndex, String value);
+	public default ImmutableList<Cursor> eat(int fromIndex, String value) {
+		return eat(fromIndex, value, false);
+	}
+	
+	public ImmutableList<Cursor> eat(int fromIndex, String value, boolean includePartialMatchWhenNoMatch);
 	
 	
 	public static class Cursor {
 		final private Cursor prevCursor;
 		final private String match;
+		final private boolean partialMatch;
 		final private int fromIndex; // inclusive
 		final private int endIndex; // exclusive
 		
-		public Cursor(String match, int fromIndex, int endIndex) {
-			this(null, match, fromIndex, endIndex);
+		public Cursor(String match, boolean partialMatch, int fromIndex, int endIndex) {
+			this(null, match, partialMatch, fromIndex, endIndex);
 		}
 		
-		public Cursor(Cursor prevCursor, String match, int fromIndex, int endIndex) {
+		public Cursor(Cursor prevCursor, String match, boolean partialMatch, int fromIndex, int endIndex) {
 			this.prevCursor = prevCursor;
 			this.match = match;
+			this.partialMatch = partialMatch;
 			this.fromIndex = fromIndex;
 			this.endIndex = endIndex;
 		}
@@ -43,7 +44,7 @@ public interface TokenEater {
 		}
 		
 		public boolean isPartialMatch() {
-			return match.length() != endIndex - fromIndex;
+			return partialMatch;
 		}
 		
 		public Cursor getPrevCursor() {
@@ -57,6 +58,7 @@ public interface TokenEater {
 		public Cursor combineCursors() {
 			int curEndIndex = this.endIndex;
 			int curFromIndex = this.fromIndex;
+			boolean curPartialMatch = this.partialMatch;
 			StringBuilder curMatch = new StringBuilder(100);
 			curMatch.append(match);
 			
@@ -67,14 +69,14 @@ public interface TokenEater {
 				curPrevCursor = curPrevCursor.getPrevCursor();
 			}
 			
-			return new Cursor(curMatch.toString(), curFromIndex, curEndIndex);
+			return new Cursor(curMatch.toString(), curPartialMatch, curFromIndex, curEndIndex);
 		}
 		
 		@Override
 		public String toString() {
 			return "Cursor [prevCursor=" + prevCursor + ", match=" + match
-					+ ", fromIndex=" + fromIndex + ", endIndex=" + endIndex
-					+ "]";
+					+ ", partialMatch=" + partialMatch + ", fromIndex="
+					+ fromIndex + ", endIndex=" + endIndex + "]";
 		}
 	}
 }

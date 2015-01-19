@@ -15,12 +15,7 @@ public class WhitespaceTokenEaterTest {
 		
 		ImmutableList<Cursor> cursors = tokenEater.eat(0, "abc");
 		
-		assertEquals(1, cursors.size());
-		Cursor cursor = cursors.get(0);
-		assertEquals(0, cursor.getFromIndex());
-		assertEquals(0, cursor.getEndIndex());
-		assertEquals(" ", cursor.getMatch());
-		assertTrue(cursor.isPartialMatch());
+		assertEquals(0, cursors.size());
 	}
 	
 	@Test

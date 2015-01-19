@@ -11,7 +11,7 @@ public class StringTokenEater implements TokenEater {
 	}
 
 	@Override
-	public ImmutableList<Cursor> eat(int fromIndex, String value) {
+	public ImmutableList<Cursor> eat(final int fromIndex, final String value, final boolean includePartialMatchWhenNoMatch) {
 		if (fromIndex < 0) {
 			return ImmutableList.of();
 		}
@@ -20,26 +20,30 @@ public class StringTokenEater implements TokenEater {
 			return ImmutableList.of();
 		}
 		
+		/*
 		if (fromIndex + match.length() > value.length()) {
 			return ImmutableList.of();
 		}
+		*/
 		
-		for (int i = 0; i < match.length(); i++) {
-			if (!charCompareIgnoreCase(value.charAt(fromIndex + i), match.charAt(i))) {
-				if (i == 0) {
-					return ImmutableList.of();
+		for (int i = 0; i < match.length() && fromIndex + i < value.length(); i++) {
+			if (value.charAt(fromIndex + i) != match.charAt(i)) {
+				if (includePartialMatchWhenNoMatch) {
+					final int endIndex = fromIndex + i;
+					return ImmutableList.of(new Cursor(match, true, fromIndex, endIndex));
 				} else {
-					return ImmutableList.of(new Cursor(match, fromIndex, fromIndex + i));
+					return ImmutableList.of();
 				}
 			}
 		}
 		
-		return ImmutableList.of(new Cursor(match, fromIndex, fromIndex + match.length()));
+		final int endIndex = Math.min(fromIndex + match.length(), value.length());
+		final boolean partialMatch = fromIndex + match.length() > value.length();
+		return ImmutableList.of(new Cursor(match, partialMatch, fromIndex, endIndex));
 	}
 	
-	private boolean charCompareIgnoreCase(char left, char right) {
-		return Character.toLowerCase(left) == Character.toLowerCase(right);
-
+	@Override
+	public String toString() {
+		return "StringTokenEater [match=" + match + "]";
 	}
-
 }

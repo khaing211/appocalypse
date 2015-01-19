@@ -16,9 +16,9 @@ public class CitesTokenEaterTest {
 		
 		ImmutableList<Cursor> cursors = citesTokenEater.eat(0, Cities.ATLANTA.getName());
 
-		System.out.println(cursors);
+		cursors.stream().forEach(System.out::println);
 
-		assertEquals(2, cursors.size());	
+		assertEquals(1, cursors.size());	
 		
 		Cursor cursor = cursors.get(0);
 		assertEquals(0, cursor.getFromIndex());

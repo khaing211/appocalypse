@@ -16,7 +16,7 @@ public enum CitesTokenEater implements TokenEater {
 	final private TokenEater innerTokenEater = new OrTokenEater(CITIES_TOKEN_EATERS);
 	
 	@Override
-	public ImmutableList<Cursor> eat(int fromIndex, String value) {
-		return innerTokenEater.eat(fromIndex, value);
+	public ImmutableList<Cursor> eat(int fromIndex, String value, boolean includePartialMatchWhenNoMatch) {
+		return innerTokenEater.eat(fromIndex, value, includePartialMatchWhenNoMatch);
 	}
 }

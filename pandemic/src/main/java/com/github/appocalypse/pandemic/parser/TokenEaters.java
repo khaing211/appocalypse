@@ -16,7 +16,7 @@ public class TokenEaters {
 			Arrays.stream(Keyword.values())
 				.collect(GuavaCollectors.toImmutableMap(
 					Function.identity(), 
-					it -> new StringTokenEater(it.name())));
+					it -> new CaseInsensitiveStringTokenEater(it.name())));
 	
 	public static TokenEater of(Keyword keyword) {
 		return KEYWORD_TOKEN_EATERS.get(keyword);

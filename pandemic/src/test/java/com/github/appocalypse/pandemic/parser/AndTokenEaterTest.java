@@ -42,7 +42,7 @@ public class AndTokenEaterTest {
 		
 		TokenEater andTokenEater = new AndTokenEater(ImmutableList.of(abcTokenEater, whitespaceTokenEater));
 		
-		ImmutableList<Cursor> cursors = andTokenEater.eat(0, "abcabc");
+		ImmutableList<Cursor> cursors = andTokenEater.eat(0, "abcabc", true);
 		
 		assertEquals(1, cursors.size());	
 		Cursor cursor = cursors.get(0);
@@ -50,6 +50,25 @@ public class AndTokenEaterTest {
 		assertEquals(0, combineCursor.getFromIndex());
 		assertEquals(3, combineCursor.getEndIndex());
 		assertEquals("abc ", combineCursor.getMatch());
+		assertTrue(combineCursor.isPartialMatch());
+		assertNull(combineCursor.getPrevCursor());
+		
+	}
+	
+	@Test
+	public void testPartialMatch2() {
+		TokenEater abcTokenEater = new StringTokenEater("abc");
+		
+		TokenEater andTokenEater = new AndTokenEater(ImmutableList.of(abcTokenEater, abcTokenEater));
+		
+		ImmutableList<Cursor> cursors = andTokenEater.eat(0, "abcadfgh", true);
+		
+		assertEquals(1, cursors.size());	
+		Cursor cursor = cursors.get(0);
+		Cursor combineCursor = cursor.combineCursors();
+		assertEquals(0, combineCursor.getFromIndex());
+		assertEquals(4, combineCursor.getEndIndex());
+		assertEquals("abcabc", combineCursor.getMatch());
 		assertTrue(combineCursor.isPartialMatch());
 		assertNull(combineCursor.getPrevCursor());
 		

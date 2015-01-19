@@ -17,10 +17,6 @@ public class PandemicCompleter implements Completer {
 			.filter(it -> it.getEndIndex() > 0)
 			.forEach(it -> candidates.add(it.combineCursors().getMatch()));
 		
-		if (candidates.isEmpty()) {
-			candidates.add("no candidate");
-		}
-		
 		return candidates.isEmpty() ? -1 : 0;
 	}
 

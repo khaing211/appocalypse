@@ -12,9 +12,9 @@ public class OrTokenEater implements TokenEater {
 	}
 	
 	@Override
-	public ImmutableList<Cursor> eat(int fromIndex, String value) {
+	public ImmutableList<Cursor> eat(int fromIndex, String value, boolean includePartialMatchWhenNoMatch) {
 		return tokenEaters.stream()
-			.map(tokenEater -> tokenEater.eat(fromIndex, value))
+			.map(tokenEater -> tokenEater.eat(fromIndex, value, includePartialMatchWhenNoMatch))
 			.collect(GuavaCollectors.flattenImmutableList());
 	}
 }

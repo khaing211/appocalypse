@@ -109,7 +109,21 @@ public class StringTokenEaterTest {
 	@Test
 	public void testPartialMatch() {
 		TokenEater tokenEater = new StringTokenEater("abcgh");
-		ImmutableList<Cursor> cursors = tokenEater.eat(0, "abcdfg");
+		ImmutableList<Cursor> cursors = tokenEater.eat(0, "abcdfg", true);
+		
+		assertEquals(1, cursors.size());
+		
+		Cursor cursor = cursors.get(0);
+		assertEquals(0, cursor.getFromIndex());
+		assertEquals(3, cursor.getEndIndex());
+		assertEquals("abcgh", cursor.getMatch());
+		assertTrue(cursor.isPartialMatch());
+	}
+	
+	@Test
+	public void testPartialMatchWhenValueIsShorterLength() {
+		TokenEater tokenEater = new StringTokenEater("abcgh");
+		ImmutableList<Cursor> cursors = tokenEater.eat(0, "abc", true);
 		
 		assertEquals(1, cursors.size());
 		

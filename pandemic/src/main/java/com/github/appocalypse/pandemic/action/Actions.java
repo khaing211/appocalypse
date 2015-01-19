@@ -12,7 +12,7 @@ public class Actions {
 	static {
 		actions = new Builder()
 			.add("build a research station", action(of(Keyword.BUILD), of(Keyword.A), of(Keyword.RESEARCH), of(Keyword.STATION)))
-			.add("discover a cure", action(of(Keyword.DISCOVER), of(Keyword.CURE)))
+			.add("discover a cure", action(of(Keyword.DISCOVER), of(Keyword.A), of(Keyword.CURE)))
 			.add("quit", action(of(Keyword.QUIT)))
 			.build();
 	}
