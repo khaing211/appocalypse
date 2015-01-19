@@ -12,7 +12,7 @@ public class CitesTokenEaterTest {
 
 	@Test
 	public void test() {
-		TokenEater citesTokenEater = new CitesTokenEater();
+		TokenEater citesTokenEater = CitesTokenEater.INSTANCE;
 		
 		ImmutableList<Cursor> cursors = citesTokenEater.eat(0, Cities.ATLANTA.getName());
 

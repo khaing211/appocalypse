@@ -2,8 +2,9 @@ package com.github.appocalypse.pandemic.parser;
 
 import com.google.common.collect.ImmutableList;
 
-public class IdentityTokenEater implements TokenEater {
-
+public enum IdentityTokenEater implements TokenEater {
+	INSTANCE
+	;
 	/**
 	 * Match nothing
 	 */

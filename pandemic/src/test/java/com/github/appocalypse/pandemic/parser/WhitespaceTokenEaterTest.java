@@ -11,16 +11,21 @@ public class WhitespaceTokenEaterTest {
 
 	@Test
 	public void testNonMatch() {
-		TokenEater tokenEater = new WhitespaceTokenEater();
+		TokenEater tokenEater = WhitespaceTokenEater.INSTANCE;
 		
 		ImmutableList<Cursor> cursors = tokenEater.eat(0, "abc");
 		
-		assertEquals(0, cursors.size());		
+		assertEquals(1, cursors.size());
+		Cursor cursor = cursors.get(0);
+		assertEquals(0, cursor.getFromIndex());
+		assertEquals(0, cursor.getEndIndex());
+		assertEquals(" ", cursor.getMatch());
+		assertTrue(cursor.isPartialMatch());
 	}
 	
 	@Test
 	public void testOneWhiteSpace() {
-		TokenEater tokenEater = new WhitespaceTokenEater();
+		TokenEater tokenEater = WhitespaceTokenEater.INSTANCE;
 		
 		ImmutableList<Cursor> cursors = tokenEater.eat(0, " bc");
 		
@@ -34,7 +39,7 @@ public class WhitespaceTokenEaterTest {
 	
 	@Test
 	public void testTwoWhiteSpace() {
-		TokenEater tokenEater = new WhitespaceTokenEater();
+		TokenEater tokenEater = WhitespaceTokenEater.INSTANCE;
 		
 		ImmutableList<Cursor> cursors = tokenEater.eat(0, "  c");
 		
@@ -48,7 +53,7 @@ public class WhitespaceTokenEaterTest {
 
 	@Test
 	public void testTab() {
-		TokenEater tokenEater = new WhitespaceTokenEater();
+		TokenEater tokenEater = WhitespaceTokenEater.INSTANCE;
 		
 		ImmutableList<Cursor> cursors = tokenEater.eat(0, "  \tc");
 		
@@ -62,7 +67,7 @@ public class WhitespaceTokenEaterTest {
 	
 	@Test
 	public void testNewline() {
-		TokenEater tokenEater = new WhitespaceTokenEater();
+		TokenEater tokenEater = WhitespaceTokenEater.INSTANCE;
 		
 		ImmutableList<Cursor> cursors = tokenEater.eat(0, "  \t\nc");
 		

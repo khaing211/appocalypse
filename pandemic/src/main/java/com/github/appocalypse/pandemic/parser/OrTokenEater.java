@@ -1,7 +1,5 @@
 package com.github.appocalypse.pandemic.parser;
 
-import java.util.Arrays;
-
 import com.github.appocalypse.guava.extra.GuavaCollectors;
 import com.google.common.collect.ImmutableList;
 
@@ -18,9 +16,5 @@ public class OrTokenEater implements TokenEater {
 		return tokenEaters.stream()
 			.map(tokenEater -> tokenEater.eat(fromIndex, value))
 			.collect(GuavaCollectors.flattenImmutableList());
-	}
-	
-	public static OrTokenEater orTokenEaters(TokenEater ... tokenEaters) {
-		return new OrTokenEater(Arrays.stream(tokenEaters).collect(GuavaCollectors.toImmutableList()));
 	}
 }

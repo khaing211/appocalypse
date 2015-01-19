@@ -8,7 +8,7 @@ public class AndTokenEater implements TokenEater {
 	final private TokenEater andTokenEater;
 
 	public AndTokenEater(ImmutableList<TokenEater> tokenEaters) {
-		this.andTokenEater = tokenEaters.stream().reduce(new IdentityTokenEater(), 
+		this.andTokenEater = tokenEaters.stream().reduce(IdentityTokenEater.INSTANCE, 
 				BinaryAndTokenEater::new);
 	}
 	
@@ -38,13 +38,16 @@ public class AndTokenEater implements TokenEater {
 				} else {
 					ImmutableList<Cursor> rightCursors = rightTokenEater.eat(leftCursor.getEndIndex(), value);
 					
-					return rightCursors.stream().map((Cursor rightCursor) -> 
-						new Cursor(leftCursor.getMatch() + rightCursor.getMatch(),
-							leftCursor.getFromIndex(), rightCursor.getEndIndex()));
+					if (rightCursors.isEmpty()) {
+						return ImmutableList.of(leftCursor).stream();
+					} else {
+						return rightCursors.stream().map((Cursor rightCursor) -> 
+							new Cursor(leftCursor, rightCursor.getMatch(),
+									rightCursor.getFromIndex(), rightCursor.getEndIndex()));
+					}
 					
 				}
 			}).collect(GuavaCollectors.toImmutableList());
 		}
 	}
-
 }

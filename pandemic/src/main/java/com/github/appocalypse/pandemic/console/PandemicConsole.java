@@ -5,10 +5,10 @@ import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.github.appocalypse.pandemic.Game;
-
 import jline.console.ConsoleReader;
 import jline.console.completer.Completer;
+
+import com.github.appocalypse.pandemic.Game;
 
 public class PandemicConsole {
 
@@ -34,7 +34,6 @@ public class PandemicConsole {
 	
 	private List<Completer> completers() {
 		final List<Completer> completers = new LinkedList<Completer>();
-		//completers.add(new CitesCompleter());
 		completers.add(new PandemicCompleter());
 		
 		return completers;

@@ -2,8 +2,9 @@ package com.github.appocalypse.pandemic.parser;
 
 import com.google.common.collect.ImmutableList;
 
-public class WhitespaceTokenEater implements TokenEater {
-
+public enum WhitespaceTokenEater implements TokenEater {
+	INSTANCE;
+	
 	@Override
 	public ImmutableList<Cursor> eat(int fromIndex, String value) {
 		if (fromIndex < 0) {
@@ -17,7 +18,8 @@ public class WhitespaceTokenEater implements TokenEater {
 		for (int endIndex = fromIndex; endIndex < value.length(); endIndex++) {
 			if (!Character.isWhitespace(value.charAt(endIndex))) {
 				if (endIndex == fromIndex) {
-					return ImmutableList.of();
+					// return a partial match
+					return ImmutableList.of(new Cursor(" ", fromIndex, endIndex));
 				} else {
 					return ImmutableList.of(new Cursor(value.substring(fromIndex, endIndex), fromIndex, endIndex));
 				}
@@ -26,5 +28,4 @@ public class WhitespaceTokenEater implements TokenEater {
 		
 		return ImmutableList.of(new Cursor(value.substring(fromIndex), fromIndex, value.length()));
 	}
-
 }

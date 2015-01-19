@@ -12,11 +12,17 @@ public interface TokenEater {
 	
 	
 	public static class Cursor {
+		final private Cursor prevCursor;
 		final private String match;
 		final private int fromIndex; // inclusive
 		final private int endIndex; // exclusive
 		
 		public Cursor(String match, int fromIndex, int endIndex) {
+			this(null, match, fromIndex, endIndex);
+		}
+		
+		public Cursor(Cursor prevCursor, String match, int fromIndex, int endIndex) {
+			this.prevCursor = prevCursor;
 			this.match = match;
 			this.fromIndex = fromIndex;
 			this.endIndex = endIndex;
@@ -40,10 +46,35 @@ public interface TokenEater {
 			return match.length() != endIndex - fromIndex;
 		}
 		
+		public Cursor getPrevCursor() {
+			return prevCursor;
+		}
+		
+		/**
+		 * @return a cursor that combine all results from current to prev
+		 * 		till prevCursor is null
+		 */
+		public Cursor combineCursors() {
+			int curEndIndex = this.endIndex;
+			int curFromIndex = this.fromIndex;
+			StringBuilder curMatch = new StringBuilder(100);
+			curMatch.append(match);
+			
+			Cursor curPrevCursor = prevCursor;
+			while (curPrevCursor != null) {
+				curFromIndex = curPrevCursor.getFromIndex();
+				curMatch.insert(0, curPrevCursor.getMatch());
+				curPrevCursor = curPrevCursor.getPrevCursor();
+			}
+			
+			return new Cursor(curMatch.toString(), curFromIndex, curEndIndex);
+		}
+		
 		@Override
 		public String toString() {
-			return "Cursor [match=" + match + ", fromIndex=" + fromIndex
-					+ ", endIndex=" + endIndex + "]";
+			return "Cursor [prevCursor=" + prevCursor + ", match=" + match
+					+ ", fromIndex=" + fromIndex + ", endIndex=" + endIndex
+					+ "]";
 		}
 	}
 }
