@@ -17,14 +17,13 @@ public class StringTokenEater implements TokenEater {
 		}
 		
 		if (fromIndex >= value.length()) {
-			return ImmutableList.of();
+			if (includePartialMatchWhenNoMatch) {
+				return ImmutableList.of(new Cursor(match, true, fromIndex, fromIndex));
+			} else {
+				return ImmutableList.of();
+			}
 		}
 		
-		/*
-		if (fromIndex + match.length() > value.length()) {
-			return ImmutableList.of();
-		}
-		*/
 		
 		for (int i = 0; i < match.length() && fromIndex + i < value.length(); i++) {
 			if (value.charAt(fromIndex + i) != match.charAt(i)) {

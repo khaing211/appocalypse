@@ -11,7 +11,7 @@ public class ActionsTest {
 		Actions.all()
 			.stream()
 			.peek(System.out::println)
-			.flatMap(it -> it.getTokenEater().eat(0, "build a researc", true).stream())
+			.flatMap(it -> it.getTokenEater().eat(0, "build a research station", true).stream())
 			.forEach(System.out::println);
 		
 		//Actions.all().get(1).getTokenEater().eat(0, "build", true).stream().forEach(System.out::println);

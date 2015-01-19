@@ -133,4 +133,18 @@ public class StringTokenEaterTest {
 		assertEquals("abcgh", cursor.getMatch());
 		assertTrue(cursor.isPartialMatch());
 	}
+	
+	@Test
+	public void testPartialMatchWhenValueIsEmpty() {
+		TokenEater tokenEater = new StringTokenEater("abcgh");
+		ImmutableList<Cursor> cursors = tokenEater.eat(0, "", true);
+		
+		assertEquals(1, cursors.size());
+		
+		Cursor cursor = cursors.get(0);
+		assertEquals(0, cursor.getFromIndex());
+		assertEquals(0, cursor.getEndIndex());
+		assertEquals("abcgh", cursor.getMatch());
+		assertTrue(cursor.isPartialMatch());
+	}
 }

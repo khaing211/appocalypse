@@ -12,7 +12,12 @@ public enum WhitespaceTokenEater implements TokenEater {
 		}
 		
 		if (fromIndex >= value.length()) {
-			return ImmutableList.of();
+			if (includePartialMatchWhenNoMatch) {
+				// return a partial match
+				return ImmutableList.of(new Cursor(" ", true, fromIndex, fromIndex));
+			} else {
+				return ImmutableList.of();
+			}
 		}
 		
 		for (int endIndex = fromIndex; endIndex < value.length(); endIndex++) {

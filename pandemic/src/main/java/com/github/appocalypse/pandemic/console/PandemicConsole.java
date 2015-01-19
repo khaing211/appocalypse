@@ -35,7 +35,6 @@ public class PandemicConsole {
 	private List<Completer> completers() {
 		final List<Completer> completers = new LinkedList<Completer>();
 		completers.add(new PandemicCompleter());
-		
 		return completers;
 	}
 }
