@@ -7,6 +7,14 @@ public interface LongPredicates {
 		return predicate.negate();
 	}
 	
+	public static LongPredicate odd() {
+		return i -> i % 2 == 1;
+	}
+	
+	public static LongPredicate even() {
+		return mod(2);
+	}
+	
 	public static LongPredicate mod(long modulo) {
 		return i -> i % modulo == 0;
 	}

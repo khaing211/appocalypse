@@ -7,6 +7,14 @@ public interface IntPredicates {
 		return predicate.negate();
 	}
 	
+	public static IntPredicate odd() {
+		return i -> i % 2 == 1;
+	}
+	
+	public static IntPredicate even() {
+		return mod(2);
+	}
+	
 	public static IntPredicate mod(int modulo) {
 		return i -> i % modulo == 0;
 	}
