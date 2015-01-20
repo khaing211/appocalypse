@@ -5,7 +5,7 @@ public interface Constant {
 	final public static int MAX_COUNT_PER_DISEASE = 24;
 	final public static int MAX_OUTBREAK_COUNT = 8;
 	
-	public static interface RoleLabel {
+	public static interface RoleName {
 		final public static String MEDIC = "Medic";
 		final public static String OPERATIONS_EXPERT = "Operations Expert";
 		final public static String DISPATCHER = "Dispatcher";

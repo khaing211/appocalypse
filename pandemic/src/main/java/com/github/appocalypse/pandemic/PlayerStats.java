@@ -1,7 +1,6 @@
 package com.github.appocalypse.pandemic;
 
 import com.github.appocalypse.pandemic.card.PlayerCard;
-import com.github.appocalypse.pandemic.role.Role;
 import com.google.common.collect.ImmutableList;
 
 public class PlayerStats {

@@ -1,5 +1,6 @@
 package com.github.appocalypse.pandemic.action;
 
+import java.util.Arrays;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -31,26 +32,39 @@ public class Action {
 		return actionStragety.toEvents(this, buffer);
 	}
 	
-	// return true for complete match
-	public boolean match(String buffer) {
-		String[] stringTokens = buffer.split(" ");
+	/**
+	 * @param buffer
+	 * @return token of the buffer if match completely or zero-element list if not match completely
+	 */
+	public ImmutableList<String> tokenize(String buffer) {
+		final String[] stringTokens = buffer.split(" ");
 		if (stringTokens.length != tokens.size()) {
-			return false;
+			return ImmutableList.of();
 		} else {
 			for (int i = 0; i < stringTokens.length; i++) {
 				Token token = tokens.get(i);
 				String stringToken = stringTokens[i];
 				if (token.values(stringToken).size() != 1) {
-					return false;
+					return ImmutableList.of();
 				}
 			}
 			
-			return true;
+			return Arrays.stream(stringTokens).collect(GuavaCollectors.toImmutableList());
 		}
 	}
 	
+	/**
+	 * @param buffer
+	 * @return true for complete match
+	 */
+	public boolean match(String buffer) {
+		return tokenize(buffer).size() != 0;
+	}
 	
-	// return suggestions for partial match
+	/**
+	 * @param buffer
+	 * @return suggestions for partial match
+	 */
 	public ImmutableList<String> next(String buffer) {
 		Stream<String> streamTokens = Pattern.compile(" ")
 				.splitAsStream(buffer);

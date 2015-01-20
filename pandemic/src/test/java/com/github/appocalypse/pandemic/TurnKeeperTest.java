@@ -5,8 +5,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.github.appocalypse.pandemic.role.Role;
-
 @RunWith(MockitoJUnitRunner.class)
 public class TurnKeeperTest {
 
