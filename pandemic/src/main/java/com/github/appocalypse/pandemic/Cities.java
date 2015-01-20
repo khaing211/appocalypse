@@ -1,5 +1,7 @@
 package com.github.appocalypse.pandemic;
 
+import java.util.Arrays;
+
 public enum Cities implements City {
 	ATLANTA(Constant.CityName.ATLANTA, RegionColor.BLUE),
 	WASHINGTON(Constant.CityName.WASHINGTON, RegionColor.BLUE),
@@ -72,5 +74,12 @@ public enum Cities implements City {
 	@Override
 	public String toString() {
 		return "City [name=" + name + ", regionColor=" + regionColor + "]";
+	}
+	
+	public static Cities fromName(final String name) {
+		return Arrays.stream(Cities.values())
+				.filter(it -> it.getName().equals(name))
+				.findAny()
+				.orElse(null);
 	}
 }

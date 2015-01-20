@@ -1,10 +1,10 @@
 package com.github.appocalypse.pandemic.action;
 
-import static com.github.appocalypse.pandemic.parser.TokenEaters.action;
-import static com.github.appocalypse.pandemic.parser.TokenEaters.of;
+import static com.github.appocalypse.pandemic.token.Tokens.action;
+import static com.github.appocalypse.pandemic.token.Tokens.of;
 
 import com.github.appocalypse.pandemic.Keyword;
-import com.github.appocalypse.pandemic.parser.TokenEater;
+import com.github.appocalypse.pandemic.token.Token;
 import com.google.common.collect.ImmutableList;
 
 public class Actions {
@@ -21,35 +21,11 @@ public class Actions {
 		return actions;
 	}
 	
-	
-	public static class Action {
-		final private String representation;
-		final private TokenEater tokenEater;
-		
-		public Action(String representation, TokenEater tokenEater) {
-			this.representation = representation;
-			this.tokenEater = tokenEater;
-		}
-		
-		public String getRepresentation() {
-			return representation;
-		}
-
-		public TokenEater getTokenEater() {
-			return tokenEater;
-		}
-		
-		@Override
-		public String toString() {
-			return "Action [" + representation + "]";
-		}
-	}
-	
 	private static class Builder {
 		private ImmutableList.Builder<Action> commands = ImmutableList.builder();
 		
-		public Builder add(String value, TokenEater tokenEater) {
-			commands.add(new Action(value, tokenEater));
+		public Builder add(String value, ImmutableList<Token> tokens) {
+			commands.add(new Action(value, tokens));
 			return this;
 		}
 		
