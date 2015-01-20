@@ -4,17 +4,18 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import com.github.appocalypse.guava.extra.GuavaCollectors;
+import com.github.appocalypse.pandemic.event.Event;
 import com.github.appocalypse.pandemic.token.Token;
 import com.google.common.collect.ImmutableList;
 
 public class Action {
 	final private String representation;
-	//final private ActionStrategy actionStragety;
+	final private ActionStrategy actionStragety;
 	final private ImmutableList<Token> tokens;
 	
-	public Action(String representation, /*ActionStrategy actionStragety,*/ ImmutableList<Token> tokens) {
+	public Action(String representation, ActionStrategy actionStragety, ImmutableList<Token> tokens) {
 		this.representation = representation;
-		//this.actionStragety = actionStragety;
+		this.actionStragety = actionStragety;
 		this.tokens = tokens;
 	}
 	
@@ -24,6 +25,10 @@ public class Action {
 
 	public ImmutableList<Token> getTokens() {
 		return tokens;
+	}
+	
+	public ImmutableList<Event> toEvents(String buffer) {
+		return actionStragety.toEvents(this, buffer);
 	}
 	
 	// return true for complete match
@@ -43,6 +48,7 @@ public class Action {
 			return true;
 		}
 	}
+	
 	
 	// return suggestions for partial match
 	public ImmutableList<String> next(String buffer) {

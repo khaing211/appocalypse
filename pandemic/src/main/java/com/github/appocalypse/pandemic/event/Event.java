@@ -8,5 +8,5 @@ import com.github.appocalypse.pandemic.Scenario;
  * Each event will create a new scenario from a given scenario, since each scenario is immutable 
  */
 public interface Event {
-	public Scenario actUpon(Scenario scenario) throws Exception;
+	public Scenario actUpon(Scenario scenario);
 }

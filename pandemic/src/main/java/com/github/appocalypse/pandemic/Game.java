@@ -10,7 +10,7 @@ public class Game {
 	}
 	
 	public void process(Event event) {
-		
+		currentScenario = event.actUpon(currentScenario);
 	}
 	
 	private Game(Scenario currentScenario) {

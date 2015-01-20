@@ -6,7 +6,7 @@ public enum BuildEvent implements Event {
 	INSTANCE;
 	
 	@Override
-	public Scenario actUpon(Scenario scenario) throws Exception {
+	public Scenario actUpon(Scenario scenario) {
 		// TODO Auto-generated method stub
 		return null;
 	}

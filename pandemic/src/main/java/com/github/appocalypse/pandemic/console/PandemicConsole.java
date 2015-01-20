@@ -9,6 +9,7 @@ import jline.console.ConsoleReader;
 import jline.console.completer.Completer;
 
 import com.github.appocalypse.pandemic.Game;
+import com.github.appocalypse.pandemic.action.Actions;
 
 public class PandemicConsole {
 
@@ -26,10 +27,21 @@ public class PandemicConsole {
 		while (!game.getCurrentScenario().isGameOver() &&  
 				((line = reader.readLine()) != null)) {
 			
+			final String curLine = line;
+			
+			Actions.all()
+				.stream()
+				.filter(action -> action.match(curLine))
+				.flatMap(action -> action.toEvents(curLine).stream())
+				.forEachOrdered(event -> game.process(event));
+			
 			out.println(line);
 			
 			out.flush();
 		}
+		
+		out.println("Game terminated");
+		out.flush();
 	}
 	
 	private List<Completer> completers() {
