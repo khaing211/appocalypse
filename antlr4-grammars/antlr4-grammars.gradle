@@ -1,0 +1,34 @@
+apply from: "$rootDir/gradle/javaProject.gradle"
+
+defaultTasks 'clean', 'test'
+
+configurations {
+	antlr4
+	compile.extendsFrom antlr4
+}
+
+dependencies {
+	antlr4 group: 'org.antlr', name: 'antlr4', version: '4.3'
+}
+
+// Expr.g4
+task transpileExpr(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
+	antlr4Classpath = configurations.antlr4
+	source = 'grammars/expr'
+	javaPackage = 'com.github.appocalypse.grammars.expr'
+}
+
+task testExpr(type: com.github.appocalypse.build.antlr4.Antlr4Test, dependsOn: 'compileJava') {
+	antlr4Classpath = sourceSets.main.runtimeClasspath
+	source = 'examples/expr/'
+	javaPackage = 'com.github.appocalypse.grammars.expr'
+	grammarName = 'Expr'
+	showTree = true
+	entryPoint = 'prog'
+}
+
+compileJava {
+	source = tasks.withType(com.github.appocalypse.build.antlr4.Antlr4Transpile)
+}
+
+test.dependsOn tasks.withType(com.github.appocalypse.build.antlr4.Antlr4Test)
