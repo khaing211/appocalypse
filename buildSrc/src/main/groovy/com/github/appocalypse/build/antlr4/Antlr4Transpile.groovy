@@ -1,20 +1,18 @@
 package com.github.appocalypse.build.antlr4
 
-import java.io.File;
-
 import org.gradle.api.file.FileCollection
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Optional
-import org.gradle.api.tasks.OutputDirectory;
-import org.gradle.api.tasks.SkipWhenEmpty
+import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.SourceTask
 import org.gradle.api.tasks.TaskAction
 
 
 class Antlr4Transpile extends SourceTask {
 	
-	@Input
-	Object antlr4Classpath
+	@InputFiles
+	FileCollection antlr4Classpath
 	
 	@Input
 	@Optional
