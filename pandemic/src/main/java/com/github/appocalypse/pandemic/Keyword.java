@@ -17,6 +17,11 @@ public enum Keyword {
 	RESEARCH,
 	STATION,
 	DISEASE,
-	
+	BY,
+	TO,
+	FLIGHT,
+	DIRECT,
+	CHARTER,
+	OPERATIONAL,
 	;
 }

@@ -23,6 +23,7 @@ public class PandemicCompleter implements Completer {
 			Actions.all()
 				.stream()
 				.flatMap(it -> it.next(newBuffer).stream())
+				.distinct()
 				.forEach(candidates::add);
 			
 	        if (candidates.size() == 1) {
@@ -33,8 +34,11 @@ public class PandemicCompleter implements Completer {
 	        	return -1;
 	        } else if (newBuffer.endsWith(" ")) {
 	        	return cursor;
-	        }  else {
-				return Math.max(0, newBuffer.lastIndexOf(" "));
+	        } else {
+				final String[] tokens = newBuffer.split(" ");
+				final String lastToken = tokens[tokens.length - 1];
+				
+				return cursor - lastToken.length();
 	        }
 		}
 	}

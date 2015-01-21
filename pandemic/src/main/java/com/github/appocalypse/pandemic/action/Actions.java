@@ -2,6 +2,7 @@ package com.github.appocalypse.pandemic.action;
 
 import static com.github.appocalypse.pandemic.token.Tokens.action;
 import static com.github.appocalypse.pandemic.token.Tokens.of;
+import static com.github.appocalypse.pandemic.token.Tokens.cities;
 import static com.github.appocalypse.pandemic.action.ActionStrategy.events;
 
 import com.github.appocalypse.pandemic.Keyword;
@@ -14,8 +15,20 @@ public class Actions {
 	final static private ImmutableList<Action> actions;
 	static {
 		actions = new Builder()
-			.add("build a research station", events(BuildEvent.INSTANCE), action(of(Keyword.BUILD), of(Keyword.A), of(Keyword.RESEARCH), of(Keyword.STATION)))
-			.add("discover a cure", action(of(Keyword.DISCOVER), of(Keyword.A), of(Keyword.CURE)))
+			.add("build a research station", 
+					events(BuildEvent.INSTANCE), 
+					action(of(Keyword.BUILD), of(Keyword.A), of(Keyword.RESEARCH), of(Keyword.STATION)))
+			.add("build a research station by discard <city>", 
+					action(of(Keyword.BUILD), of(Keyword.A), of(Keyword.RESEARCH), of(Keyword.STATION), 
+							of(Keyword.BY), of(Keyword.DISCARD), cities()))
+			.add("direct flight to <city>", action(of(Keyword.DIRECT), of(Keyword.FLIGHT), of(Keyword.TO), cities()))
+			.add("charter flight from <city>", action(of(Keyword.CHARTER), of(Keyword.FLIGHT), of(Keyword.TO), cities()))
+			.add("discover a cure by discard <city> <city> <city> <city> <city>", 
+					action(of(Keyword.DISCOVER), of(Keyword.A), of(Keyword.CURE), of(Keyword.BY), of(Keyword.DISCARD), 
+							cities(), cities(), cities(), cities(), cities()))
+			.add("discover a cure by discard <city> <city> <city> <city>", 
+					action(of(Keyword.DISCOVER), of(Keyword.A), of(Keyword.CURE), of(Keyword.BY), of(Keyword.DISCARD), 
+							cities(), cities(), cities(), cities()))
 			.add("quit", events(QuitEvent.INSTANCE), action(of(Keyword.QUIT)))
 			.build();
 	}

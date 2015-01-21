@@ -21,6 +21,14 @@ public class Tokens {
 		return KEYWORD_TOKENS.get(keyword);
 	}
 	
+	public static Token string(String value) {
+		return new StringToken(value);
+	}
+	
+	public static Token cities() {
+		return CitiesToken.INSTANCE;
+	}
+	
 	public static ImmutableList<Token> action(Token ... tokens) {
 		return Arrays.stream(tokens)
 			.collect(GuavaCollectors.toImmutableList());
