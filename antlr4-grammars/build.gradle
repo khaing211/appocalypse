@@ -20,11 +20,155 @@ task transpileExpr(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
 
 task testExpr(type: com.github.appocalypse.build.antlr4.Antlr4Test, dependsOn: 'compileJava') {
 	antlr4Classpath = sourceSets.main.runtimeClasspath
-	source = 'examples/expr/'
+	source = 'examples/expr'
 	javaPackage = 'com.github.appocalypse.grammars.expr'
 	grammarName = 'Expr'
 	showTree = true
 	entryPoint = 'prog'
+}
+
+// java.g4
+task transpileJava(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
+	antlr4Classpath = configurations.antlr4
+	source = 'grammars/java'
+	javaPackage = 'com.github.appocalypse.grammars.java'
+}
+
+task testJava(type: com.github.appocalypse.build.antlr4.Antlr4Test, dependsOn: 'compileJava') {
+	antlr4Classpath = sourceSets.main.runtimeClasspath
+	source = 'examples/java'
+	javaPackage = 'com.github.appocalypse.grammars.java'
+	grammarName = 'Java'
+	showTree = true
+	entryPoint = 'compilationUnit'
+}
+
+// java8.g4
+task transpileJava8(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
+	antlr4Classpath = configurations.antlr4
+	source = 'grammars/java8'
+	javaPackage = 'com.github.appocalypse.grammars.java8'
+}
+
+task testJava8(type: com.github.appocalypse.build.antlr4.Antlr4Test, dependsOn: 'compileJava') {
+	antlr4Classpath = sourceSets.main.runtimeClasspath
+	source = 'examples/java8'
+	javaPackage = 'com.github.appocalypse.grammars.java8'
+	grammarName = 'Java8'
+	showTree = true
+	entryPoint = 'compilationUnit'
+}
+
+// antlr4
+task transpileAntlr4(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
+	antlr4Classpath = configurations.antlr4
+	source = 'grammars/antlr4'
+	javaPackage = 'com.github.appocalypse.grammars.antlr4'
+}
+
+// bnf
+task transpileBnf(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
+	antlr4Classpath = configurations.antlr4
+	source = 'grammars/bnf'
+	javaPackage = 'com.github.appocalypse.grammars.bnf'
+}
+
+// c
+task transpileC(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
+	antlr4Classpath = configurations.antlr4
+	source = 'grammars/c'
+	javaPackage = 'com.github.appocalypse.grammars.c'
+}
+
+// clojure
+task transpileClojure(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
+	antlr4Classpath = configurations.antlr4
+	source = 'grammars/clojure'
+	javaPackage = 'com.github.appocalypse.grammars.clojure'
+}
+
+// csv
+task transpileCsv(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
+	antlr4Classpath = configurations.antlr4
+	source = 'grammars/csv'
+	javaPackage = 'com.github.appocalypse.grammars.csv'
+}
+
+// dot
+task transpileDot(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
+	antlr4Classpath = configurations.antlr4
+	source = 'grammars/dot'
+	javaPackage = 'com.github.appocalypse.grammars.dot'
+}
+
+// erlang
+task transpileErlang(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
+	antlr4Classpath = configurations.antlr4
+	source = 'grammars/erlang'
+	javaPackage = 'com.github.appocalypse.grammars.erlang'
+}
+
+// html
+task transpileHtml(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
+	antlr4Classpath = configurations.antlr4
+	source = 'grammars/html'
+	javaPackage = 'com.github.appocalypse.grammars.html'
+}
+
+// json
+task transpileJson(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
+	antlr4Classpath = configurations.antlr4
+	source = 'grammars/json'
+	javaPackage = 'com.github.appocalypse.grammars.json'
+}
+
+// less
+task transpileLess(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
+	antlr4Classpath = configurations.antlr4
+	source = 'grammars/less'
+	javaPackage = 'com.github.appocalypse.grammars.less'
+}
+
+// python3
+task transpilePython3(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
+	antlr4Classpath = configurations.antlr4
+	source = 'grammars/python3'
+	javaPackage = 'com.github.appocalypse.grammars.python3'
+}
+
+// r
+task transpileR(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
+	antlr4Classpath = configurations.antlr4
+	source = 'grammars/r'
+	javaPackage = 'com.github.appocalypse.grammars.r'
+}
+
+// scala
+task transpileScala(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
+	antlr4Classpath = configurations.antlr4
+	source = 'grammars/scala'
+	javaPackage = 'com.github.appocalypse.grammars.scala'
+}
+
+// scss
+task transpileScss(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
+	antlr4Classpath = configurations.antlr4
+	source = 'grammars/scss'
+	javaPackage = 'com.github.appocalypse.grammars.scss'
+}
+
+// sqlite
+task transpileSqlite(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
+	antlr4Classpath = configurations.antlr4
+	source = 'grammars/sqlite'
+	javaPackage = 'com.github.appocalypse.grammars.sqlite'
+}
+
+// swift
+task transpileSwift(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
+	antlr4Classpath = configurations.antlr4
+	source = 'grammars/swift'
+	javaPackage = 'com.github.appocalypse.grammars.swift'
 }
 
 compileJava {
