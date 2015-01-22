@@ -32,13 +32,8 @@ public class PandemicCompleter implements Completer {
 			
 	        if (candidates.isEmpty()) {
 	        	return -1;
-	        } else if (newBuffer.endsWith(" ")) {
-	        	return cursor;
 	        } else {
-				final String[] tokens = newBuffer.split(" ");
-				final String lastToken = tokens[tokens.length - 1];
-				
-				return cursor - lastToken.length();
+				return newBuffer.lastIndexOf(' ') + 1;
 	        }
 		}
 	}
