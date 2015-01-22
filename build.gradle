@@ -32,6 +32,8 @@ ext {
 	jlineVersion = '2.12'
 	
 	gmailServiceVersion = 'v1-rev19-1.19.1'
+	
+	jgitVersion = '3.6.0.201412230720-r'
 }
 
 apply from: 'gradle/wrapper.gradle'
