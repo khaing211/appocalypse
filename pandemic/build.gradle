@@ -3,7 +3,14 @@ apply from: "$rootDir/gradle/oneJar.gradle"
 
 defaultTasks 'clean', 'buildPandemic'
 
+configurations {
+	antlr4
+	compile.extendsFrom antlr4
+}
+
 dependencies {
+	antlr4 group: 'org.antlr', name: 'antlr4', version: '4.3'
+	
 	compile group: 'jline', name: 'jline', version: jlineVersion
 	compile group: 'commons-cli', name: 'commons-cli', version: commonsCliVersion
 	compile project(':guava-extra')
@@ -11,4 +18,26 @@ dependencies {
 
 task buildPandemic(type: OneJar) {
 	mainClass = 'com.github.appocalypse.Pandemic'
+}
+
+task transpilePandemic(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
+	antlr4Classpath = configurations.antlr4
+	source = 'grammars'
+	javaPackage = 'com.github.appocalypse.pandemic.grammars'
+	destinationDir = file('src/main/java')
+}
+
+task grunPandemic(type: com.github.appocalypse.build.antlr4.Antlr4Grun) {
+	antlr4Classpath = sourceSets.main.runtimeClasspath
+	source = file('examples/join_action.txt')
+	grammarName = 'com.github.appocalypse.pandemic.grammars.Pandemic'
+	entryPoint = 'actions'
+}
+
+task testPandemic(type: com.github.appocalypse.build.antlr4.Antlr4Test, dependsOn: 'compileJava') {
+	antlr4Classpath = sourceSets.main.runtimeClasspath
+	source = 'examples'
+	javaPackage = 'com.github.appocalypse.pandemic.grammars'
+	grammarName = 'Pandemic'
+	entryPoint = 'actions'
 }
