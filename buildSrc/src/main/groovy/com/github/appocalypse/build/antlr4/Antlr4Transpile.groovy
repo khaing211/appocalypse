@@ -20,11 +20,11 @@ class Antlr4Transpile extends SourceTask {
 	
 	@Input
 	@Optional
-	boolean generateListener = false
+	boolean generateListener = true
 	
 	@Input
 	@Optional
-	boolean generateVisitor = false
+	boolean generateVisitor = true
 	
 	@Input
 	@Optional
@@ -32,7 +32,7 @@ class Antlr4Transpile extends SourceTask {
 	
 	@Input
 	@Optional
-	boolean showLongMessages = false
+	boolean showLongMessages = true
 	
 	@Input
 	@Optional
