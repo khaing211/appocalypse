@@ -23,7 +23,6 @@ task testExpr(type: com.github.appocalypse.build.antlr4.Antlr4Test, dependsOn: '
 	source = 'examples/expr'
 	javaPackage = 'com.github.appocalypse.grammars.expr'
 	grammarName = 'Expr'
-	showTree = true
 	entryPoint = 'prog'
 }
 
@@ -39,7 +38,6 @@ task testJava(type: com.github.appocalypse.build.antlr4.Antlr4Test, dependsOn: '
 	source = 'examples/java'
 	javaPackage = 'com.github.appocalypse.grammars.java'
 	grammarName = 'Java'
-	showTree = true
 	entryPoint = 'compilationUnit'
 }
 
@@ -55,7 +53,6 @@ task testJava8(type: com.github.appocalypse.build.antlr4.Antlr4Test, dependsOn: 
 	source = 'examples/java8'
 	javaPackage = 'com.github.appocalypse.grammars.java8'
 	grammarName = 'Java8'
-	showTree = true
 	entryPoint = 'compilationUnit'
 }
 
@@ -72,6 +69,16 @@ task transpileBnf(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
 	source = 'grammars/bnf'
 	javaPackage = 'com.github.appocalypse.grammars.bnf'
 }
+
+/*
+task testBnf(type: com.github.appocalypse.build.antlr4.Antlr4Test, dependsOn: 'compileJava') {
+	antlr4Classpath = sourceSets.main.runtimeClasspath
+	source = 'examples/bnf'
+	javaPackage = 'com.github.appocalypse.grammars.bnf'
+	grammarName = 'Bnf'
+	entryPoint = 'rulelist'
+}
+*/
 
 // c
 task transpileC(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
@@ -94,11 +101,27 @@ task transpileCsv(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
 	javaPackage = 'com.github.appocalypse.grammars.csv'
 }
 
+task testCsv(type: com.github.appocalypse.build.antlr4.Antlr4Test, dependsOn: 'compileJava') {
+	antlr4Classpath = sourceSets.main.runtimeClasspath
+	source = 'examples/csv'
+	javaPackage = 'com.github.appocalypse.grammars.csv'
+	grammarName = 'Csv'
+	entryPoint = 'file'
+}
+
 // dot
 task transpileDot(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
 	antlr4Classpath = configurations.antlr4
 	source = 'grammars/dot'
 	javaPackage = 'com.github.appocalypse.grammars.dot'
+}
+
+task testDot(type: com.github.appocalypse.build.antlr4.Antlr4Test, dependsOn: 'compileJava') {
+	antlr4Classpath = sourceSets.main.runtimeClasspath
+	source = 'examples/dot'
+	javaPackage = 'com.github.appocalypse.grammars.dot'
+	grammarName = 'Dot'
+	entryPoint = 'graph'
 }
 
 // erlang
@@ -120,6 +143,14 @@ task transpileJson(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
 	antlr4Classpath = configurations.antlr4
 	source = 'grammars/json'
 	javaPackage = 'com.github.appocalypse.grammars.json'
+}
+
+task testJson(type: com.github.appocalypse.build.antlr4.Antlr4Test, dependsOn: 'compileJava') {
+	antlr4Classpath = sourceSets.main.runtimeClasspath
+	source = 'examples/json'
+	javaPackage = 'com.github.appocalypse.grammars.json'
+	grammarName = 'Json'
+	entryPoint = 'json'
 }
 
 // less
@@ -170,6 +201,16 @@ task transpileSwift(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
 	source = 'grammars/swift'
 	javaPackage = 'com.github.appocalypse.grammars.swift'
 }
+
+/*
+task testSwift(type: com.github.appocalypse.build.antlr4.Antlr4Test, dependsOn: 'compileJava') {
+	antlr4Classpath = sourceSets.main.runtimeClasspath
+	source = 'examples/swift'
+	javaPackage = 'com.github.appocalypse.grammars.swift'
+	grammarName = 'Swift'
+	entryPoint = 'top_level'
+}
+*/
 
 compileJava {
 	source = tasks.withType(com.github.appocalypse.build.antlr4.Antlr4Transpile)

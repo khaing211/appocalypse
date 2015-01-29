@@ -23,7 +23,7 @@ class Antlr4Test extends SourceTask {
 	
 	@Input
 	@Optional
-	def showTree
+	def showTree = false
 	
 	@Input
 	def entryPoint
