@@ -11,20 +11,20 @@ dependencies {
 	antlr4 group: 'org.antlr', name: 'antlr4', version: '4.3'
 }
 
-new File('meta').eachFile(groovy.io.FileType.FILES) {
+new File("${projectDir}/meta").eachFile(groovy.io.FileType.FILES) {
 	Properties prop = new Properties()
 	prop.load(it.newInputStream())
 	
 	task "transpile${prop.grammarName}" (type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
 		antlr4Classpath = configurations.antlr4
-		source = prop.antlr4Source
+		source = "${projectDir}/${prop.antlr4Source}"
 		javaPackage = prop.javaPackage
 	}
 	
 	if (prop.testSource) {
 		task "test${prop.grammarName}" (type: com.github.appocalypse.build.antlr4.Antlr4Test, dependsOn: 'compileJava') {
 			antlr4Classpath = sourceSets.main.runtimeClasspath
-			source = prop.testSource
+			source = "${projectDir}/${prop.testSource}"
 			javaPackage = prop.javaPackage
 			grammarName = prop.grammarName
 			entryPoint = prop.entryPoint
