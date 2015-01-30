@@ -11,34 +11,25 @@ dependencies {
 	antlr4 group: 'org.antlr', name: 'antlr4', version: '4.3'
 }
 
-// Expr.g4
-task transpileExpr(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
-	antlr4Classpath = configurations.antlr4
-	source = 'grammars/expr'
-	javaPackage = 'com.github.appocalypse.grammars.expr'
-}
-
-task testExpr(type: com.github.appocalypse.build.antlr4.Antlr4Test, dependsOn: 'compileJava') {
-	antlr4Classpath = sourceSets.main.runtimeClasspath
-	source = 'examples/expr'
-	javaPackage = 'com.github.appocalypse.grammars.expr'
-	grammarName = 'Expr'
-	entryPoint = 'prog'
-}
-
-// java.g4
-task transpileJava(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
-	antlr4Classpath = configurations.antlr4
-	source = 'grammars/java'
-	javaPackage = 'com.github.appocalypse.grammars.java'
-}
-
-task testJava(type: com.github.appocalypse.build.antlr4.Antlr4Test, dependsOn: 'compileJava') {
-	antlr4Classpath = sourceSets.main.runtimeClasspath
-	source = 'examples/java'
-	javaPackage = 'com.github.appocalypse.grammars.java'
-	grammarName = 'Java'
-	entryPoint = 'compilationUnit'
+new File('meta').eachFile(groovy.io.FileType.FILES) {
+	Properties prop = new Properties()
+	prop.load(it.newInputStream())
+	
+	task "transpile${prop.grammarName}" (type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
+		antlr4Classpath = configurations.antlr4
+		source = prop.antlr4Source
+		javaPackage = prop.javaPackage
+	}
+	
+	if (prop.testSource) {
+		task "test${prop.grammarName}" (type: com.github.appocalypse.build.antlr4.Antlr4Test, dependsOn: 'compileJava') {
+			antlr4Classpath = sourceSets.main.runtimeClasspath
+			source = prop.testSource
+			javaPackage = prop.javaPackage
+			grammarName = prop.grammarName
+			entryPoint = prop.entryPoint
+		}
+	}
 }
 
 // java8.g4
@@ -54,13 +45,6 @@ task testJava8(type: com.github.appocalypse.build.antlr4.Antlr4Test, dependsOn: 
 	javaPackage = 'com.github.appocalypse.grammars.java8'
 	grammarName = 'Java8'
 	entryPoint = 'compilationUnit'
-}
-
-// antlr4
-task transpileAntlr4(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
-	antlr4Classpath = configurations.antlr4
-	source = 'grammars/antlr4'
-	javaPackage = 'com.github.appocalypse.grammars.antlr4'
 }
 
 // bnf
