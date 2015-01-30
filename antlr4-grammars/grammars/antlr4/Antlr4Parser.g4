@@ -30,10 +30,10 @@
 
 /** A grammar for ANTLR v4 written in ANTLR v4.
 */
-parser grammar ANTLRv4Parser;
+parser grammar Antlr4Parser;
 
 options {
-	tokenVocab=ANTLRv4Lexer;
+	tokenVocab=Antlr4Lexer;
 }
 
 // The main entry point for parsing a v4 grammar.

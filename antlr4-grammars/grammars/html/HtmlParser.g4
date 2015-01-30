@@ -26,9 +26,9 @@
  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-parser grammar HTMLParser;
+parser grammar HtmlParser;
 
-options { tokenVocab=HTMLLexer; }
+options { tokenVocab=HtmlLexer; }
 
 htmlDocument    
     : (scriptlet | SEA_WS)* xml? (scriptlet | SEA_WS)* dtd? (scriptlet | SEA_WS)* htmlElements*

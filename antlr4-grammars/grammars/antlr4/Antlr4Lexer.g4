@@ -28,8 +28,8 @@
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/** A grammar for ANTLR v4 tokens */
-lexer grammar ANTLRv4Lexer;
+/** A grammar for Antlr4 tokens */
+lexer grammar Antlr4Lexer;
 
 tokens {
 	TOKEN_REF,

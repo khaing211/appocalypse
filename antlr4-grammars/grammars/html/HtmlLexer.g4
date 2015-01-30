@@ -26,7 +26,7 @@
  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-lexer grammar  HTMLLexer;
+lexer grammar  HtmlLexer;
 
 HTML_COMMENT    
     : '<!--' .*? '-->'
