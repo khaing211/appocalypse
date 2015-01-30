@@ -32,38 +32,6 @@ new File('meta').eachFile(groovy.io.FileType.FILES) {
 	}
 }
 
-// java8.g4
-task transpileJava8(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
-	antlr4Classpath = configurations.antlr4
-	source = 'grammars/java8'
-	javaPackage = 'com.github.appocalypse.grammars.java8'
-}
-
-task testJava8(type: com.github.appocalypse.build.antlr4.Antlr4Test, dependsOn: 'compileJava') {
-	antlr4Classpath = sourceSets.main.runtimeClasspath
-	source = 'examples/java8'
-	javaPackage = 'com.github.appocalypse.grammars.java8'
-	grammarName = 'Java8'
-	entryPoint = 'compilationUnit'
-}
-
-// bnf
-task transpileBnf(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
-	antlr4Classpath = configurations.antlr4
-	source = 'grammars/bnf'
-	javaPackage = 'com.github.appocalypse.grammars.bnf'
-}
-
-/*
-task testBnf(type: com.github.appocalypse.build.antlr4.Antlr4Test, dependsOn: 'compileJava') {
-	antlr4Classpath = sourceSets.main.runtimeClasspath
-	source = 'examples/bnf'
-	javaPackage = 'com.github.appocalypse.grammars.bnf'
-	grammarName = 'Bnf'
-	entryPoint = 'rulelist'
-}
-*/
-
 // c
 task transpileC(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
 	antlr4Classpath = configurations.antlr4
@@ -156,13 +124,6 @@ task transpileR(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
 	antlr4Classpath = configurations.antlr4
 	source = 'grammars/r'
 	javaPackage = 'com.github.appocalypse.grammars.r'
-}
-
-// scala
-task transpileScala(type: com.github.appocalypse.build.antlr4.Antlr4Transpile) {
-	antlr4Classpath = configurations.antlr4
-	source = 'grammars/scala'
-	javaPackage = 'com.github.appocalypse.grammars.scala'
 }
 
 // scss
