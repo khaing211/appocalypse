@@ -18,6 +18,7 @@
 lib
 
 # idea file
+.idea
 *.iml
 *.ipr
 *.iws
