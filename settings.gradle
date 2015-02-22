@@ -12,3 +12,5 @@ include 'guava-extra'
 include 'jdk-extra'
 include 'optionzero'
 include 'inferno'
+include 'json-grep'
+
