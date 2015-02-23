@@ -1,9 +1,13 @@
 package com.github.appocalypse;
 
-import javax.json.*;
-import javax.json.stream.JsonParser;
+import com.github.appocalypse.jsongrep.JsonMatcher;
+import com.github.appocalypse.jsongrep.JsonPattern;
+
+import javax.json.Json;
+import javax.json.JsonReader;
+import javax.json.JsonStructure;
+import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.LineNumberReader;
 
 /**
  * Implement json grep by passing in json path
@@ -33,16 +37,11 @@ public class JsonGrep {
 
         final String pattern = args[0];
         final InputStreamReader systemReader = new InputStreamReader(System.in);
-        final LineNumberReader lineNumberReader = new LineNumberReader(systemReader);
-        final JsonParser jsonParser = Json.createParser(lineNumberReader);
+        final BufferedReader bufferedReader = new BufferedReader(systemReader);
+        final JsonReader jsonReader = Json.createReader(bufferedReader);
 
-        if (!jsonParser.hasNext()) return;
+        final JsonStructure root = jsonReader.read();
 
-        final JsonParser.Event firstEvent = jsonParser.next();
-        switch (firstEvent) {
-            case START_ARRAY: break;
-            case START_OBJECT: break;
-            default: return;
-        }
+        final JsonMatcher matcher = JsonPattern.compile(pattern).matcher(root);
     }
 }

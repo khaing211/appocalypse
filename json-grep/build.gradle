@@ -1,7 +1,7 @@
 apply from: "$rootDir/gradle/javaProject.gradle"
 apply plugin: 'application'
 
-applicationName = 'Json Grep'
+applicationName = 'jgrep'
 mainClassName = 'com.github.appocalypse.JsonGrep'
 
 dependencies {
