@@ -13,6 +13,10 @@ public class JsonPattern {
     }
 
     public JsonMatcher matcher(JsonStructure root) {
+        if (root == null) {
+            throw new NullPointerException("root cannot be null");
+        }
+
         return jsonMatcherFactory.fromRoot(root);
     }
 
