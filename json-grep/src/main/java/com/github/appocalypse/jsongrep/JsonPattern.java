@@ -70,6 +70,11 @@ public class JsonPattern {
 
                     if (nextBracketIndex.isPresent()) {
                         final String value = pattern.substring(index.get(), nextBracketIndex.get());
+
+                        if (value.isEmpty()) {
+                            throw new JsonPatternParseException("pattern does not expected empty access after '.'", index.get());
+                        }
+
                         matcherFactory = handleDot(matcherFactory, value);
 
                         index = nextBracketIndex;
@@ -78,7 +83,7 @@ public class JsonPattern {
                         final String value = pattern.substring(index.get());
 
                         if (value.isEmpty()) {
-                            throw new JsonPatternParseException("pattern unexpected empty access after '.'", pattern.length() - 1);
+                            throw new JsonPatternParseException("pattern does not expected empty access after '.'", pattern.length() - 1);
                         }
 
                         matcherFactory = handleDot(matcherFactory, value);
@@ -98,11 +103,15 @@ public class JsonPattern {
 
                 if (!nextIndex.isPresent()) {
                     throw new JsonPatternParseException("pattern expect to have '" + CLOSED_SQUARE_BRACKET
-                            + "' matching to '" + OPEN_SQUARE_BRACKET + "'" + currentIndex, currentIndex);
+                            + "' matching to '" + OPEN_SQUARE_BRACKET + "'", currentIndex);
                 }
 
 
                 final String value = pattern.substring(index.get(), nextIndex.get());
+
+                if (value.isEmpty()) {
+                    throw new JsonPatternParseException("pattern expected to have non-empty string inside bracket", currentIndex);
+                }
 
                 matcherFactory = handleBracket(matcherFactory, value);
 
