@@ -7,6 +7,8 @@ import javax.json.JsonReader;
 import javax.json.JsonStructure;
 import java.io.StringReader;
 
+import static org.junit.Assert.assertEquals;
+
 public class JsonPatternTest {
 
     @Test
@@ -14,6 +16,24 @@ public class JsonPatternTest {
         final JsonReader jsonReader = Json.createReader(new StringReader("[]"));
         final JsonStructure root = jsonReader.read();
         JsonPattern.compile("$").matcher(root);
+    }
+
+    @Test
+    public void testNonDollarSignPattern() {
+        try {
+            JsonPattern.compile("[");
+        } catch (JsonPatternParseException e) {
+            assertEquals(0, e.getErrorIndex());
+        }
+    }
+
+    @Test
+    public void testEndWithDescendant() {
+        try {
+            JsonPattern.compile("$..");
+        } catch (JsonPatternParseException e) {
+            assertEquals(2, e.getErrorIndex());
+        }
     }
 
     @Test(expected = NullPointerException.class)

@@ -15,7 +15,7 @@ import java.io.InputStreamReader;
  *
  * $                = root object
  * . or []          = child operator
- * ..               = descendant operator
+ * ..               = descendant operator (but not at end)
  * *                = match all
  * [number]         = subscript if provide
  * [a,b]            = union operator
