@@ -27,7 +27,7 @@ public class JsonChildMatcherFactory extends JsonChainMatcherFactory {
 
         @Override
         public boolean find() {
-            while(jsonMatcher.find()) {
+            while (jsonMatcher.find()) {
                 final JsonValue previousValue = jsonMatcher.current();
                 if (previousValue instanceof JsonObject) {
                     final JsonObject jsonObject = (JsonObject)previousValue;
