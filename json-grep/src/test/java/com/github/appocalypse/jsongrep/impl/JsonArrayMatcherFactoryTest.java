@@ -2,7 +2,7 @@ package com.github.appocalypse.jsongrep.impl;
 
 import org.junit.Test;
 
-public class JsonChildMatcherFactoryTest {
+public class JsonArrayMatcherFactoryTest {
     @Test
     public void testJsonObject() {
 

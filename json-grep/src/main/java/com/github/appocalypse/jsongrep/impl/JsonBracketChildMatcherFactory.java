@@ -18,6 +18,18 @@ public class JsonBracketChildMatcherFactory extends JsonChainMatcherFactory {
 
     @Override
     protected JsonMatcher fromPreviousMatcher(JsonMatcher previousMatcher) {
-        return null;
+        return new JsonBracketChildMatcher(previousMatcher);
+    }
+
+    private class JsonBracketChildMatcher extends JsonChainMatcher {
+
+        protected JsonBracketChildMatcher(JsonMatcher jsonMatcher) {
+            super(jsonMatcher);
+        }
+
+        @Override
+        public boolean find() {
+            return false;
+        }
     }
 }

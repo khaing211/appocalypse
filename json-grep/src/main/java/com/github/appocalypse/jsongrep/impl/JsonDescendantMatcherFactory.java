@@ -9,11 +9,11 @@ public class JsonDescendantMatcherFactory extends JsonChainMatcherFactory {
 
     @Override
     protected JsonMatcher fromPreviousMatcher(JsonMatcher previousMatcher) {
-        return new JsonDescendantMatcher(previousMatcher);
+        return new JsonDescendantChainMatcher(previousMatcher);
     }
 
-    private static class JsonDescendantMatcher extends ChainedJsonMatcher {
-        protected JsonDescendantMatcher(JsonMatcher jsonMatcher) {
+    private static class JsonDescendantChainMatcher extends JsonChainMatcher {
+        protected JsonDescendantChainMatcher(JsonMatcher jsonMatcher) {
             super(jsonMatcher);
         }
 

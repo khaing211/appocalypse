@@ -16,12 +16,12 @@ public class JsonChildMatcherFactory extends JsonChainMatcherFactory {
 
     @Override
     protected JsonMatcher fromPreviousMatcher(JsonMatcher previousMatcher) {
-        return new JsonChildMatcher(previousMatcher);
+        return new JsonChildChainMatcher(previousMatcher);
     }
 
-    private class JsonChildMatcher extends ChainedJsonMatcher {
+    private class JsonChildChainMatcher extends JsonChainMatcher {
 
-        protected JsonChildMatcher(JsonMatcher jsonMatcher) {
+        protected JsonChildChainMatcher(JsonMatcher jsonMatcher) {
             super(jsonMatcher);
         }
 

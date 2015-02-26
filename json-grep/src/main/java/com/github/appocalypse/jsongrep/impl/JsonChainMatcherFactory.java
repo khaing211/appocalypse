@@ -19,12 +19,12 @@ public abstract class JsonChainMatcherFactory implements JsonMatcherFactory {
 
     abstract protected JsonMatcher fromPreviousMatcher(JsonMatcher previousMatcher);
 
-    protected abstract static class ChainedJsonMatcher implements JsonMatcher {
+    protected abstract static class JsonChainMatcher implements JsonMatcher {
         final protected JsonMatcher jsonMatcher;
 
         protected JsonValue current;
 
-        protected ChainedJsonMatcher(JsonMatcher jsonMatcher) {
+        protected JsonChainMatcher(JsonMatcher jsonMatcher) {
             this.jsonMatcher = jsonMatcher;
         }
 

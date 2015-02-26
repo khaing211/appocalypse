@@ -15,14 +15,14 @@ public class JsonAnyChildMatcherFactory extends JsonChainMatcherFactory {
 
     @Override
     protected JsonMatcher fromPreviousMatcher(JsonMatcher previousMatcher) {
-        return new JsonAnyChildMatcher(previousMatcher);
+        return new JsonAnyChildChainMatcher(previousMatcher);
     }
 
-    private static class JsonAnyChildMatcher extends ChainedJsonMatcher {
+    private static class JsonAnyChildChainMatcher extends JsonChainMatcher {
 
         private Iterator<JsonValue> previousValueChildren;
 
-        protected JsonAnyChildMatcher(JsonMatcher jsonMatcher) {
+        protected JsonAnyChildChainMatcher(JsonMatcher jsonMatcher) {
             super(jsonMatcher);
         }
 
