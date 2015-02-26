@@ -1,5 +1,7 @@
 package com.github.appcalypse.jdk.extra.util;
 
+import java.util.Optional;
+
 public class Either<T extends Throwable, A> {
     final private T left;
     final private A right;
@@ -25,11 +27,23 @@ public class Either<T extends Throwable, A> {
         return left != null;
     }
 
+    /**
+     * @param defaultValue
+     * @return the right value or default value if left
+     */
     public A orLeft(A defaultValue) {
         if (isRight()) {
             return right;
         } else {
             return defaultValue;
         }
+    }
+
+    public Optional<A> right() {
+        return Optional.ofNullable(right);
+    }
+
+    public Optional<T> left() {
+        return Optional.ofNullable(left);
     }
 }
