@@ -2,37 +2,44 @@ package com.github.appocalypse.jsongrep.impl;
 
 import com.github.appocalypse.jsongrep.JsonMatcher;
 
+import javax.json.JsonArray;
+import javax.json.JsonValue;
+import java.util.Iterator;
 import java.util.Optional;
 
 /**
- * Handling
+ * start = mandatory, inclusive, support negative index
+ * end = optional, inclusive, default -1 i.e. end of array
+ * step = optional, positive number, default 1
  *
+ * Remember: start, end index are depending on actual given array
  *
- *  x[-2:-1:1]
- *  x[-1:]
- *  x[3:]
- *  x[2:5]
- *  x[1:5:2]
+ * example: [0::], [0:], [0::1], [-1::2], [-5:-1:2]
  */
 public class JsonArrayMatcherFactory extends JsonChainMatcherFactory {
 
-    final private Integer startIndex;
-    final private Optional<Integer> endIndex;
-    final private Optional<Integer> step;
+    final private int startIndex;
+    final private int endIndex;
+    final private int step;
 
-    public JsonArrayMatcherFactory(JsonMatcherFactory jsonMatcherFactory, Integer startIndex) {
-        this(jsonMatcherFactory, startIndex, null, 1);
+    public JsonArrayMatcherFactory(JsonMatcherFactory jsonMatcherFactory, int startIndex) {
+        this(jsonMatcherFactory, startIndex, -1, 1);
     }
 
-    public JsonArrayMatcherFactory(JsonMatcherFactory jsonMatcherFactory, Integer startIndex, Integer endIndex) {
-        this(jsonMatcherFactory, startIndex, endIndex, 1);
+    public JsonArrayMatcherFactory(JsonMatcherFactory jsonMatcherFactory, int startIndex, int endIndex) {
+        this(jsonMatcherFactory, startIndex, -1, 1);
     }
 
-    public JsonArrayMatcherFactory(JsonMatcherFactory jsonMatcherFactory, Integer startIndex, Integer endIndex, Integer step) {
+    public JsonArrayMatcherFactory(JsonMatcherFactory jsonMatcherFactory, int startIndex, int endIndex, int step) {
         super(jsonMatcherFactory);
+
+        if (step <= 0) {
+            throw new IllegalArgumentException("step has to be positive");
+        }
+
         this.startIndex = startIndex;
-        this.endIndex = Optional.ofNullable(endIndex);
-        this.step = Optional.of(Optional.ofNullable(step).orElse(1));
+        this.endIndex = endIndex;
+        this.step = step;
     }
 
     @Override
@@ -41,6 +48,9 @@ public class JsonArrayMatcherFactory extends JsonChainMatcherFactory {
     }
 
     private class JsonArrayMatcher extends JsonChainMatcher {
+        private JsonArray previousJsonArray;
+        private int currentIndex;
+        private int currentEndIndex;
 
         protected JsonArrayMatcher(JsonMatcher jsonMatcher) {
             super(jsonMatcher);
@@ -48,7 +58,58 @@ public class JsonArrayMatcherFactory extends JsonChainMatcherFactory {
 
         @Override
         public boolean find() {
-            return false;
+            while (true)  {
+                if (checkPreviousJsonArray()) {
+                    super.current = step();
+                    return true;
+                } else {
+                    if (!jsonMatcher.find()) {
+                        super.current = null;
+                        return false;
+                    }
+
+                    final JsonValue previousValue = jsonMatcher.current();
+                    if (previousValue instanceof JsonArray) {
+                        previousJsonArray = (JsonArray) previousValue;
+                        adjustInitialIndex();
+                        adjustEndIndex();
+                    }
+                }
+            }
+        }
+
+        private void adjustInitialIndex() {
+            this.currentIndex = mod(startIndex, previousJsonArray.size());
+        }
+
+        private void adjustEndIndex() {
+            this.currentEndIndex = mod(endIndex, previousJsonArray.size());
+        }
+
+        private JsonValue step() {
+            final JsonValue value = previousJsonArray.get(currentIndex);
+            currentIndex += step;
+            return value;
+        }
+
+        private int mod(int i, int modulo) {
+            while (i < 0 && i < modulo) {
+                i += modulo;
+            }
+
+            return i;
+        }
+
+        private boolean checkPreviousJsonArray() {
+            if (previousJsonArray == null) {
+                return false;
+            }
+
+            if (currentIndex > previousJsonArray.size() || currentIndex > currentEndIndex) {
+                return false;
+            }
+
+            return true;
         }
     }
 }

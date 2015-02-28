@@ -20,7 +20,11 @@ import java.io.InputStreamReader;
  * [number]         = subscript if provide
  * [a,b]            = union operator
  * [start:end:step] = array slice (support negative index)
- * ?()              = filter
+ *                    start = mandatory, inclusive, support negative index
+ *                    end = optional, inclusive, default -1 i.e. end of array
+ *                    step = optional, positive number, default 1
+ *                    example: [0::], [0:], [0::1], [-1::2], [-5:-1:2]
+ * [?()]            = filter
  *
  * Example:
  * $..book[?(@.price<10)]	= find all books with price less than 10
