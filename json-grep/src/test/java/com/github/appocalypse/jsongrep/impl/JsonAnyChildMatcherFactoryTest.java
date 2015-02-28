@@ -7,14 +7,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonString;
-import javax.json.JsonValue;
+import javax.json.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -56,32 +51,91 @@ public class JsonAnyChildMatcherFactoryTest {
         assertEquals("world", ((JsonString)jsonAnyChildMatcher.current()).getString());
 
         assertFalse(jsonAnyChildMatcher.find());
+        assertNull(jsonAnyChildMatcher.current());
 
         verify(jsonMatcher, times(2)).find();
     }
 
     @Test
     public void testJsonArray() {
+        JsonArray jsonArray = Json.createArrayBuilder()
+                .add("string")
+                .add(1)
+                .build();
 
+        when(jsonMatcher.find()).thenReturn(true).thenReturn(false);
+        when(jsonMatcher.current()).thenReturn(jsonArray).thenReturn(null);
+
+        JsonAnyChildMatcherFactory jsonAnyChildMatcherFactory = new JsonAnyChildMatcherFactory(jsonMatcherFactory);
+        JsonMatcher jsonAnyChildMatcher = jsonAnyChildMatcherFactory.fromRoot(JsonValue.NULL);
+
+        assertTrue(jsonAnyChildMatcher.find());
+        assertTrue(jsonAnyChildMatcher.current() instanceof JsonString);
+        assertEquals("string", ((JsonString)jsonAnyChildMatcher.current()).getString());
+
+        assertTrue(jsonAnyChildMatcher.find());
+        assertTrue(jsonAnyChildMatcher.current() instanceof JsonNumber);
+        assertEquals(JsonNumbers.fromInt(1), ((JsonNumber)jsonAnyChildMatcher.current()));
+
+        assertFalse(jsonAnyChildMatcher.find());
+        assertNull(jsonAnyChildMatcher.current());
+
+        verify(jsonMatcher, times(2)).find();
     }
 
     @Test
     public void testJsonNull() {
+        when(jsonMatcher.find()).thenReturn(true).thenReturn(false);
+        when(jsonMatcher.current()).thenReturn(JsonValue.NULL).thenReturn(null);
 
+        JsonAnyChildMatcherFactory jsonAnyChildMatcherFactory = new JsonAnyChildMatcherFactory(jsonMatcherFactory);
+        JsonMatcher jsonAnyChildMatcher = jsonAnyChildMatcherFactory.fromRoot(JsonValue.NULL);
+
+        assertFalse(jsonAnyChildMatcher.find());
+        assertNull(jsonAnyChildMatcher.current());
+
+        verify(jsonMatcher, times(2)).find();
     }
 
     @Test
     public void testJsonTrue() {
+        when(jsonMatcher.find()).thenReturn(true).thenReturn(false);
+        when(jsonMatcher.current()).thenReturn(JsonValue.TRUE).thenReturn(null);
 
+        JsonAnyChildMatcherFactory jsonAnyChildMatcherFactory = new JsonAnyChildMatcherFactory(jsonMatcherFactory);
+        JsonMatcher jsonAnyChildMatcher = jsonAnyChildMatcherFactory.fromRoot(JsonValue.NULL);
+
+        assertFalse(jsonAnyChildMatcher.find());
+        assertNull(jsonAnyChildMatcher.current());
+
+        verify(jsonMatcher, times(2)).find();
     }
 
     @Test
     public void testJsonFalse() {
+        when(jsonMatcher.find()).thenReturn(true).thenReturn(false);
+        when(jsonMatcher.current()).thenReturn(JsonValue.FALSE).thenReturn(null);
 
+        JsonAnyChildMatcherFactory jsonAnyChildMatcherFactory = new JsonAnyChildMatcherFactory(jsonMatcherFactory);
+        JsonMatcher jsonAnyChildMatcher = jsonAnyChildMatcherFactory.fromRoot(JsonValue.NULL);
+
+        assertFalse(jsonAnyChildMatcher.find());
+        assertNull(jsonAnyChildMatcher.current());
+
+        verify(jsonMatcher, times(2)).find();
     }
 
     @Test
     public void testJsonNumber() {
+        when(jsonMatcher.find()).thenReturn(true).thenReturn(false);
+        when(jsonMatcher.current()).thenReturn(JsonNumbers.fromInt(1)).thenReturn(null);
 
+        JsonAnyChildMatcherFactory jsonAnyChildMatcherFactory = new JsonAnyChildMatcherFactory(jsonMatcherFactory);
+        JsonMatcher jsonAnyChildMatcher = jsonAnyChildMatcherFactory.fromRoot(JsonValue.NULL);
+
+        assertFalse(jsonAnyChildMatcher.find());
+        assertNull(jsonAnyChildMatcher.current());
+
+        verify(jsonMatcher, times(2)).find();
     }
 }
