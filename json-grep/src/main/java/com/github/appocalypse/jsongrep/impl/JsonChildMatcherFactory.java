@@ -31,7 +31,7 @@ public class JsonChildMatcherFactory extends JsonChainMatcherFactory {
                 final JsonValue previousValue = jsonMatcher.current();
                 if (previousValue instanceof JsonObject) {
                     final JsonObject jsonObject = (JsonObject)previousValue;
-                    if (!jsonObject.isNull(name)) {
+                    if (jsonObject.containsKey(name)) {
                         super.current = jsonObject.get(name);
                         return true;
                     }

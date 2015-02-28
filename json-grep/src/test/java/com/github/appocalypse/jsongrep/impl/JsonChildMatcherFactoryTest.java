@@ -47,6 +47,26 @@ public class JsonChildMatcherFactoryTest {
         assertEquals("this", ((JsonString)jsonChildMatcher.current()).getString());
 
         assertFalse(jsonChildMatcher.find());
+        assertNull(jsonChildMatcher.current());
+
+        verify(jsonMatcher, times(2)).find();
+    }
+
+    @Test
+    public void testJsonObjectNonMatch() {
+        JsonObject jsonObject = Json.createObjectBuilder()
+                .add("match", "this")
+                .add("hello", "world")
+                .build();
+
+        when(jsonMatcher.find()).thenReturn(true).thenReturn(false);
+        when(jsonMatcher.current()).thenReturn(jsonObject).thenReturn(null);
+
+        JsonChildMatcherFactory jsonChildMatcherFactory = new JsonChildMatcherFactory(jsonMatcherFactory, "nonmatch");
+        JsonMatcher jsonChildMatcher = jsonChildMatcherFactory.fromRoot(JsonValue.NULL);
+
+        assertFalse(jsonChildMatcher.find());
+        assertNull(jsonChildMatcher.current());
 
         verify(jsonMatcher, times(2)).find();
     }
@@ -65,6 +85,7 @@ public class JsonChildMatcherFactoryTest {
         JsonMatcher jsonChildMatcher = jsonChildMatcherFactory.fromRoot(JsonValue.NULL);
 
         assertFalse(jsonChildMatcher.find());
+        assertNull(jsonChildMatcher.current());
 
         verify(jsonMatcher, times(2)).find();
     }
@@ -78,6 +99,7 @@ public class JsonChildMatcherFactoryTest {
         JsonMatcher jsonChildMatcher = jsonChildMatcherFactory.fromRoot(JsonValue.NULL);
 
         assertFalse(jsonChildMatcher.find());
+        assertNull(jsonChildMatcher.current());
 
         verify(jsonMatcher, times(2)).find();
     }
@@ -91,6 +113,7 @@ public class JsonChildMatcherFactoryTest {
         JsonMatcher jsonChildMatcher = jsonChildMatcherFactory.fromRoot(JsonValue.NULL);
 
         assertFalse(jsonChildMatcher.find());
+        assertNull(jsonChildMatcher.current());
 
         verify(jsonMatcher, times(2)).find();
     }
@@ -104,6 +127,7 @@ public class JsonChildMatcherFactoryTest {
         JsonMatcher jsonChildMatcher = jsonChildMatcherFactory.fromRoot(JsonValue.NULL);
 
         assertFalse(jsonChildMatcher.find());
+        assertNull(jsonChildMatcher.current());
 
         verify(jsonMatcher, times(2)).find();
     }
@@ -117,6 +141,7 @@ public class JsonChildMatcherFactoryTest {
         JsonMatcher jsonChildMatcher = jsonChildMatcherFactory.fromRoot(JsonValue.NULL);
 
         assertFalse(jsonChildMatcher.find());
+        assertNull(jsonChildMatcher.current());
 
         verify(jsonMatcher, times(2)).find();
     }
