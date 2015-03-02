@@ -16,7 +16,14 @@ public class JsonPatternTest {
     public void testRoot() {
         final JsonReader jsonReader = Json.createReader(new StringReader("[]"));
         final JsonStructure root = jsonReader.read();
-        JsonPattern.compile("$").matcher(root);
+        JsonPattern.compile("$").matcher(root).stream().forEach(System.out::println);
+    }
+
+    @Test
+    public void testObjectMatch() {
+        final JsonReader jsonReader = Json.createReader(new StringReader("{\"name\":\"hello\"}"));
+        final JsonStructure root = jsonReader.read();
+        JsonPattern.compile("$.name").matcher(root).stream().forEach(System.out::println);
     }
 
     @Test

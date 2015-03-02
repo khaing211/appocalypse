@@ -2,6 +2,7 @@ package com.github.appocalypse.jsongrep;
 
 import com.github.appcalypse.jdk.extra.function.IntPredicates;
 import com.github.appcalypse.jdk.extra.function.Predicates;
+import com.github.appcalypse.jdk.extra.util.Eithers;
 import com.github.appocalypse.jsongrep.impl.*;
 
 import javax.json.JsonStructure;
@@ -171,10 +172,43 @@ public class JsonPattern {
 
     private static JsonMatcherFactory handleBracket(JsonMatcherFactory previousMatcherFactory, String value) {
         // TODO: handle value: index, filter use cases
-        if (ASTERISK.equals(value)) {
+        final Optional<JsonMatcherFactory> jsonArrayMatcherFactory = createJsonArrayMatcherFactory(previousMatcherFactory, value);
+        if (jsonArrayMatcherFactory.isPresent()) {
+            return jsonArrayMatcherFactory.get();
+        } else if (ASTERISK.equals(value)) {
             return new JsonAnyChildMatcherFactory(previousMatcherFactory);
         } else {
             return new JsonChildMatcherFactory(previousMatcherFactory, value);
         }
+    }
+
+    private static Optional<JsonMatcherFactory> createJsonArrayMatcherFactory(JsonMatcherFactory previousMatcherFactory, String value) {
+        final int firstSemiColonIndex = value.indexOf(':');
+        final int secondSemiColonIndex = value.indexOf(':', firstSemiColonIndex);
+        if (firstSemiColonIndex == -1) {
+            return Optional.empty();
+        }
+
+        final String startIndexStr = value.substring(0, firstSemiColonIndex);
+        final String endIndexStr = secondSemiColonIndex == -1 ?
+                value.substring(firstSemiColonIndex + 1) : value.substring(firstSemiColonIndex + 1, secondSemiColonIndex);
+        final String stepStr = secondSemiColonIndex == -1 ?
+                "1" : value.substring(secondSemiColonIndex + 1);
+
+        final Optional<Integer> startIndex = Eithers.wrap(() -> Integer.parseInt(startIndexStr), NumberFormatException.class)
+                .right();
+
+        final Optional<Integer> endIndex = Eithers.wrap(() -> Integer.parseInt(endIndexStr), NumberFormatException.class)
+                .right();
+
+        final Optional<Integer> step = Eithers.wrap(() -> Integer.parseInt(stepStr), NumberFormatException.class)
+                .right()
+                .filter(Predicates.boxed(IntPredicates.greaterThan(0)));
+
+        if (!startIndex.isPresent() || !endIndex.isPresent() || !step.isPresent()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(new JsonArrayMatcherFactory(previousMatcherFactory, startIndex.get(), endIndex.get(), step.get()));
     }
 }
