@@ -34,7 +34,10 @@ public class JsonPattern {
     private static final String QUESTION = "?";
     private static final String OPEN_ROUND_BRACKET = "(";
     private static final String CLOSED_ROUND_BRACKET = ")";
-
+    
+    // operators
+    private static final String[] COMPARATORS = new String[] { "=", "<", "<=", ">", ">=", "!=" };
+    
     public static JsonPattern compile(String pattern) {
         if (pattern == null) throw new NullPointerException("pattern cannot be null");
         // parse pattern
@@ -159,6 +162,7 @@ public class JsonPattern {
         }
     }
 
+    
 
     private static JsonMatcherFactory handleDot(JsonMatcherFactory previousMatcherFactory, String value) {
         if (value.isEmpty()) {
@@ -171,11 +175,17 @@ public class JsonPattern {
     }
 
     private static JsonMatcherFactory handleBracket(JsonMatcherFactory previousMatcherFactory, String value) {
-        // TODO: handle value: index, filter use cases
         final Optional<JsonMatcherFactory> jsonArrayMatcherFactory = createJsonArrayMatcherFactory(previousMatcherFactory, value);
         if (jsonArrayMatcherFactory.isPresent()) {
             return jsonArrayMatcherFactory.get();
-        } else if (ASTERISK.equals(value)) {
+        } 
+        
+        final Optional<JsonMatcherFactory> jsonPredicateMatcherFactory = createJsonPredicateMatcherFactory(previousMatcherFactory, value);
+        if (jsonPredicateMatcherFactory.isPresent()) {
+            return jsonPredicateMatcherFactory.get();
+        } 
+        
+        if (ASTERISK.equals(value)) {
             return new JsonAnyChildMatcherFactory(previousMatcherFactory);
         } else {
             return new JsonChildMatcherFactory(previousMatcherFactory, value);
@@ -183,8 +193,8 @@ public class JsonPattern {
     }
 
     private static Optional<JsonMatcherFactory> createJsonArrayMatcherFactory(JsonMatcherFactory previousMatcherFactory, String value) {
-        final int firstSemiColonIndex = value.indexOf(':');
-        final int secondSemiColonIndex = value.indexOf(':', firstSemiColonIndex);
+        final int firstSemiColonIndex = value.indexOf(SEMI_COLON);
+        final int secondSemiColonIndex = value.indexOf(SEMI_COLON, firstSemiColonIndex);
         if (firstSemiColonIndex == -1) {
             return Optional.empty();
         }
@@ -210,5 +220,22 @@ public class JsonPattern {
         }
 
         return Optional.of(new JsonArrayMatcherFactory(previousMatcherFactory, startIndex.get(), endIndex.get(), step.get()));
+    }
+    
+    private static Optional<JsonMatcherFactory> createJsonPredicateMatcherFactory(JsonMatcherFactory previousMatcherFactory, String value) {
+    	if (!value.startsWith(QUESTION + OPEN_ROUND_BRACKET) || !value.endsWith(CLOSED_ROUND_BRACKET)) {
+    		return Optional.empty();	
+    	}
+    	
+    	value = value.substring(2, value.length() - 1);
+    	
+    	for (String comparator : COMPARATORS) {
+    		Optional<Integer> index = eatTill(comparator, value, 0);
+    		if (index.isPresent()) {
+    			// TODO:
+    		}
+    	}
+    	
+    	return Optional.empty();
     }
 }

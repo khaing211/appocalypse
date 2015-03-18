@@ -1,10 +1,10 @@
 package com.github.appocalypse.jsongrep.impl;
 
-import com.github.appocalypse.jsongrep.JsonMatcher;
-
-import javax.json.JsonObject;
-import javax.json.JsonValue;
 import java.util.function.Predicate;
+
+import javax.json.JsonValue;
+
+import com.github.appocalypse.jsongrep.JsonMatcher;
 
 public class JsonPredicateMatcherFactory extends JsonChainMatcherFactory {
     final private Predicate<JsonValue> predicate;
