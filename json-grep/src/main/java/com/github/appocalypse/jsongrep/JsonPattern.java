@@ -1,13 +1,19 @@
 package com.github.appocalypse.jsongrep;
 
+import java.util.Optional;
+import java.util.function.Predicate;
+
+import javax.json.JsonValue;
+
 import com.github.appcalypse.jdk.extra.function.IntPredicates;
 import com.github.appcalypse.jdk.extra.function.Predicates;
 import com.github.appcalypse.jdk.extra.util.Eithers;
-import com.github.appocalypse.jsongrep.impl.*;
-
-import javax.json.JsonStructure;
-import java.util.Optional;
-import java.util.function.Predicate;
+import com.github.appocalypse.jsongrep.impl.JsonAnyChildMatcherFactory;
+import com.github.appocalypse.jsongrep.impl.JsonArrayMatcherFactory;
+import com.github.appocalypse.jsongrep.impl.JsonChildMatcherFactory;
+import com.github.appocalypse.jsongrep.impl.JsonDescendantMatcherFactory;
+import com.github.appocalypse.jsongrep.impl.JsonMatcherFactory;
+import com.github.appocalypse.jsongrep.impl.JsonRootMatcherFactory;
 
 public class JsonPattern {
     final private JsonMatcherFactory jsonMatcherFactory;
@@ -16,7 +22,7 @@ public class JsonPattern {
         this.jsonMatcherFactory = jsonMatcherFactory;
     }
 
-    public JsonMatcher matcher(JsonStructure root) {
+    public JsonMatcher matcher(JsonValue root) {
         if (root == null) {
             throw new NullPointerException("root cannot be null");
         }
@@ -24,7 +30,7 @@ public class JsonPattern {
         return jsonMatcherFactory.fromRoot(root);
     }
 
-    private static final String ROOT = "$";
+    private static final String DOLLAR_SIGN = "$";
     private static final String DOT = ".";
     private static final String OPEN_SQUARE_BRACKET = "[";
     private static final String CLOSED_SQUARE_BRACKET = "]";
@@ -42,17 +48,21 @@ public class JsonPattern {
         if (pattern == null) throw new NullPointerException("pattern cannot be null");
         // parse pattern
 
-        final Predicate<Integer> lessThanPatternLength = Predicates.boxed(IntPredicates.lessThan(pattern.length()));
-
-        final Optional<Integer> rootIndex = eat(ROOT, pattern, 0);
+        final Optional<Integer> rootIndex = eat(DOLLAR_SIGN, pattern, 0);
 
         if (!rootIndex.isPresent()) {
-            throw new JsonPatternParseException("pattern have to start with '" + ROOT + "'", 0);
+            throw new JsonPatternParseException("pattern have to start with '" + DOLLAR_SIGN + "'", 0);
         }
 
-        // side-effect variables
-        JsonMatcherFactory matcherFactory = new JsonRootMatcherFactory();
-        Optional<Integer> index = rootIndex;
+        return fromRoot(new JsonRootMatcherFactory(), pattern ,rootIndex.get());
+    }
+    
+    private static JsonPattern fromRoot(final JsonMatcherFactory rootMatcherFactory, final String pattern, final int startIndex) {
+        final Predicate<Integer> lessThanPatternLength = Predicates.boxed(IntPredicates.lessThan(pattern.length()));
+
+    	// side-effect variables
+        Optional<Integer> index = Optional.of(startIndex);
+        JsonMatcherFactory matcherFactory = rootMatcherFactory;
 
         while (index.filter(lessThanPatternLength).isPresent()) {
             final int currentIndex = index.get();
@@ -229,13 +239,30 @@ public class JsonPattern {
     	
     	value = value.substring(2, value.length() - 1);
     	
-    	for (String comparator : COMPARATORS) {
+    	for (final String comparator : COMPARATORS) {
     		Optional<Integer> index = eatTill(comparator, value, 0);
     		if (index.isPresent()) {
-    			// TODO:
+    			final String leftValue = value.substring(0, index.get()).trim();
+    			final String rightValue = value.substring(index.get() + comparator.length()).trim();
+    			
+    			
+    			
+    			
     		}
     	}
     	
     	return Optional.empty();
+    }
+    
+    private static boolean isJsonString(String value) {
+    	return value != null 
+    			&& (value.startsWith("'") || value.startsWith("\"")) 
+    			&& (value.endsWith("'") || value.endsWith("\"")); 
+    }
+    
+    private static boolean isPattern(String value) {
+    	// TODO: not support $ yet, bad design pattern.
+    	return value != null 
+    			&& (value.startsWith(AT) /*|| value.startsWith(DOLLAR_SIGN)*/ );
     }
 }
