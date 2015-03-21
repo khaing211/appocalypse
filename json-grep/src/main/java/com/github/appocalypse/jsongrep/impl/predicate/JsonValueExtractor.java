@@ -1,12 +1,11 @@
 package com.github.appocalypse.jsongrep.impl.predicate;
 
-import java.math.BigDecimal;
+import com.github.appocalypse.jsongrep.impl.JsonHelper;
 
 import javax.json.JsonString;
 import javax.json.JsonValue;
 import javax.json.JsonValue.ValueType;
-
-import com.github.appocalypse.jsongrep.impl.JsonNumbers;
+import java.math.BigDecimal;
 
 public interface JsonValueExtractor {
 	public JsonValue apply(JsonValue source);
@@ -15,7 +14,7 @@ public interface JsonValueExtractor {
 		final private JsonString value;
 		
 		public JsonStringExtractor(String value) {
-			this.value = new JsonStringImpl(value);
+			this.value = JsonHelper.fromString(value);
 		}
 
 		@Override
@@ -35,7 +34,7 @@ public interface JsonValueExtractor {
 		public JsonValue apply(JsonValue source) {
 			if (source.getValueType() == ValueType.NUMBER) {
 				try {
-					return JsonNumbers.fromBigDecimal(new BigDecimal(value));
+					return JsonHelper.fromBigDecimal(new BigDecimal(value));
 				} catch (NumberFormatException ignore) { }
 			} 
 			
@@ -50,7 +49,7 @@ public interface JsonValueExtractor {
 			}
 			
 			// default to String type
-			return new JsonStringImpl(value);
+			return JsonHelper.fromString(value);
 		}
 	}
 	
@@ -59,30 +58,6 @@ public interface JsonValueExtractor {
 		public JsonValue apply(JsonValue source) {
 			// TODO Auto-generated method stub
 			return null;
-		}
-	}
-	
-	
-	static class JsonStringImpl implements JsonString {
-		final private String value;
-		
-		public JsonStringImpl(String value) {
-			this.value = value;
-		}
-		
-		@Override
-		public ValueType getValueType() {
-			return ValueType.STRING;
-		}
-
-		@Override
-		public String getString() {
-			return value;
-		}
-
-		@Override
-		public CharSequence getChars() {
-			return value;
 		}
 	}
 }

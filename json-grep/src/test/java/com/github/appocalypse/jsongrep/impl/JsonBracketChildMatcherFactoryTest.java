@@ -196,7 +196,7 @@ public class JsonBracketChildMatcherFactoryTest {
     @Test
     public void testJsonNumber() {
         when(jsonMatcher.find()).thenReturn(true).thenReturn(false);
-        when(jsonMatcher.current()).thenReturn(JsonNumbers.fromInt(1)).thenReturn(null);
+        when(jsonMatcher.current()).thenReturn(JsonHelper.fromInt(1)).thenReturn(null);
 
         JsonBracketChildMatcherFactory jsonChildMatcherFactory = new JsonBracketChildMatcherFactory(jsonMatcherFactory, "-1");
         JsonMatcher jsonBracketChildMatcher = jsonChildMatcherFactory.fromRoot(JsonValue.NULL);

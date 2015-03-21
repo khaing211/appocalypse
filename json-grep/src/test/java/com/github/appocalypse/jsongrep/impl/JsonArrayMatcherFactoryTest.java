@@ -67,7 +67,7 @@ public class JsonArrayMatcherFactoryTest {
 
         assertTrue(jsonArrayMatcher.find());
         assertTrue(jsonArrayMatcher.current() instanceof JsonNumber);
-        assertEquals(JsonNumbers.fromInt(1), ((JsonNumber)jsonArrayMatcher.current()));
+        assertEquals(JsonHelper.fromInt(1), ((JsonNumber)jsonArrayMatcher.current()));
 
         assertFalse(jsonArrayMatcher.find());
         assertNull(jsonArrayMatcher.current());
@@ -149,7 +149,7 @@ public class JsonArrayMatcherFactoryTest {
     @Test
     public void testJsonNumber() {
         when(jsonMatcher.find()).thenReturn(true).thenReturn(false);
-        when(jsonMatcher.current()).thenReturn(JsonNumbers.fromInt(1)).thenReturn(null);
+        when(jsonMatcher.current()).thenReturn(JsonHelper.fromInt(1)).thenReturn(null);
 
         JsonArrayMatcherFactory jsonArrayMatcherFactory = new JsonArrayMatcherFactory(jsonMatcherFactory, 0);
         JsonMatcher jsonArrayMatcher = jsonArrayMatcherFactory.fromRoot(JsonValue.NULL);

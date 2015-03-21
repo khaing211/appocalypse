@@ -75,7 +75,7 @@ public class JsonAnyChildMatcherFactoryTest {
 
         assertTrue(jsonAnyChildMatcher.find());
         assertTrue(jsonAnyChildMatcher.current() instanceof JsonNumber);
-        assertEquals(JsonNumbers.fromInt(1), ((JsonNumber)jsonAnyChildMatcher.current()));
+        assertEquals(JsonHelper.fromInt(1), ((JsonNumber)jsonAnyChildMatcher.current()));
 
         assertFalse(jsonAnyChildMatcher.find());
         assertNull(jsonAnyChildMatcher.current());
@@ -128,7 +128,7 @@ public class JsonAnyChildMatcherFactoryTest {
     @Test
     public void testJsonNumber() {
         when(jsonMatcher.find()).thenReturn(true).thenReturn(false);
-        when(jsonMatcher.current()).thenReturn(JsonNumbers.fromInt(1)).thenReturn(null);
+        when(jsonMatcher.current()).thenReturn(JsonHelper.fromInt(1)).thenReturn(null);
 
         JsonAnyChildMatcherFactory jsonAnyChildMatcherFactory = new JsonAnyChildMatcherFactory(jsonMatcherFactory);
         JsonMatcher jsonAnyChildMatcher = jsonAnyChildMatcherFactory.fromRoot(JsonValue.NULL);

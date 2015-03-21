@@ -143,13 +143,13 @@ public class JsonDescendantMatcherFactoryTest {
     @Test
     public void testJsonNumber() {
         when(jsonMatcher.find()).thenReturn(true).thenReturn(false);
-        when(jsonMatcher.current()).thenReturn(JsonNumbers.fromInt(1)).thenReturn(null);
+        when(jsonMatcher.current()).thenReturn(JsonHelper.fromInt(1)).thenReturn(null);
 
         JsonDescendantMatcherFactory jsonDescendantMatcherFactory = new JsonDescendantMatcherFactory(jsonMatcherFactory);
         JsonMatcher jsonDescendantMatcher = jsonDescendantMatcherFactory.fromPreviousMatcher(jsonMatcher);
 
         assertTrue(jsonDescendantMatcher.find());
-        assertEquals(JsonNumbers.fromInt(1), jsonDescendantMatcher.current());
+        assertEquals(JsonHelper.fromInt(1), jsonDescendantMatcher.current());
 
         assertFalse(jsonDescendantMatcher.find());
         assertNull(jsonDescendantMatcher.current());
