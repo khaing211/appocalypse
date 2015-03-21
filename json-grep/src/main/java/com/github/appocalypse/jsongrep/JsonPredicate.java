@@ -153,6 +153,7 @@ public interface JsonPredicate {
 
         @Override
         public int compare(JsonPredicate left, JsonPredicate right) {
+            // TODO:
             return 0;
         }
     }

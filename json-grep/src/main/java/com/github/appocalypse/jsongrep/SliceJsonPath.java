@@ -1,5 +1,6 @@
 package com.github.appocalypse.jsongrep;
 
+import javax.json.JsonArray;
 import javax.json.JsonValue;
 import java.util.stream.Stream;
 
@@ -20,10 +21,15 @@ public class SliceJsonPath implements JsonPath {
     @Override
     public Stream<JsonValue> evaluate() {
         final Stream<JsonValue> source = jsonPath.evaluate();
-
-        // TODO:
-
-        return source;
+        return source.flatMap(jsonValue -> {
+            if (jsonValue instanceof JsonArray) {
+                JsonArray jsonArray = (JsonArray)jsonValue;
+                // TODO:
+                return Stream.of(jsonArray.get(start));
+            } else {
+                return Stream.empty();
+            }
+        });
     }
 
     @Override
