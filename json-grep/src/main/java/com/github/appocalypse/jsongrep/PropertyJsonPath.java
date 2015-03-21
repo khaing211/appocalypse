@@ -20,7 +20,11 @@ public class PropertyJsonPath implements JsonPath {
         return source.flatMap(jsonValue -> {
             if (jsonValue instanceof JsonObject) {
                 JsonObject jsonObject = (JsonObject)jsonValue;
-                return Stream.of(jsonObject.get(property));
+                if (jsonObject.containsKey(property)) {
+                    return Stream.of(jsonObject.get(property));
+                } else {
+                    return Stream.empty();
+                }
             } else {
                 return Stream.empty();
             }
