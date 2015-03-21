@@ -153,8 +153,10 @@ public interface JsonPredicate {
 
         @Override
         public int compare(JsonPredicate left, JsonPredicate right) {
-            // TODO:
-            return 0;
+            final JsonValue leftValue = left.value();
+            final JsonValue rightValue = right.value();
+
+            return leftValue.toString().compareTo(rightValue.toString());
         }
     }
 }
