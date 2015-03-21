@@ -2,7 +2,11 @@ package com.github.appocalypse.jsongrep;
 
 import javax.json.JsonArray;
 import javax.json.JsonValue;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public class SliceJsonPath implements JsonPath {
 
@@ -23,9 +27,8 @@ public class SliceJsonPath implements JsonPath {
         final Stream<JsonValue> source = jsonPath.evaluate();
         return source.flatMap(jsonValue -> {
             if (jsonValue instanceof JsonArray) {
-                JsonArray jsonArray = (JsonArray)jsonValue;
-                // TODO:
-                return Stream.of(jsonArray.get(start));
+                JsonArray jsonArray = (JsonArray) jsonValue;
+                return StreamSupport.stream(new JsonArraySpliterator(jsonArray, Long.MAX_VALUE, Spliterator.ORDERED), false);
             } else {
                 return Stream.empty();
             }
@@ -40,5 +43,40 @@ public class SliceJsonPath implements JsonPath {
     @Override
     public void source(JsonValue source) {
         jsonPath.source(source);
+    }
+
+    private static int mod(int i, int modulo) {
+        while (i < 0 && i < modulo) {
+            i += modulo;
+        }
+
+        return i;
+    }
+
+    private class JsonArraySpliterator extends Spliterators.AbstractSpliterator<JsonValue> {
+
+        final private JsonArray jsonArray;
+        private int currentIndex;
+        private int currentEndIndex;
+
+        public JsonArraySpliterator(JsonArray jsonArray, long est, int additionalCharacteristics) {
+            super(est, additionalCharacteristics);
+            this.jsonArray = jsonArray;
+            this.currentIndex = mod(start, jsonArray.size());
+            this.currentEndIndex = mod(end, jsonArray.size());
+        }
+
+        @Override
+        public boolean tryAdvance(Consumer<? super JsonValue> action) {
+            if (currentIndex > jsonArray.size() || currentIndex > currentEndIndex) {
+                return false;
+            }
+
+            final JsonValue jsonValue = jsonArray.get(currentIndex);
+            currentIndex += step;
+
+            action.accept(jsonValue);
+            return true;
+        }
     }
 }

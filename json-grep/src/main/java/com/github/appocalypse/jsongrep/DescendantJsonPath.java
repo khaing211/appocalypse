@@ -22,7 +22,7 @@ public class DescendantJsonPath implements JsonPath {
     public Stream<JsonValue> evaluate() {
         final Stream<JsonValue> source = jsonPath.evaluate();
         return source.flatMap(jsonValue -> {
-            return StreamSupport.stream(new JsonValueWalker(jsonValue, Long.MAX_VALUE, Spliterator.ORDERED), false);
+            return StreamSupport.stream(new JsonValueSpliterator(jsonValue, Long.MAX_VALUE, Spliterator.ORDERED), false);
         });
     }
 
@@ -36,10 +36,10 @@ public class DescendantJsonPath implements JsonPath {
         jsonPath.source(source);
     }
 
-    private static class JsonValueWalker extends Spliterators.AbstractSpliterator<JsonValue> {
+    private static class JsonValueSpliterator extends Spliterators.AbstractSpliterator<JsonValue> {
         final private Stack<JsonValue> jsonValues = new Stack<JsonValue>();
 
-        public JsonValueWalker(JsonValue jsonValue, long est, int additionalCharacteristics) {
+        public JsonValueSpliterator(JsonValue jsonValue, long est, int additionalCharacteristics) {
             super(est, additionalCharacteristics);
             jsonValues.push(jsonValue);
         }
