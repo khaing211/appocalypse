@@ -1,5 +1,7 @@
 package com.github.appocalypse.jsongrep.impl;
 
+import javax.json.Json;
+
 public class JsonPathLexer {
 
     final private String pattern;
@@ -15,6 +17,13 @@ public class JsonPathLexer {
         this.index = startIndex;
     }
 
-
-
+    /**
+     * Current index changes by next token
+     *
+     * @return token
+     */
+    public JsonPathToken nextToken() {
+        // TODO;
+        return new JsonPathToken.NoneToken();
+    }
 }
