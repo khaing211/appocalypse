@@ -2,9 +2,7 @@ package com.github.appocalypse.jsongrep;
 
 import com.github.appocalypse.jsongrep.impl.JsonHelper;
 
-import javax.json.Json;
-import javax.json.JsonNumber;
-import javax.json.JsonValue;
+import javax.json.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Comparator;
@@ -155,6 +153,62 @@ public interface JsonPredicate {
         public int compare(JsonPredicate left, JsonPredicate right) {
             final JsonValue leftValue = left.value();
             final JsonValue rightValue = right.value();
+
+            return compare(leftValue, rightValue);
+        }
+
+        private int compare(final JsonValue leftValue, final JsonValue rightValue) {
+            if (leftValue.getValueType() == JsonValue.ValueType.NUMBER &&
+                rightValue.getValueType() == JsonValue.ValueType.NUMBER) {
+
+                final JsonNumber leftNumber = (JsonNumber)leftValue;
+                final JsonNumber rightNumber = (JsonNumber)rightValue;
+
+                return leftNumber.bigDecimalValue().compareTo(rightNumber.bigDecimalValue());
+            }
+
+            if (leftValue.getValueType() == JsonValue.ValueType.ARRAY &&
+                rightValue.getValueType() == JsonValue.ValueType.ARRAY) {
+
+                final JsonArray leftArray = (JsonArray)leftValue;
+                final JsonArray rightArray = (JsonArray)rightValue;
+
+                final int sizeDiff =  (leftArray.size() - rightArray.size());
+                if (sizeDiff != 0) {
+                    return sizeDiff;
+                }
+
+                for (int i = 0; i < leftArray.size(); i++) {
+                    final int diff = compare(leftArray.get(i), rightArray.get(i));
+                    if (diff != 0) {
+                        return diff;
+                    }
+                }
+
+                return 0;
+            }
+
+            if (leftValue.getValueType() == JsonValue.ValueType.OBJECT &&
+                rightValue.getValueType() == JsonValue.ValueType.OBJECT) {
+
+                final JsonObject leftObject = (JsonObject)leftValue;
+                final JsonObject rightObject = (JsonObject)rightValue;
+
+                final boolean keyDiff = leftObject.keySet().containsAll(rightObject.keySet());
+                if (!keyDiff) {
+                    // don't care about the order
+                    return -1;
+                }
+
+                for (String key : leftObject.keySet()) {
+                    final int diff = compare(leftObject.get(key), rightObject.get(key));
+                    if (diff != 0) {
+                        return diff;
+                    }
+                }
+
+                return 0;
+            }
 
             return leftValue.toString().compareTo(rightValue.toString());
         }
