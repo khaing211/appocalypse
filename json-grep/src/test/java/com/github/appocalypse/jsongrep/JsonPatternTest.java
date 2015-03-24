@@ -31,7 +31,7 @@ public class JsonPatternTest {
         try {
             JsonPattern.compile("[");
             fail("should throw exception");
-        } catch (JsonPatternParseException e) {
+        } catch (JsonPathParseException e) {
             assertEquals(0, e.getErrorIndex());
         }
     }
@@ -41,7 +41,7 @@ public class JsonPatternTest {
         try {
             JsonPattern.compile("$..");
             fail("should throw exception");
-        } catch (JsonPatternParseException e) {
+        } catch (JsonPathParseException e) {
             assertEquals(2, e.getErrorIndex());
         }
     }
@@ -51,7 +51,7 @@ public class JsonPatternTest {
         try {
             JsonPattern.compile("$[a]..");
             fail("should throw exception");
-        } catch (JsonPatternParseException e) {
+        } catch (JsonPathParseException e) {
             assertEquals(5, e.getErrorIndex());
         }
     }
@@ -61,7 +61,7 @@ public class JsonPatternTest {
         try {
             JsonPattern.compile("$.a..");
             fail("should throw exception");
-        } catch (JsonPatternParseException e) {
+        } catch (JsonPathParseException e) {
             assertEquals(4, e.getErrorIndex());
         }
     }
@@ -71,7 +71,7 @@ public class JsonPatternTest {
         try {
             JsonPattern.compile("$[abc");
             fail("should throw exception");
-        } catch (JsonPatternParseException e) {
+        } catch (JsonPathParseException e) {
             assertEquals(1, e.getErrorIndex());
         }
     }
@@ -81,7 +81,7 @@ public class JsonPatternTest {
         try {
             JsonPattern.compile("$[]");
             fail("should throw exception");
-        } catch (JsonPatternParseException e) {
+        } catch (JsonPathParseException e) {
             assertEquals(1, e.getErrorIndex());
         }
     }

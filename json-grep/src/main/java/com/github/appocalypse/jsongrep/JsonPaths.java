@@ -4,19 +4,15 @@ import javax.json.JsonValue;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+/**
+ * Fluent API for JsonPath
+ */
 public class JsonPaths {
 
     private JsonPath jsonPath;
 
     private JsonPaths(JsonPath source) {
         this.jsonPath = source;
-    }
-
-    /**
-     * Only use this for inner json path i.e. json predicate
-     */
-    public static JsonPaths source() {
-        return new JsonPaths(new SourceJsonPath());
     }
 
     public static JsonPaths source(JsonValue source) {

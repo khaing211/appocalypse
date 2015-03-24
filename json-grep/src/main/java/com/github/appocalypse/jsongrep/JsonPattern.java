@@ -51,7 +51,7 @@ public class JsonPattern {
         final Optional<Integer> rootIndex = eat(DOLLAR_SIGN, pattern, 0);
 
         if (!rootIndex.isPresent()) {
-            throw new JsonPatternParseException("pattern have to start with '" + DOLLAR_SIGN + "'", 0);
+            throw new JsonPathParseException("pattern have to start with '" + DOLLAR_SIGN + "'", 0);
         }
 
         return fromRoot(new JsonRootMatcherFactory(), pattern ,rootIndex.get());
@@ -86,7 +86,7 @@ public class JsonPattern {
                         final String value = pattern.substring(index.get(), nextBracketIndex.get());
 
                         if (value.isEmpty()) {
-                            throw new JsonPatternParseException("pattern does not expected empty access after '.'", index.get());
+                            throw new JsonPathParseException("pattern does not expected empty access after '.'", index.get());
                         }
 
                         matcherFactory = handleDot(matcherFactory, value);
@@ -97,7 +97,7 @@ public class JsonPattern {
                         final String value = pattern.substring(index.get());
 
                         if (value.isEmpty()) {
-                            throw new JsonPatternParseException("pattern does not expected empty access after '.'", pattern.length() - 1);
+                            throw new JsonPathParseException("pattern does not expected empty access after '.'", pattern.length() - 1);
                         }
 
                         matcherFactory = handleDot(matcherFactory, value);
@@ -116,7 +116,7 @@ public class JsonPattern {
                 final Optional<Integer> nextIndex = eatTill(CLOSED_SQUARE_BRACKET, pattern, index.get());
 
                 if (!nextIndex.isPresent()) {
-                    throw new JsonPatternParseException("pattern expect to have '" + CLOSED_SQUARE_BRACKET
+                    throw new JsonPathParseException("pattern expect to have '" + CLOSED_SQUARE_BRACKET
                             + "' matching to '" + OPEN_SQUARE_BRACKET + "'", currentIndex);
                 }
 
@@ -124,7 +124,7 @@ public class JsonPattern {
                 final String value = pattern.substring(index.get(), nextIndex.get());
 
                 if (value.isEmpty()) {
-                    throw new JsonPatternParseException("pattern expected to have non-empty string inside bracket", currentIndex);
+                    throw new JsonPathParseException("pattern expected to have non-empty string inside bracket", currentIndex);
                 }
 
                 matcherFactory = handleBracket(matcherFactory, value);
@@ -135,7 +135,7 @@ public class JsonPattern {
                 continue;
             }
 
-            throw new JsonPatternParseException("pattern expect to have '.' or '['", currentIndex);
+            throw new JsonPathParseException("pattern expect to have '.' or '['", currentIndex);
         }
 
         return new JsonPattern(matcherFactory);

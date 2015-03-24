@@ -1,5 +1,7 @@
 package com.github.appocalypse.jsongrep;
 
+import com.github.appocalypse.jsongrep.impl.JsonPathParser;
+
 import javax.json.JsonValue;
 import java.util.stream.Stream;
 
@@ -22,4 +24,9 @@ public interface JsonPath {
      * @param source
      */
     public void source(JsonValue source);
+
+
+    public static JsonPath path(String pattern) throws JsonPathParseException {
+        return new JsonPathParser(pattern).parse();
+    }
 }

@@ -8,8 +8,81 @@ public interface JsonPathToken {
 
     public default String getValue() { return null; }
 
+    public static JsonPathToken eof(int charIndex) {
+        return new EofToken(charIndex);
+    }
 
-    public static class NoneToken implements JsonPathToken { }
+    public static JsonPathToken asterisk(int charIndex) {
+        return new AsteriskToken(charIndex);
+    }
+
+    public static JsonPathToken dot(int charIndex) {
+        return new DotToken(charIndex);
+    }
+
+    public static JsonPathToken twoDots(int charIndex) {
+        return new TwoDotsToken(charIndex);
+    }
+
+    public static JsonPathToken openSquareBracket(int charIndex) {
+        return new OpenSquareBracketToken(charIndex);
+    }
+
+    public static JsonPathToken closeSquareBracket(int charIndex) {
+        return new ClosedSquareBracketToken(charIndex);
+    }
+
+    public static JsonPathToken dollarSign(int charIndex) {
+        return new DollarSignToken(charIndex);
+    }
+
+    public static JsonPathToken at(int charIndex) {
+        return new AtToken(charIndex);
+    }
+
+    public static JsonPathToken question(int charIndex) {
+        return new QuestionToken(charIndex);
+    }
+
+    public static JsonPathToken semiColon(int charIndex) {
+        return new SemiColonToken(charIndex);
+    }
+
+    public static JsonPathToken openRoundBracket(int charIndex) {
+        return new OpenRoundBracketToken(charIndex);
+    }
+
+    public static JsonPathToken closeRoundBracket(int charIndex) {
+        return new ClosedRoundBracketToken(charIndex);
+    }
+
+    public static JsonPathToken quote(int charIndex) {
+        return new QuoteToken(charIndex);
+    }
+
+    public static JsonPathToken lessThan(int charIndex) {
+        return new LessThanToken(charIndex);
+    }
+
+    public static JsonPathToken lessThanOrEqual(int charIndex) {
+        return new LessThanOrEqualToken(charIndex);
+    }
+
+    public static JsonPathToken equal(int charIndex) {
+        return new EqualToken(charIndex);
+    }
+
+    public static JsonPathToken greaterThan(int charIndex) {
+        return new GreaterThanToken(charIndex);
+    }
+
+    public static JsonPathToken greaterThanOrEqual(int charIndex) {
+        return new GreaterThanOrEqualToken(charIndex);
+    }
+
+    public static JsonPathToken string(int charIndex, String value) {
+        return new StringToken(charIndex, value);
+    }
 
     public static abstract class AbstractToken implements JsonPathToken {
         final private int charIndex;
@@ -32,6 +105,17 @@ public interface JsonPathToken {
         @Override
         public String getValue() {
             return ".";
+        }
+    }
+
+    public static class TwoDotsToken extends AbstractToken {
+        public TwoDotsToken(int charIndex) {
+            super(charIndex);
+        }
+
+        @Override
+        public String getValue() {
+            return "..";
         }
     }
 
@@ -143,6 +227,19 @@ public interface JsonPathToken {
         }
     }
 
+    public static class QuoteToken extends AbstractToken {
+
+        public QuoteToken(int charIndex) {
+            super(charIndex);
+        }
+
+        @Override
+        public String getValue() {
+            return "'";
+        }
+    }
+
+
     public static interface ComparisonToken { }
 
     public static class LessThanToken extends AbstractToken implements ComparisonToken {
@@ -209,9 +306,9 @@ public interface JsonPathToken {
         final private String value;
         final private int charIndex;
 
-        public StringToken(String value, int charIndex) {
-            this.value = value;
+        public StringToken(int charIndex, String value) {
             this.charIndex = charIndex;
+            this.value = value;
         }
 
         @Override
@@ -224,4 +321,11 @@ public interface JsonPathToken {
             return charIndex;
         }
     }
+
+    public static class EofToken extends AbstractToken {
+        public EofToken(int charIndex) {
+            super(charIndex);
+        }
+    }
+
 }
