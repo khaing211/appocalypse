@@ -28,7 +28,8 @@ public class SourceJsonPath implements JsonPath {
     }
 
     @Override
-    public void source(JsonValue source) {
+    public JsonPath source(JsonValue source) {
         this.source = source;
+        return this;
     }
 }

@@ -37,7 +37,8 @@ public class PropertyJsonPath implements JsonPath {
     }
 
     @Override
-    public void source(JsonValue source) {
+    public JsonPath source(JsonValue source) {
         jsonPath.source(source);
+        return this;
     }
 }

@@ -23,7 +23,7 @@ public interface JsonPath {
      *
      * @param source
      */
-    public void source(JsonValue source);
+    public JsonPath source(JsonValue source);
 
 
     public static JsonPath path(String pattern) throws JsonPathParseException {

@@ -1,7 +1,6 @@
 package com.github.appocalypse;
 
-import com.github.appocalypse.jsongrep.JsonMatcher;
-import com.github.appocalypse.jsongrep.JsonPattern;
+import com.github.appocalypse.jsongrep.JsonPath;
 
 import javax.json.Json;
 import javax.json.JsonReader;
@@ -46,6 +45,9 @@ public class JsonGrep {
 
         final JsonStructure root = jsonReader.read();
 
-        final JsonMatcher matcher = JsonPattern.compile(pattern).matcher(root);
+        JsonPath.path(pattern)
+                .source(root)
+                .evaluate()
+                .forEach(System.out::println);
     }
 }

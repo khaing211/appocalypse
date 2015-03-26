@@ -41,8 +41,9 @@ public class SliceJsonPath implements JsonPath {
     }
 
     @Override
-    public void source(JsonValue source) {
+    public JsonPath source(JsonValue source) {
         jsonPath.source(source);
+        return this;
     }
 
     private static int mod(int i, int modulo) {
