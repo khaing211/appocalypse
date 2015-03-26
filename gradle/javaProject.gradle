@@ -1,5 +1,9 @@
 apply plugin: 'java'
 apply plugin: 'maven'
+apply plugin: 'propdeps'
+apply plugin: 'propdeps-maven'
+apply plugin: 'propdeps-idea'
+apply plugin: 'propdeps-eclipse'
 
 defaultTasks 'clean', 'install'
 
@@ -15,15 +19,6 @@ repositories {
 configurations {
 	compile.exclude group: 'commons-logging', module: 'commons-logging'
 	compile.exclude group: 'log4j', module: 'log4j'
-
-    // provided scope
-    // http://www.sinking.in/blog/provided-scope-in-gradle/
-    provided {
-        dependencies.all { dep ->
-            configurations.default.exclude group: dep.group, module: dep.name
-        }
-    }
-    compile.extendsFrom provided
 }
 
 dependencies {

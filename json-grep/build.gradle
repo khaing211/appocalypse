@@ -7,7 +7,5 @@ mainClassName = 'com.github.appocalypse.JsonGrep'
 dependencies {
     provided group: 'javax.json', name: 'javax.json-api', version: javaxJsonVersion
 
-    compile project(":jdk-extra")
-
     runtime group: 'org.glassfish', name: 'javax.json', version: glassfishJsonVersion
 }

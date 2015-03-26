@@ -2,9 +2,7 @@ package com.github.appocalypse;
 
 import com.github.appocalypse.jsongrep.JsonPath;
 
-import javax.json.Json;
-import javax.json.JsonReader;
-import javax.json.JsonStructure;
+import javax.json.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
@@ -49,5 +47,13 @@ public class JsonGrep {
                 .source(root)
                 .evaluate()
                 .forEach(System.out::println);
+    }
+
+    public static void println(JsonValue jsonValue) {
+        if (jsonValue instanceof JsonString) {
+            System.out.println(((JsonString)jsonValue).getString());
+        } else {
+            System.out.println(jsonValue.toString());
+        }
     }
 }
