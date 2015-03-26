@@ -326,6 +326,11 @@ public interface JsonPathToken {
         public EofToken(int charIndex) {
             super(charIndex);
         }
+
+        @Override
+        public String getValue() {
+            return "[EOF]";
+        }
     }
 
 }

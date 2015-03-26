@@ -60,6 +60,66 @@ public class JsonPathParser {
     }
 
     private JsonPath openSquareBracket(JsonPath jsonPath) {
+        final JsonPathToken token = lexer.nextToken();
+
+        if (token instanceof JsonPathToken.StringToken) {
+            final JsonPathToken nextToken = lexer.peek();
+            if (nextToken instanceof JsonPathToken.SemiColonToken) {
+                jsonPath = sliceBracket(token, jsonPath);
+            } else {
+                jsonPath = simpleBracket(token, jsonPath);
+            }
+        } else if (token instanceof JsonPathToken.QuoteToken) {
+            final JsonPathToken quoteToken = quote();
+            jsonPath = new PropertyJsonPath(jsonPath, quoteToken.getValue());
+        } else if  (token instanceof JsonPathToken.AsteriskToken) {
+            jsonPath = new AnyJsonPath(jsonPath);
+        } else if (token instanceof JsonPathToken.QuestionToken) {
+            jsonPath = predicateBracket(jsonPath);
+        }
+
+        final JsonPathToken closeSquareBracketToken = lexer.nextToken();
+        if (!(closeSquareBracketToken instanceof JsonPathToken.ClosedSquareBracketToken)) {
+            throw new JsonPathParseException("Expect ] but got " + token.getValue(), token.getCharIndex());
+        }
+
+        return jsonPath;
+    }
+
+    private JsonPathToken quote() {
+        final int index = lexer.index();
+
+        JsonPathToken token = JsonPathToken.string(index, "");
+
+        do {
+            JsonPathToken nextToken = lexer.nextToken();
+            if (!(token instanceof JsonPathToken.QuoteToken)) {
+                if (token instanceof JsonPathToken.EofToken) {
+                    throw new JsonPathParseException("Expect ' but got " + token.getValue(), token.getCharIndex());
+                } else {
+                    token = JsonPathToken.string(index, token.getValue() + nextToken.getValue());
+                }
+            }
+        } while (!(token instanceof JsonPathToken.QuoteToken));
+
+        return token;
+    }
+
+    private JsonPath simpleBracket(JsonPathToken token, JsonPath jsonPath) {
+        try {
+            final int index = Integer.parseInt(token.getValue());
+            return new IndexJsonPath(jsonPath, index);
+        } catch (NumberFormatException ignore) {
+            return new PropertyJsonPath(jsonPath, token.getValue());
+        }
+    }
+
+    private JsonPath sliceBracket(JsonPathToken token, JsonPath jsonPath) {
+        // TODO:
+        return jsonPath;
+    }
+
+    private JsonPath predicateBracket(JsonPath jsonPath) {
         // TODO:
         return jsonPath;
     }

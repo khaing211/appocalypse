@@ -19,7 +19,7 @@ public class PropertyJsonPath implements JsonPath {
         final Stream<JsonValue> source = jsonPath.evaluate();
         return source.flatMap(jsonValue -> {
             if (jsonValue instanceof JsonObject) {
-                JsonObject jsonObject = (JsonObject)jsonValue;
+                final JsonObject jsonObject = (JsonObject)jsonValue;
                 if (jsonObject.containsKey(property)) {
                     return Stream.of(jsonObject.get(property));
                 } else {

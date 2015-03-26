@@ -1,16 +1,19 @@
 package com.github.appocalypse.jsongrep;
 
 import javax.json.JsonArray;
+import javax.json.JsonObject;
 import javax.json.JsonValue;
 import java.util.stream.Stream;
 
 public class IndexJsonPath implements JsonPath {
     final private JsonPath jsonPath;
     final private int index;
+    final private String property;
 
     public IndexJsonPath(JsonPath jsonPath, int index) {
         this.jsonPath = jsonPath;
         this.index = index;
+        this.property = Integer.toString(index);
     }
 
     @Override
@@ -18,11 +21,18 @@ public class IndexJsonPath implements JsonPath {
         final Stream<JsonValue> source = jsonPath.evaluate();
         return source.flatMap(jsonValue -> {
            if (jsonValue instanceof JsonArray) {
-               JsonArray jsonArray = (JsonArray)jsonValue;
+               final JsonArray jsonArray = (JsonArray)jsonValue;
                return Stream.of(jsonArray.get(index));
-           } else {
-               return Stream.empty();
            }
+
+            if (jsonValue instanceof JsonObject) {
+                final JsonObject jsonObject = (JsonObject)jsonValue;
+                if (jsonObject.containsKey(property)) {
+                    return Stream.of(jsonObject.get(property));
+                }
+            }
+
+            return Stream.empty();
         });
     }
 

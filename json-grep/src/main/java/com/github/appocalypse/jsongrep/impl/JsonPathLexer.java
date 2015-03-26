@@ -20,6 +20,27 @@ public class JsonPathLexer {
     }
 
     /**
+     * @return current index
+     */
+    public int index() {
+        return index;
+    }
+
+
+    /**
+     * peek the next token, current index does not change.
+     * This operation has no side effect, you can call as many time as you want.
+     *
+     * @return token
+     */
+    public JsonPathToken peek() {
+        final int currentIndex = index;
+        final JsonPathToken token = nextToken();
+        index = currentIndex;
+        return token;
+    }
+
+    /**
      * Current index changes by next token
      *
      * @return token

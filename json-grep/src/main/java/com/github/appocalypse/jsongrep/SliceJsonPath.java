@@ -27,7 +27,7 @@ public class SliceJsonPath implements JsonPath {
         final Stream<JsonValue> source = jsonPath.evaluate();
         return source.flatMap(jsonValue -> {
             if (jsonValue instanceof JsonArray) {
-                JsonArray jsonArray = (JsonArray) jsonValue;
+                final JsonArray jsonArray = (JsonArray) jsonValue;
                 return StreamSupport.stream(new JsonArraySpliterator(jsonArray, Long.MAX_VALUE, Spliterator.ORDERED), false);
             } else {
                 return Stream.empty();
