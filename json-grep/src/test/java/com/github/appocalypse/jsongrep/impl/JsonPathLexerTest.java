@@ -122,7 +122,12 @@ public class JsonPathLexerTest {
         token = lexer.nextToken();
         assertTrue(token instanceof JsonPathToken.StringToken);
         assertEquals(6, token.getCharIndex());
-        assertEquals("aa ", token.getValue());
+        assertEquals("aa", token.getValue());
+
+        token = lexer.nextToken();
+        assertTrue(token instanceof JsonPathToken.SpaceToken);
+        assertEquals(8, token.getCharIndex());
+        assertEquals(" ", token.getValue());
 
         token = lexer.nextToken();
         assertTrue(token instanceof JsonPathToken.GreaterThanOrEqualToken);
@@ -130,9 +135,14 @@ public class JsonPathLexerTest {
         assertEquals(">=", token.getValue());
 
         token = lexer.nextToken();
-        assertTrue(token instanceof JsonPathToken.StringToken);
+        assertTrue(token instanceof JsonPathToken.SpaceToken);
         assertEquals(11, token.getCharIndex());
-        assertEquals(" 2", token.getValue());
+        assertEquals(" ", token.getValue());
+
+        token = lexer.nextToken();
+        assertTrue(token instanceof JsonPathToken.StringToken);
+        assertEquals(12, token.getCharIndex());
+        assertEquals("2", token.getValue());
 
         token = lexer.nextToken();
         assertTrue(token instanceof JsonPathToken.ClosedRoundBracketToken);

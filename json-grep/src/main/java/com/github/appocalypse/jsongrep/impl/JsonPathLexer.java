@@ -80,9 +80,11 @@ public class JsonPathLexer {
 
         for (int i = index; i < pattern.length(); i++) {
             final char ch = pattern.charAt(i);
-            final boolean special = inArray(ch, SPECIAL_CHARS);
 
-            if (special) {
+            final boolean special = inArray(ch, SPECIAL_CHARS);
+            final boolean considerSpace = spaceSensitive && Character.isSpaceChar(ch);
+
+            if (special || considerSpace) {
                 JsonPathToken ret = null;
 
                 if (i == index) {

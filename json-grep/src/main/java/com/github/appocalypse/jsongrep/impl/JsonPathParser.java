@@ -62,11 +62,7 @@ public class JsonPathParser {
     private JsonPath property(JsonPath jsonPath) {
         final JsonPathToken token = lexer.nextToken();
         if (token instanceof JsonPathToken.StringToken) {
-            if (token.getValue().trim().equals(token.getValue())) {
-                return new PropertyJsonPath(jsonPath, token.getValue());
-            } else {
-                throw new JsonPathParseException("Should not contain space in property: " + token.getValue(), token.getCharIndex());
-            }
+            return new PropertyJsonPath(jsonPath, token.getValue());
         } else if (token instanceof JsonPathToken.AsteriskToken) {
             return new AnyJsonPath(jsonPath);
         }
