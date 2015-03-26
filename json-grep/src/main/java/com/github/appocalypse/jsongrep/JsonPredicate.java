@@ -167,6 +167,28 @@ public interface JsonPredicate {
                 return leftNumber.bigDecimalValue().compareTo(rightNumber.bigDecimalValue());
             }
 
+            if (leftValue.getValueType() == JsonValue.ValueType.NUMBER &&
+                rightValue.getValueType() == JsonValue.ValueType.STRING) {
+
+                try {
+                    final JsonNumber leftNumber = (JsonNumber)leftValue;
+                    final JsonString rightString = (JsonString)rightValue;
+
+                    return leftNumber.bigDecimalValue().compareTo(new BigDecimal(rightString.getString()));
+                } catch (NumberFormatException ignore) {}
+            }
+
+            if (leftValue.getValueType() == JsonValue.ValueType.STRING &&
+                rightValue.getValueType() == JsonValue.ValueType.NUMBER) {
+
+                try {
+                    final JsonString leftString = (JsonString)leftValue;
+                    final JsonNumber rightNumber = (JsonNumber)rightValue;
+
+                    return new BigDecimal(leftString.getString()).compareTo(rightNumber.bigDecimalValue());
+                } catch (NumberFormatException ignore) {}
+            }
+
             if (leftValue.getValueType() == JsonValue.ValueType.ARRAY &&
                 rightValue.getValueType() == JsonValue.ValueType.ARRAY) {
 

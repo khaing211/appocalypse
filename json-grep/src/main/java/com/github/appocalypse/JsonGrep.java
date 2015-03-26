@@ -22,7 +22,7 @@ import java.io.InputStreamReader;
  *                    start = mandatory, inclusive, support negative index
  *                    end = optional, inclusive, default -1 i.e. end of array
  *                    step = optional, positive number, default 1
- *                    example: [0::], [0:], [0::1], [-1::2], [-5:-1:2]
+ *                    example: [0:], [0:3], [0:-1:1], [-1:-1:2], [-5:-1:2]
  * [?()]            = filter
  *
  * Example:

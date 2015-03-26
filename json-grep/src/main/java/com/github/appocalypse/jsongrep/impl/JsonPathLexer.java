@@ -7,16 +7,18 @@ public class JsonPathLexer {
     final private static char[] SPECIAL_CHARS = new char[] { '.', '*', '[', ']', '(', ')', '?', ':', '$', '@', '\'', '<', '=', '>' };
 
     final private String pattern;
+
+    private int rewindIndex;
     private int index;
 
     public JsonPathLexer(String pattern) {
-        this.pattern = pattern;
-        this.index = 0;
+        this(pattern, 0);
     }
 
     public JsonPathLexer(String pattern, int startIndex) {
         this.pattern = pattern;
         this.index = startIndex;
+        this.rewindIndex = startIndex;
     }
 
     /**
@@ -24,6 +26,14 @@ public class JsonPathLexer {
      */
     public int index() {
         return index;
+    }
+
+    /**
+     * rewind() to before last consumed token.
+     * This method can only call once after nextToken()
+     */
+    public void rewind() {
+        this.index = rewindIndex;
     }
 
 
@@ -34,9 +44,14 @@ public class JsonPathLexer {
      * @return token
      */
     public JsonPathToken peek() {
+        final int currentRewindIndex = rewindIndex;
         final int currentIndex = index;
+
         final JsonPathToken token = nextToken();
+
         index = currentIndex;
+        rewindIndex = currentRewindIndex;
+
         return token;
     }
 
@@ -46,6 +61,9 @@ public class JsonPathLexer {
      * @return token
      */
     public JsonPathToken nextToken() {
+        // store the rewind index
+        rewindIndex = index;
+
         if (index >= pattern.length()) {
             return JsonPathToken.eof(index);
         }

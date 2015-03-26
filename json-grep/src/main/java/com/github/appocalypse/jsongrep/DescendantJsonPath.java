@@ -3,10 +3,13 @@ package com.github.appocalypse.jsongrep;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonValue;
+import java.util.LinkedList;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.Stack;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -42,7 +45,7 @@ public class DescendantJsonPath implements JsonPath {
 
         public JsonValueSpliterator(JsonValue jsonValue, long est, int additionalCharacteristics) {
             super(est, additionalCharacteristics);
-            jsonValues.push(jsonValue);
+            push(jsonValue);
         }
 
         @Override
@@ -52,19 +55,33 @@ public class DescendantJsonPath implements JsonPath {
             }
 
             final JsonValue jsonValue = jsonValues.pop();
-            if (jsonValue instanceof JsonObject) {
-                final JsonObject jsonObject = (JsonObject) jsonValue;
-                // this mean the find() in reverse order
-                jsonObject.values().stream().forEach(jsonValues::push);
-            } else if (jsonValue instanceof JsonArray) {
-                final JsonArray jsonArray = (JsonArray) jsonValue;
-                // this mean the find() in reverse order
-                jsonArray.forEach(jsonValues::push);
-            }
+            push(jsonValue);
 
             action.accept(jsonValue);
 
             return true;
+        }
+
+        private void push(JsonValue jsonValue) {
+            if (jsonValue instanceof JsonObject) {
+                final JsonObject jsonObject = (JsonObject) jsonValue;
+
+                // iterate in reverse for JsonObject
+                jsonObject.values()
+                        .stream()
+                        .collect(Collectors.toCollection(LinkedList::new))
+                        .descendingIterator()
+                        .forEachRemaining(jsonValues::push);
+
+            } else if (jsonValue instanceof JsonArray) {
+                final JsonArray jsonArray = (JsonArray) jsonValue;
+
+                // iterate in reverse for JsonArray
+                IntStream.range(0, jsonArray.size())
+                        .map(i -> jsonArray.size() - 1 - i)
+                        .mapToObj(jsonArray::get)
+                        .forEach(jsonValues::push);
+            }
         }
     }
 }

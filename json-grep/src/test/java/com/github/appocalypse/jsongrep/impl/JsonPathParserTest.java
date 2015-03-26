@@ -37,6 +37,51 @@ public class JsonPathParserTest {
         jsonPath.evaluate().forEach(System.out::println);
     }
 
+    @Test
+    public void testParseSliceStartOnly() {
+        final JsonPath jsonPath = JsonPath.path("$[1:]");
+    }
+
+    @Test
+    public void testParseSliceEndOnly() {
+        final JsonPath jsonPath = JsonPath.path("$[1:-3]");
+    }
+
+    @Test
+    public void testParseSliceStepOnly() {
+        final JsonPath jsonPath = JsonPath.path("$[1:-1:1]");
+    }
+
+    @Test
+    public void testParseIndex() {
+        final JsonPath jsonPath = JsonPath.path("$[1]");
+    }
+
+    @Test
+    public void testParseQuote() {
+        final JsonPath jsonPath = JsonPath.path("$['1']");
+    }
+
+    @Test
+    public void testParseSimplePredicate() {
+        final JsonPath jsonPath = JsonPath.path("$[?(1=1)]");
+    }
+
+    @Test
+    public void testParseCurrentPredicate() {
+        final JsonPath jsonPath = JsonPath.path("$[?(@[0]=1)]");
+    }
+
+    @Test
+    public void testParseCurrentQuotePredicate() {
+        final JsonPath jsonPath = JsonPath.path("$[?(@['a']=1)]");
+    }
+
+    @Test
+    public void testParseRootQuotePredicate() {
+        final JsonPath jsonPath = JsonPath.path("$[?(@['a']=$.aa)]");
+    }
+
     @Test(expected = JsonPathParseException.class)
     public void testBadProperty() {
         JsonPath.path("$.aaa ");
@@ -46,4 +91,40 @@ public class JsonPathParserTest {
     public void testBadDescendant() {
         JsonPath.path("$..");
     }
+
+    @Test(expected = JsonPathParseException.class)
+    public void testBadUnclosedBracket() {
+        JsonPath.path("$[");
+    }
+
+    @Test(expected = JsonPathParseException.class)
+    public void testBadUnclosedBracket2() {
+        JsonPath.path("$[aaa");
+    }
+
+    @Test(expected = JsonPathParseException.class)
+    public void testBadUnclosedBracket3() {
+        JsonPath.path("$[1");
+    }
+
+    @Test(expected = JsonPathParseException.class)
+    public void testBadUnclosedBracket4() {
+        JsonPath.path("$['1'");
+    }
+
+    @Test(expected = JsonPathParseException.class)
+    public void testBadUnclosedQuote() {
+        JsonPath.path("$['1");
+    }
+
+    @Test(expected = JsonPathParseException.class)
+    public void testBadSlice() {
+        JsonPath.path("$[1::]");
+    }
+
+    @Test(expected = JsonPathParseException.class)
+    public void testBadSlice2() {
+        JsonPath.path("$[1:1:]");
+    }
+
 }

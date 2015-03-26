@@ -21,6 +21,10 @@ public class JsonPathParser {
     }
 
     private JsonPath root() {
+        return root(JsonPathToken.EofToken.class);
+    }
+
+    private <T extends JsonPathToken> JsonPath root(Class<T> expectedTerminateToken) {
         JsonPath jsonPath = new SourceJsonPath();
 
         while (true) {
@@ -32,7 +36,7 @@ public class JsonPathParser {
                 jsonPath = descendant(jsonPath);
             } else if (token instanceof JsonPathToken.OpenSquareBracketToken) {
                 jsonPath = openSquareBracket(jsonPath);
-            } else if (token instanceof JsonPathToken.EofToken) {
+            } else if (expectedTerminateToken.isAssignableFrom(token.getClass())) {
                 return jsonPath;
             } else {
                 throw new JsonPathParseException("Unexpected token " + token.getValue(), token.getCharIndex());
@@ -90,17 +94,16 @@ public class JsonPathParser {
         final int index = lexer.index();
 
         JsonPathToken token = JsonPathToken.string(index, "");
-
+        JsonPathToken nextToken = null;
         do {
-            JsonPathToken nextToken = lexer.nextToken();
-            if (!(token instanceof JsonPathToken.QuoteToken)) {
-                if (token instanceof JsonPathToken.EofToken) {
-                    throw new JsonPathParseException("Expect ' but got " + token.getValue(), token.getCharIndex());
-                } else {
-                    token = JsonPathToken.string(index, token.getValue() + nextToken.getValue());
-                }
+            nextToken = lexer.nextToken();
+
+            if (nextToken instanceof JsonPathToken.EofToken) {
+                throw new JsonPathParseException("Expect ' but got " + token.getValue(), token.getCharIndex());
+            } else if (!(nextToken instanceof JsonPathToken.QuoteToken)) {
+                token = JsonPathToken.string(index, token.getValue() + nextToken.getValue());
             }
-        } while (!(token instanceof JsonPathToken.QuoteToken));
+        } while (!(nextToken instanceof JsonPathToken.QuoteToken));
 
         return token;
     }
@@ -115,12 +118,102 @@ public class JsonPathParser {
     }
 
     private JsonPath sliceBracket(JsonPathToken token, JsonPath jsonPath) {
-        // TODO:
-        return jsonPath;
+        try {
+            final int start = Integer.parseInt(token.getValue());
+
+            // consume first semi-colon
+            lexer.nextToken();
+
+            JsonPathToken lookAheadToken = lexer.peek();
+            if (lookAheadToken instanceof JsonPathToken.ClosedSquareBracketToken) {
+                return new SliceJsonPath(jsonPath, start, -1, 1);
+            }
+
+            // end
+            token = lexer.nextToken();
+            final int end = Integer.parseInt(token.getValue());
+
+            lookAheadToken = lexer.peek();
+            if (lookAheadToken instanceof JsonPathToken.ClosedSquareBracketToken) {
+                return new SliceJsonPath(jsonPath, start, end, 1);
+            }
+
+            if (!(lookAheadToken instanceof JsonPathToken.SemiColonToken)) {
+                throw new JsonPathParseException("Expect : but got " + lookAheadToken.getValue(), lookAheadToken.getCharIndex());
+            }
+
+            // consume second semi-colon
+            lexer.nextToken();
+
+            token = lexer.nextToken();
+            final int step = Integer.parseInt(token.getValue());
+
+            return new SliceJsonPath(jsonPath, start, end, step);
+        } catch (NumberFormatException e) {
+            throw new JsonPathParseException("Expect a number but got " + token.getValue(), token.getCharIndex());
+        }
     }
 
     private JsonPath predicateBracket(JsonPath jsonPath) {
-        // TODO:
-        return jsonPath;
+        JsonPathToken token = null;
+
+        JsonPredicate leftPredicate, rightPredicate;
+
+        token = lexer.nextToken();
+        if (!(token instanceof JsonPathToken.OpenRoundBracketToken)) {
+            throw new JsonPathParseException("Expect ( but got " + token.getValue(), token.getCharIndex());
+        }
+
+        // left predicate
+        token = lexer.nextToken();
+        if (token instanceof JsonPathToken.AtToken) {
+            leftPredicate = JsonPredicate.current(root(JsonPathToken.ComparisonToken.class));
+            lexer.rewind();
+        } else if (token instanceof JsonPathToken.DollarSignToken) {
+            leftPredicate = JsonPredicate.root(root(JsonPathToken.ComparisonToken.class));
+            lexer.rewind();
+        } else if (token instanceof JsonPathToken.StringToken) {
+            leftPredicate = JsonPredicate.constant(token.getValue());
+        } else {
+            throw new JsonPathParseException("Expect $,@,or string but got " + token.getValue(), token.getCharIndex());
+        }
+
+        final JsonPathToken comparisonToken = lexer.nextToken();
+        if (!(comparisonToken instanceof JsonPathToken.ComparisonToken)) {
+            throw new JsonPathParseException("Expect comparison operator but got " + comparisonToken.getValue(), comparisonToken.getCharIndex());
+        }
+
+        // right predicate
+        token = lexer.nextToken();
+        if (token instanceof JsonPathToken.AtToken) {
+            rightPredicate = JsonPredicate.current(root(JsonPathToken.ClosedRoundBracketToken.class));
+            lexer.rewind();
+        } else if (token instanceof JsonPathToken.DollarSignToken) {
+            rightPredicate = JsonPredicate.root(root(JsonPathToken.ClosedRoundBracketToken.class));
+            lexer.rewind();
+        } else if (token instanceof JsonPathToken.StringToken) {
+            rightPredicate = JsonPredicate.constant(token.getValue());
+        } else {
+            throw new JsonPathParseException("Expect $,@,or string but got " + token.getValue(), token.getCharIndex());
+        }
+
+        token = lexer.nextToken();
+        if (!(token instanceof JsonPathToken.ClosedRoundBracketToken)) {
+            throw new JsonPathParseException("Expect ) but got " + token.getValue(), token.getCharIndex());
+        }
+
+        if (comparisonToken instanceof JsonPathToken.EqualToken) {
+            return new PredicateJsonPath(jsonPath, leftPredicate.eq(rightPredicate));
+        } else if (comparisonToken instanceof JsonPathToken.LessThanToken) {
+            return new PredicateJsonPath(jsonPath, leftPredicate.lt(rightPredicate));
+        } else if (comparisonToken instanceof JsonPathToken.LessThanOrEqualToken) {
+            return new PredicateJsonPath(jsonPath, leftPredicate.lte(rightPredicate));
+        } else if (comparisonToken instanceof JsonPathToken.GreaterThanToken) {
+            return new PredicateJsonPath(jsonPath, leftPredicate.gt(rightPredicate));
+        } else if (comparisonToken instanceof JsonPathToken.GreaterThanOrEqualToken) {
+            return new PredicateJsonPath(jsonPath, leftPredicate.gte(rightPredicate));
+        } else {
+            throw new JsonPathParseException("Unexpected comparison operator " + comparisonToken.getValue(), comparisonToken.getCharIndex());
+        }
     }
 }
