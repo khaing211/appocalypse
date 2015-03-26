@@ -4,6 +4,9 @@ import com.github.appocalypse.jsongrep.*;
 
 import javax.json.Json;
 import javax.json.stream.JsonParsingException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class JsonPathParser {
     final private JsonPathLexer lexer;
@@ -21,10 +24,18 @@ public class JsonPathParser {
     }
 
     private JsonPath root() {
-        return root(JsonPathToken.EofToken.class);
+        return root(Arrays.asList(JsonPathToken.EofToken.class));
     }
 
-    private <T extends JsonPathToken> JsonPath root(Class<T> expectedTerminateToken) {
+    private static boolean isOneOfClasses(Object object, List<Class> classes) {
+        return classes
+                .stream()
+                .filter(i -> i.isAssignableFrom(object.getClass()))
+                .findAny()
+                .isPresent();
+    }
+
+    private JsonPath root(List<Class> expectedTerminateTokenClasses) {
         JsonPath jsonPath = new SourceJsonPath();
 
         while (true) {
@@ -36,7 +47,7 @@ public class JsonPathParser {
                 jsonPath = descendant(jsonPath);
             } else if (token instanceof JsonPathToken.OpenSquareBracketToken) {
                 jsonPath = openSquareBracket(jsonPath);
-            } else if (expectedTerminateToken.isAssignableFrom(token.getClass())) {
+            } else if (isOneOfClasses(token, expectedTerminateTokenClasses)) {
                 return jsonPath;
             } else {
                 throw new JsonPathParseException("Unexpected token " + token.getValue(), token.getCharIndex());
@@ -92,6 +103,7 @@ public class JsonPathParser {
 
     private JsonPathToken quote() {
         final int index = lexer.index();
+        lexer.spaceSensitive(false);
 
         JsonPathToken token = JsonPathToken.string(index, "");
         JsonPathToken nextToken = null;
@@ -105,6 +117,7 @@ public class JsonPathParser {
             }
         } while (!(nextToken instanceof JsonPathToken.QuoteToken));
 
+        lexer.spaceSensitive(true);
         return token;
     }
 
@@ -167,10 +180,10 @@ public class JsonPathParser {
         // left predicate
         token = lexer.nextToken();
         if (token instanceof JsonPathToken.AtToken) {
-            leftPredicate = JsonPredicate.current(root(JsonPathToken.ComparisonToken.class));
+            leftPredicate = JsonPredicate.current(root(Arrays.asList(JsonPathToken.SpaceToken.class, JsonPathToken.ComparisonToken.class)));
             lexer.rewind();
         } else if (token instanceof JsonPathToken.DollarSignToken) {
-            leftPredicate = JsonPredicate.root(root(JsonPathToken.ComparisonToken.class));
+            leftPredicate = JsonPredicate.current(root(Arrays.asList(JsonPathToken.SpaceToken.class, JsonPathToken.ComparisonToken.class)));
             lexer.rewind();
         } else if (token instanceof JsonPathToken.StringToken) {
             leftPredicate = JsonPredicate.constant(token.getValue());
@@ -178,18 +191,28 @@ public class JsonPathParser {
             throw new JsonPathParseException("Expect $,@,or string but got " + token.getValue(), token.getCharIndex());
         }
 
-        final JsonPathToken comparisonToken = lexer.nextToken();
+        // comparison token
+        JsonPathToken comparisonToken = lexer.nextToken();
+        if (comparisonToken instanceof JsonPathToken.SpaceToken) {
+            comparisonToken = lexer.nextToken();
+        }
+
         if (!(comparisonToken instanceof JsonPathToken.ComparisonToken)) {
             throw new JsonPathParseException("Expect comparison operator but got " + comparisonToken.getValue(), comparisonToken.getCharIndex());
         }
 
         // right predicate
         token = lexer.nextToken();
+        if (token instanceof JsonPathToken.SpaceToken) {
+            token = lexer.nextToken();
+        }
+
+
         if (token instanceof JsonPathToken.AtToken) {
-            rightPredicate = JsonPredicate.current(root(JsonPathToken.ClosedRoundBracketToken.class));
+            rightPredicate = JsonPredicate.current(root(Arrays.asList(JsonPathToken.ClosedRoundBracketToken.class)));
             lexer.rewind();
         } else if (token instanceof JsonPathToken.DollarSignToken) {
-            rightPredicate = JsonPredicate.root(root(JsonPathToken.ClosedRoundBracketToken.class));
+            rightPredicate = JsonPredicate.root(root(Arrays.asList(JsonPathToken.ClosedRoundBracketToken.class)));
             lexer.rewind();
         } else if (token instanceof JsonPathToken.StringToken) {
             rightPredicate = JsonPredicate.constant(token.getValue());

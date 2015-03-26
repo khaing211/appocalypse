@@ -68,8 +68,28 @@ public class JsonPathParserTest {
     }
 
     @Test
+    public void testParseSimplePredicateWithSpace() {
+        final JsonPath jsonPath = JsonPath.path("$[?(1 =1)]");
+    }
+
+    @Test
+    public void testParseSimplePredicateWithSpace1() {
+        final JsonPath jsonPath = JsonPath.path("$[?(1 = 1)]");
+    }
+
+    @Test
     public void testParseCurrentPredicate() {
         final JsonPath jsonPath = JsonPath.path("$[?(@[0]=1)]");
+    }
+
+    @Test
+    public void testParseCurrentPredicateWithSpace() {
+        final JsonPath jsonPath = JsonPath.path("$[?(@[0] =1)]");
+    }
+
+    @Test
+    public void testParseCurrentPredicateWithSpace1() {
+        final JsonPath jsonPath = JsonPath.path("$[?(@[0] = 1)]");
     }
 
     @Test
@@ -78,8 +98,33 @@ public class JsonPathParserTest {
     }
 
     @Test
+    public void testParseCurrentQuotePredicateWithSpace() {
+        final JsonPath jsonPath = JsonPath.path("$[?(@['a'] =1)]");
+    }
+
+    @Test
+    public void testParseCurrentQuotePredicateWithSpace2() {
+        final JsonPath jsonPath = JsonPath.path("$[?(@['a'] = 1)]");
+    }
+
+    @Test
     public void testParseRootQuotePredicate() {
         final JsonPath jsonPath = JsonPath.path("$[?(@['a']=$.aa)]");
+    }
+
+    @Test
+    public void testParseRootQuotePredicateWithSpace() {
+        final JsonPath jsonPath = JsonPath.path("$[?(@['a'] =$.aa)]");
+    }
+
+    @Test
+    public void testParseRootQuotePredicateWithSpace1() {
+        final JsonPath jsonPath = JsonPath.path("$[?(@['a'] = $.aa)]");
+    }
+
+    @Test
+    public void testParseRootQuoteGreaterThanOrEqualPredicateWithSpace1() {
+        final JsonPath jsonPath = JsonPath.path("$[?(@['a'] >= $.aa)]");
     }
 
     @Test(expected = JsonPathParseException.class)

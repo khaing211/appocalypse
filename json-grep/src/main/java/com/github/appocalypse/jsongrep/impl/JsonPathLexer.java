@@ -8,6 +8,8 @@ public class JsonPathLexer {
 
     final private String pattern;
 
+    private boolean spaceSensitive = true;
+
     private int rewindIndex;
     private int index;
 
@@ -19,6 +21,10 @@ public class JsonPathLexer {
         this.pattern = pattern;
         this.index = startIndex;
         this.rewindIndex = startIndex;
+    }
+
+    public void spaceSensitive(boolean spaceSensitive) {
+        this.spaceSensitive = spaceSensitive;
     }
 
     /**
@@ -66,6 +72,10 @@ public class JsonPathLexer {
 
         if (index >= pattern.length()) {
             return JsonPathToken.eof(index);
+        }
+
+        if (spaceSensitive && Character.isSpaceChar(pattern.charAt(index))) {
+            return space();
         }
 
         for (int i = index; i < pattern.length(); i++) {
@@ -164,6 +174,21 @@ public class JsonPathLexer {
         JsonPathToken ret = JsonPathToken.string(index, pattern.substring(index));
         index = pattern.length();
         return ret;
+    }
+
+    private JsonPathToken space() {
+        int i = index+1;
+
+        for (; i < pattern.length(); i++) {
+            final char ch = pattern.charAt(i);
+            if (!Character.isSpaceChar(ch)) {
+                break;
+            }
+        }
+
+        final JsonPathToken token = new JsonPathToken.SpaceToken(index, pattern.substring(index, i));
+        index = i;
+        return token;
     }
 
     private static boolean inArray(char needle, char[] haystack) {

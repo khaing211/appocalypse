@@ -333,4 +333,23 @@ public interface JsonPathToken {
         }
     }
 
+    final public static class SpaceToken implements JsonPathToken {
+        final private String value;
+        final private int charIndex;
+
+        public SpaceToken(int charIndex, String value) {
+            this.charIndex = charIndex;
+            this.value = value;
+        }
+
+        @Override
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public int getCharIndex() {
+            return charIndex;
+        }
+    }
 }
