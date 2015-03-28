@@ -2,14 +2,12 @@ package com.github.appocalypse.jsongrep;
 
 import org.junit.Test;
 
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.json.JsonValue;
+import javax.json.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class DescendantJsonPathTest {
     @Test
@@ -37,7 +35,21 @@ public class DescendantJsonPathTest {
 
         assertEquals(8, results.size());
 
-        results.stream().forEach(System.out::println);
+        JsonTestHelper.assertJsonNumber(3, results.get(0));
+
+        JsonTestHelper.assertJsonString("string", results.get(1));
+
+        JsonTestHelper.assertJsonTrue(results.get(2));
+
+        JsonTestHelper.assertJsonNull(results.get(3));
+
+        JsonTestHelper.assertJsonArray(results.get(4));
+
+        JsonTestHelper.assertJsonString("inner", results.get(5));
+
+        JsonTestHelper.assertJsonObject(results.get(6));
+
+        JsonTestHelper.assertJsonString("inner", results.get(7));
     }
 
     @Test
@@ -64,5 +76,21 @@ public class DescendantJsonPathTest {
                 .collect(Collectors.toList());
 
         assertEquals(8, results.size());
+
+        JsonTestHelper.assertJsonNumber(3, results.get(0));
+
+        JsonTestHelper.assertJsonString("string", results.get(1));
+
+        JsonTestHelper.assertJsonTrue(results.get(2));
+
+        JsonTestHelper.assertJsonNull(results.get(3));
+
+        JsonTestHelper.assertJsonArray(results.get(4));
+
+        JsonTestHelper.assertJsonString("inner", results.get(5));
+
+        JsonTestHelper.assertJsonObject(results.get(6));
+
+        JsonTestHelper.assertJsonString("inner", results.get(7));
     }
 }
