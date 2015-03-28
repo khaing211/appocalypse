@@ -5,6 +5,8 @@ import com.github.appocalypse.jsongrep.JsonPath;
 import javax.json.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 /**
  * Implement json grep by passing in json path
@@ -43,10 +45,18 @@ public class JsonGrep {
 
         final JsonStructure root = jsonReader.read();
 
-        JsonPath.path(pattern)
+        final LinkedList<JsonValue> results = JsonPath.path(pattern)
                 .source(root)
                 .evaluate()
-                .forEach(System.out::println);
+                .collect(Collectors.toCollection(LinkedList::new));
+
+        final boolean isAllObject = results.stream().allMatch(it -> it.getValueType() == JsonValue.ValueType.OBJECT);
+
+        if (isAllObject) {
+            printCsv(results);
+        } else {
+            results.stream().forEach(JsonGrep::println);
+        }
     }
 
     public static void println(JsonValue jsonValue) {
@@ -55,5 +65,12 @@ public class JsonGrep {
         } else {
             System.out.println(jsonValue.toString());
         }
+    }
+
+    /**
+     * Print JsonObject as csv, it does not handle inner object or inner array
+     */
+    public static void printCsv(LinkedList<JsonValue> results) {
+        // TODO:
     }
 }
