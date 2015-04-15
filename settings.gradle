@@ -13,4 +13,4 @@ include 'jdk-extra'
 include 'optionzero'
 include 'inferno'
 include 'json-grep'
-
+include 'sudoku-java-solver'
