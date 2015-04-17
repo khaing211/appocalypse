@@ -20,34 +20,29 @@ public class SudokuSolver {
             if (r == -1 || c == -1) break;
             if (count == 0) {
                 System.out.println("Impossible to solve, potential candidate lists");
-                board.printUnfillNumberPossible();
+                board.printUnfilledCellPossible();
                 break;
             }
 
+            // easy case: eliminate cell with 1 possible
             final int[] possibles = board.getPossibles(r, c);
             if (count == 1) {
                 board.setNumber(r, c, possibles[0]);
-            } else {
-                if (board.isFilled(3, 8)) {
-                    break;
-                }
-
-                if (board.isFilled(6, 8)) {
-                    break;
-                }
-
-                if (board.isFilled(8, 8)) {
-                    break;
-                }
-
-                board.setNumber(3, 8, 9);
-                board.setNumber(6, 8, 8);
-                board.setNumber(8, 8, 4);
-
-                //break;
+                continue;
             }
+
+            // medium case: eliminate cell by set of 1 possible among cells within big cell
+            final int[] result = board.getBigCellHeuristic();
+            if (result[0] != -1 && result[1] != -1 && result[2] != 0) {
+                board.setNumber(result[0], result[1], result[2]);
+                continue;
+            }
+
+            System.out.println("Impossible to solve, potential candidate lists");
+            board.printUnfilledCellPossible();
+            break;
         }
-        board.printUnfillNumberPossible();
+
         System.out.println("Final board");
         board.printBoard();
 
@@ -75,7 +70,9 @@ public class SudokuSolver {
     }
 
     public static void main(String[] args) {
-        solve(initialize(new Scanner(ClassLoader.getSystemResourceAsStream("easy_0.txt"))));
+        //solve(initialize(new Scanner(ClassLoader.getSystemResourceAsStream("easy_0.txt"))));
+        //solve(initialize(new Scanner(ClassLoader.getSystemResourceAsStream("medium_0.txt"))));
+        solve(initialize(new Scanner(ClassLoader.getSystemResourceAsStream("hard_0.txt"))));
 
         //solve(initialize(new Scanner(System.in)));
     }
