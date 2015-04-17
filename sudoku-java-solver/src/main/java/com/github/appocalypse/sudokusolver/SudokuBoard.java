@@ -35,7 +35,7 @@ public class SudokuBoard {
         isValidIndex(r, c);
         isValidNumber(n);
 
-        if (board[r][c] == 0 && possible[r][c][n]) {
+        if (board[r][c] == 0 && possible[r][c][n-1]) {
             board[r][c] = n;
             update(r, c, n);
         } else if (board[r][c] == n) {
@@ -51,19 +51,24 @@ public class SudokuBoard {
         return possible[r][c][n-1];
     }
 
-    public int[] getLeastPossibleUnsolvedCell() {
+    public boolean isFilled(int r, int c) {
+        isValidIndex(r, c);
+        return board[r][c] != 0;
+    }
+
+    public int[] getLeastPossibleUnfilledCell() {
         final int[] ret = new int[3];
         ret[0] = -1;
         ret[1] = -1;
         ret[2] = 9;
 
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                if (board[i][j] == 0) {
-                    final int curPossibleCount = countPossibles(i, j);
+        for (int r = 0; r < 9; r++) {
+            for (int c = 0; c < 9; c++) {
+                if (!isFilled(r, c)) {
+                    final int curPossibleCount = countPossibles(r, c);
                     if (ret[2] > curPossibleCount) {
-                        ret[0] = i;
-                        ret[1] = j;
+                        ret[0] = r;
+                        ret[1] = c;
                         ret[2] = curPossibleCount;
                     }
                 }
@@ -152,6 +157,16 @@ public class SudokuBoard {
         IntStream.range(0, 9)
                 .forEachOrdered(r -> IntStream.range(0, 9)
                         .forEachOrdered(c -> printNumberPossible(r, c)));
+    }
+
+    public void printUnfillNumberPossible() {
+        IntStream.range(0, 9)
+                .forEachOrdered(r -> IntStream.range(0, 9)
+                        .forEachOrdered(c -> {
+                            if (!isFilled(r, c)) {
+                                printNumberPossible(r, c);
+                            }
+                        }));
     }
 
     public void printNumberPossible(int r, int c) {
