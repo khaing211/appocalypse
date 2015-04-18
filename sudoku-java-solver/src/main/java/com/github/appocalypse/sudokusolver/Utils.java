@@ -1,6 +1,7 @@
 package com.github.appocalypse.sudokusolver;
 
 public interface Utils {
+    short ALL = (1<<9)-1;
 
     static void isValidIndex(int r, int c) {
         if (0 > r || r >= 9) {
@@ -16,6 +17,18 @@ public interface Utils {
         if (n <= 0 || n > 9) {
             throw new IllegalArgumentException("n value cannot be less than or equal 0 or greater than 9");
         }
+    }
+
+    static boolean isPossible(short[][] possible, int r, int c, int n) {
+        Utils.isValidIndex(r, c);
+        Utils.isValidNumber(n);
+        final short mask = (short)(1<<(n-1));
+        return (possible[r][c] & mask) == mask;
+    }
+
+    static void unsetPossible(short[][] possible, int r, int c, int n) {
+        final short mask = (short)((~(1<<(n-1))) & ALL);
+        possible[r][c] &= mask;
     }
 
     /**

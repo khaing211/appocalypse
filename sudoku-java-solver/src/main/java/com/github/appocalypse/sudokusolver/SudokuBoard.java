@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.stream.IntStream;
 
 public class SudokuBoard {
-    private static final short ALL = (1<<9)-1;
     private static final int MAX_NUM_UNSOLVED_CELL = 81;
 
     private final short[][] possible = new short[9][9];
@@ -24,7 +23,7 @@ public class SudokuBoard {
     public SudokuBoard() {
         this.numUnsolvedCell = MAX_NUM_UNSOLVED_CELL;
         Arrays.setAll(possible, r -> {
-            Arrays.fill(possible[r], ALL);
+            Arrays.fill(possible[r], Utils.ALL);
             return possible[r];
         });
     }
@@ -33,7 +32,16 @@ public class SudokuBoard {
         return numUnsolvedCell;
     }
 
-    public void setNumber( int r, int c, int n) {
+    /**
+     * @return copied instance of possible masks
+     */
+    public short[][] getCopyPossible() {
+        final short[][] copyPossible = new short[9][9];
+        Arrays.setAll(copyPossible, r -> possible[r]);
+        return copyPossible;
+    }
+
+    public void setNumber(int r, int c, int n) {
         Utils.isValidIndex(r, c);
         Utils.isValidNumber(n);
 
@@ -49,10 +57,7 @@ public class SudokuBoard {
     }
 
     public boolean isPossible(int r, int c, int n) {
-        Utils.isValidIndex(r, c);
-        Utils.isValidNumber(n);
-        final short mask = (short)(1<<(n-1));
-        return (possible[r][c] & mask) == mask;
+        return Utils.isPossible(possible, r, c, n);
     }
 
     public boolean isFilled(int r, int c) {
@@ -63,15 +68,15 @@ public class SudokuBoard {
     private void update(final int r, final int c, final int n) {
         for (int i = 0; i < 9; i++) {
             if (i != c) {
-                unsetPossible(r, i, n);
+                Utils.unsetPossible(possible, r, i, n);
             }
 
             if (i != r) {
-                unsetPossible(i, c, n);
+                Utils.unsetPossible(possible, i, c, n);
             }
 
             if (i != n-1) {
-                unsetPossible(r, c, i+1);
+                Utils.unsetPossible(possible, r, c, i + 1);
             }
         }
 
@@ -82,15 +87,10 @@ public class SudokuBoard {
                 final int curR = baseR + i;
                 final int curC = baseC + j;
                 if (!(curR == r && curC == c)) {
-                    unsetPossible(curR, curC, n);
+                    Utils.unsetPossible(possible, curR, curC, n);
                 }
             }
         }
-    }
-
-    private void unsetPossible(int r, int c, int n) {
-        final short mask = (short)((~(1<<(n-1))) & ALL);
-        possible[r][c] &= mask;
     }
 
     public short getPossibleMask(int r, int c) {
