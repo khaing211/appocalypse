@@ -8,14 +8,19 @@ import java.util.Scanner;
 
 public class SudokuSolver {
 
+    public static SudokuSolveStrategy[] getStrategies() {
+        final SudokuSolveStrategy[] strategies = new SudokuSolveStrategy[2];
+        strategies[0] = new NakedSingleSolveStrategy();
+        strategies[1] = new HiddenSingleSolveStragety();
+        return strategies;
+    }
+
     /**
      * @param board to be solve
      * @return true if the board has been solved. false otherwise
      */
     public static boolean solve(final SudokuBoard board) {
-        final SudokuSolveStrategy[] strategies = new SudokuSolveStrategy[2];
-        strategies[0] = new NakedSingleSolveStrategy();
-        strategies[1] = new HiddenSingleSolveStragety();
+        final SudokuSolveStrategy[] strategies = getStrategies();
 
         int curNumUnsolvedCell, postSolveNumUnsolvedCell;
 
