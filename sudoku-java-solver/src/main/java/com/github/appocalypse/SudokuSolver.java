@@ -87,7 +87,7 @@ public class SudokuSolver {
     public static void main(String[] args) {
         mainSolve(initialize(new Scanner(ClassLoader.getSystemResourceAsStream("easy_0.txt"))));
         mainSolve(initialize(new Scanner(ClassLoader.getSystemResourceAsStream("medium_0.txt"))));
-        //mainSolve(initialize(new Scanner(ClassLoader.getSystemResourceAsStream("hard_0.txt"))));
+        mainSolve(initialize(new Scanner(ClassLoader.getSystemResourceAsStream("hard_0.txt"))));
 
         //mainSolve(initialize(new Scanner(System.in)));
     }

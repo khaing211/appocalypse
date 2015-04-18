@@ -24,6 +24,9 @@ public interface Utils {
      * http://en.wikipedia.org/wiki/Hamming_weight
      */
     static int popcount16(int bits) {
+        // fast check
+        if (bits == 0) return 0;
+
         final int m1  = 0x5555; //binary: 0101...
         final int m2  = 0x3333; //binary: 00110011..
         final int m4  = 0x0f0f; //binary:  4 zeros,  4 ones ...

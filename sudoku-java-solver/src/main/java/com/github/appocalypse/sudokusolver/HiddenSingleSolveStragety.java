@@ -4,7 +4,7 @@ import java.util.Optional;
 
 /**
  * HiddenSingle is to eliminate cells that has a possible candidate X that can't go anywhere else
- * in either row, column or box i.e. it must go here in the cell
+ * in (exclusive) either row, column or box i.e. it must go here in the cell
  */
 public class HiddenSingleSolveStragety implements SudokuSolveStrategy {
 
@@ -22,16 +22,23 @@ public class HiddenSingleSolveStragety implements SudokuSolveStrategy {
                         final int c = bigC * 3 + smallC;
 
                         if (!board.isFilled(r, c)) {
-                            short currentDifference = board.getPossibleMask(r, c);
-                            currentDifference = checkInBox(board, r, c, currentDifference, bigR, bigC);
+                            final short boxDifference = checkInBox(board, r, c, bigR, bigC);
 
-                            // TODO: check row and column
+                            // hidden single in box
+                            if (Utils.popcount16(boxDifference) == 1) {
+                                return Optional.of(new SudokuStrategyResult(r, c, Integer.numberOfTrailingZeros(boxDifference) + 1));
+                            }
 
-                            if (currentDifference != 0) {
-                                final int count = Utils.popcount16(currentDifference);
-                                if (count == 1) {
-                                    return Optional.of(new SudokuStrategyResult(r, c, Integer.numberOfTrailingZeros(currentDifference) + 1));
-                                }
+                            // hidden single in row
+                            final short rowDifference = checkInRow(board, r, c);
+                            if (Utils.popcount16(rowDifference) == 1) {
+                                return Optional.of(new SudokuStrategyResult(r, c, Integer.numberOfTrailingZeros(rowDifference) + 1));
+                            }
+
+                            // hidden single in column
+                            final short colDifference = checkInColumn(board, r, c);
+                            if (Utils.popcount16(colDifference) == 1) {
+                                return Optional.of(new SudokuStrategyResult(r, c, Integer.numberOfTrailingZeros(colDifference) + 1));
                             }
                         }
                     }
@@ -42,7 +49,9 @@ public class HiddenSingleSolveStragety implements SudokuSolveStrategy {
         return Optional.empty();
     }
 
-    private short checkInBox(SudokuBoard board, int r, int c, short currentDifference, int bigR, int bigC) {
+    private short checkInBox(SudokuBoard board, int r, int c, int bigR, int bigC) {
+        short currentDifference = board.getPossibleMask(r, c);
+
         // compute against other cells in box
         for (int otherR = 0; otherR < 3; otherR++) {
             for (int otherC = 0; otherC < 3; otherC++) {
@@ -57,6 +66,32 @@ public class HiddenSingleSolveStragety implements SudokuSolveStrategy {
                 if (currentDifference == 0) {
                     return currentDifference;
                 }
+            }
+        }
+
+        return currentDifference;
+    }
+
+    private short checkInRow(SudokuBoard board, int r, int c) {
+        short currentDifference = board.getPossibleMask(r, c);
+
+        for (int i = 0; i < 9; i++) {
+            // check in row
+            if (i != c && !board.isFilled(r, i)) {
+                currentDifference = Utils.difference(currentDifference, board.getPossibleMask(r, i));
+            }
+        }
+
+        return currentDifference;
+    }
+
+    private short checkInColumn(SudokuBoard board, int r, int c) {
+        short currentDifference = board.getPossibleMask(r, c);
+
+        for (int i = 0; i < 9; i++) {
+            // check in column
+            if (i != r && !board.isFilled(i, c)) {
+                currentDifference = Utils.difference(currentDifference, board.getPossibleMask(i, c));
             }
         }
 
