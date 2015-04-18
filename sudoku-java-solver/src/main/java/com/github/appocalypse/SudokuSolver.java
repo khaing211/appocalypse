@@ -1,53 +1,47 @@
 package com.github.appocalypse;
 
-import com.github.appocalypse.sudokusolver.SudokuBoard;
+import com.github.appocalypse.sudokusolver.*;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class SudokuSolver {
 
-    public static void solve(final SudokuBoard board) {
-        System.out.println("Initial board");
-        board.printBoard();
+    /**
+     * @param board to be solve
+     * @return true if the board has been solved. false otherwise
+     */
+    public static boolean solve(final SudokuBoard board) {
+        final SudokuSolveStrategy[] strategies = new SudokuSolveStrategy[2];
+        strategies[0] = new NakedSingleSolveStrategy();
+        strategies[1] = new HiddenSingleSolveStragety();
 
-        while (true) {
-            final int[] cell = board.getLeastPossibleUnfilledCell();
-            final int r = cell[0];
-            final int c = cell[1];
-            final int count = cell[2];
+        int curNumUnsolvedCell, postSolveNumUnsolvedCell;
 
-            if (r == -1 || c == -1) break;
-            if (count == 0) {
-                System.out.println("Impossible to solve, potential candidate lists");
-                board.printUnfilledCellPossible();
-                break;
+        while ((curNumUnsolvedCell = board.getNumUnsolvedCell()) != 0) {
+
+            for (SudokuSolveStrategy strategy : strategies) {
+                final Optional<SudokuStrategyResult> result = strategy.solve(board);
+                if (result.isPresent()) {
+                    result.get().apply(board);
+                    break;
+                }
             }
 
-            // easy case: eliminate cell with 1 possible
-            final int[] possibles = board.getPossibles(r, c);
-            if (count == 1) {
-                board.setNumber(r, c, possibles[0]);
-                continue;
+            postSolveNumUnsolvedCell = board.getNumUnsolvedCell();
+            if (postSolveNumUnsolvedCell == curNumUnsolvedCell) {
+                return false;
             }
-
-            // medium case: eliminate cell by set of 1 possible among cells within big cell
-            final int[] result = board.getBigCellHeuristic();
-            if (result[0] != -1 && result[1] != -1 && result[2] != 0) {
-                board.setNumber(result[0], result[1], result[2]);
-                continue;
-            }
-
-            System.out.println("Impossible to solve, potential candidate lists");
-            board.printUnfilledCellPossible();
-            break;
         }
 
-        System.out.println("Final board");
-        board.printBoard();
-
+        return true;
     }
 
+    /**
+     * @param scanner to initalize the board
+     * @return SudokuBoard from scanner input
+     */
     public static SudokuBoard initialize(final Scanner scanner) {
         final SudokuBoard board = new SudokuBoard();
 
@@ -69,11 +63,27 @@ public class SudokuSolver {
         return board;
     }
 
-    public static void main(String[] args) {
-        //solve(initialize(new Scanner(ClassLoader.getSystemResourceAsStream("easy_0.txt"))));
-        //solve(initialize(new Scanner(ClassLoader.getSystemResourceAsStream("medium_0.txt"))));
-        solve(initialize(new Scanner(ClassLoader.getSystemResourceAsStream("hard_0.txt"))));
+    /**
+     * Print out the result and diagnose information when board is not solved.
+     */
+    public static void mainSolve(SudokuBoard board) {
+        System.out.println("Initial board");
+        board.printBoard();
 
-        //solve(initialize(new Scanner(System.in)));
+        if (!solve(board)) {
+            System.out.println("Impossible to solve, potential candidate lists");
+            board.printUnfilledCellPossible();
+        }
+
+        System.out.println("Final board");
+        board.printBoard();
+    }
+
+    public static void main(String[] args) {
+        mainSolve(initialize(new Scanner(ClassLoader.getSystemResourceAsStream("easy_0.txt"))));
+        mainSolve(initialize(new Scanner(ClassLoader.getSystemResourceAsStream("medium_0.txt"))));
+        //mainSolve(initialize(new Scanner(ClassLoader.getSystemResourceAsStream("hard_0.txt"))));
+
+        //mainSolve(initialize(new Scanner(System.in)));
     }
 }
