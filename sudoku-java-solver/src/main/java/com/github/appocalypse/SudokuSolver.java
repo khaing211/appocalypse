@@ -9,9 +9,10 @@ import java.util.Scanner;
 public class SudokuSolver {
 
     public static SudokuSolveStrategy[] getStrategies() {
-        final SudokuSolveStrategy[] strategies = new SudokuSolveStrategy[2];
+        final SudokuSolveStrategy[] strategies = new SudokuSolveStrategy[3];
         strategies[0] = new NakedSingleSolveStrategy();
         strategies[1] = new HiddenSingleSolveStragety();
+        strategies[2] = new NakedPairSolveStrategy();
         return strategies;
     }
 
@@ -25,17 +26,15 @@ public class SudokuSolver {
         int curNumUnsolvedCell, postSolveNumUnsolvedCell;
 
         while ((curNumUnsolvedCell = board.getNumUnsolvedCell()) != 0) {
-
+            boolean hasUpdated = false;
             for (SudokuSolveStrategy strategy : strategies) {
-                final Optional<SudokuStrategyResult> result = strategy.solve(board);
-                if (result.isPresent()) {
-                    result.get().apply(board);
+                hasUpdated = strategy.update(board);
+                if (hasUpdated) {
                     break;
                 }
             }
 
-            postSolveNumUnsolvedCell = board.getNumUnsolvedCell();
-            if (postSolveNumUnsolvedCell == curNumUnsolvedCell) {
+            if (!hasUpdated) {
                 return false;
             }
         }
@@ -85,8 +84,8 @@ public class SudokuSolver {
     }
 
     public static void main(String[] args) {
-        mainSolve(initialize(new Scanner(ClassLoader.getSystemResourceAsStream("easy_0.txt"))));
-        mainSolve(initialize(new Scanner(ClassLoader.getSystemResourceAsStream("medium_0.txt"))));
+        //mainSolve(initialize(new Scanner(ClassLoader.getSystemResourceAsStream("easy_0.txt"))));
+        //mainSolve(initialize(new Scanner(ClassLoader.getSystemResourceAsStream("medium_0.txt"))));
         mainSolve(initialize(new Scanner(ClassLoader.getSystemResourceAsStream("hard_0.txt"))));
 
         //mainSolve(initialize(new Scanner(System.in)));

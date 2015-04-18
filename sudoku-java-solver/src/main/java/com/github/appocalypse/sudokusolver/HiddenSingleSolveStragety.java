@@ -9,7 +9,7 @@ import java.util.Optional;
 public class HiddenSingleSolveStragety implements SudokuSolveStrategy {
 
     @Override
-    public Optional<SudokuStrategyResult> solve(SudokuBoard board) {
+    public boolean update(SudokuBoard board) {
         // for each big cell
         for (int bigR = 0; bigR < 3; bigR++) {
             for (int bigC = 0; bigC < 3; bigC++) {
@@ -26,19 +26,22 @@ public class HiddenSingleSolveStragety implements SudokuSolveStrategy {
 
                             // hidden single in box
                             if (Utils.popcount16(boxDifference) == 1) {
-                                return Optional.of(new SudokuStrategyResult(r, c, Integer.numberOfTrailingZeros(boxDifference) + 1));
+                                board.setNumber(r, c, Utils.getNumber(boxDifference));
+                                return true;
                             }
 
                             // hidden single in row
                             final short rowDifference = checkInRow(board, r, c);
                             if (Utils.popcount16(rowDifference) == 1) {
-                                return Optional.of(new SudokuStrategyResult(r, c, Integer.numberOfTrailingZeros(rowDifference) + 1));
+                                board.setNumber(r, c, Utils.getNumber(rowDifference));
+                                return true;
                             }
 
                             // hidden single in column
                             final short colDifference = checkInColumn(board, r, c);
                             if (Utils.popcount16(colDifference) == 1) {
-                                return Optional.of(new SudokuStrategyResult(r, c, Integer.numberOfTrailingZeros(colDifference) + 1));
+                                board.setNumber(r, c, Utils.getNumber(colDifference));
+                                return true;
                             }
                         }
                     }
@@ -46,7 +49,7 @@ public class HiddenSingleSolveStragety implements SudokuSolveStrategy {
             }
         }
 
-        return Optional.empty();
+        return false;
     }
 
     private short checkInBox(SudokuBoard board, int r, int c, int bigR, int bigC) {

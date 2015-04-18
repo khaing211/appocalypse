@@ -2,6 +2,7 @@ package com.github.appocalypse.sudokusolver;
 
 public interface Utils {
     short ALL = (1<<9)-1;
+    int MAX_NUM_UNSOLVED_CELL = 81;
 
     static void isValidIndex(int r, int c) {
         if (0 > r || r >= 9) {
@@ -29,6 +30,14 @@ public interface Utils {
     static void unsetPossible(short[][] possible, int r, int c, int n) {
         final short mask = (short)((~(1<<(n-1))) & ALL);
         possible[r][c] &= mask;
+    }
+
+    static boolean isInSameBox(int r, int c, int otherR, int otherC) {
+        return (r/3 == otherR/3) && (c/3 == otherC/3);
+    }
+
+    static int getNumber(short bitVector) {
+        return Integer.numberOfTrailingZeros(bitVector) + 1;
     }
 
     /**

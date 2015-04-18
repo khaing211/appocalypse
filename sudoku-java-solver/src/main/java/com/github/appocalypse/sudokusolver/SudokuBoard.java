@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.stream.IntStream;
 
 public class SudokuBoard {
-    private static final int MAX_NUM_UNSOLVED_CELL = 81;
-
     private final short[][] possible = new short[9][9];
     private final int[][] board = new int[9][9];
 
@@ -21,7 +19,7 @@ public class SudokuBoard {
     }
 
     public SudokuBoard() {
-        this.numUnsolvedCell = MAX_NUM_UNSOLVED_CELL;
+        this.numUnsolvedCell = Utils.MAX_NUM_UNSOLVED_CELL;
         Arrays.setAll(possible, r -> {
             Arrays.fill(possible[r], Utils.ALL);
             return possible[r];
@@ -91,6 +89,14 @@ public class SudokuBoard {
                 }
             }
         }
+    }
+
+    public boolean unsetPossible(int r, int c, short set) {
+        Utils.isValidIndex(r, c);
+        final short val = (short)(possible[r][c] & set);
+        final short mask = (short)((~set) & Utils.ALL);
+        possible[r][c] &= mask;
+        return val != 0;
     }
 
     public short getPossibleMask(int r, int c) {
