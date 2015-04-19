@@ -7,27 +7,30 @@ import java.util.Optional;
 import java.util.Scanner;
 
 public class SudokuSolver {
+    private final SudokuBoard board;
+    private final SudokuSolveStrategy[] strategies;
+
+    public SudokuSolver(final SudokuBoard board) {
+        this.board = board;
+        this.strategies = getStrategies();
+    }
 
     public static SudokuSolveStrategy[] getStrategies() {
-        final SudokuSolveStrategy[] strategies = new SudokuSolveStrategy[5];
+        final SudokuSolveStrategy[] strategies = new SudokuSolveStrategy[6];
         strategies[0] = new NakedSingleSolveStrategy();
         strategies[1] = new HiddenSingleSolveStragety();
         strategies[2] = new NakedPairSolveStrategy();
         strategies[3] = new NakedTripleSolveStrategy();
         strategies[4] = new HiddenPairSolveStrategy();
+        strategies[5] = new HiddenTripleSolveStrategy();
         return strategies;
     }
 
     /**
-     * @param board to be solve
      * @return true if the board has been solved. false otherwise
      */
-    public static boolean solve(final SudokuBoard board) {
-        final SudokuSolveStrategy[] strategies = getStrategies();
-
-        int curNumUnsolvedCell, postSolveNumUnsolvedCell;
-
-        while ((curNumUnsolvedCell = board.getNumUnsolvedCell()) != 0) {
+    public boolean solve() {
+        while (board.getNumUnsolvedCell() != 0) {
             boolean hasUpdated = false;
             for (SudokuSolveStrategy strategy : strategies) {
                 hasUpdated = strategy.update(board);
@@ -44,11 +47,15 @@ public class SudokuSolver {
         return true;
     }
 
+    public SudokuBoard getBoard() {
+        return board;
+    }
+
     /**
      * @param scanner to initalize the board
      * @return SudokuBoard from scanner input
      */
-    public static SudokuBoard initialize(final Scanner scanner) {
+    public static SudokuSolver initialize(final Scanner scanner) {
         final SudokuBoard board = new SudokuBoard();
 
         for (int i = 0; i < 9; i++) {
@@ -66,23 +73,25 @@ public class SudokuSolver {
             }
         }
 
-        return board;
+        return new SudokuSolver(board);
     }
+
+
 
     /**
      * Print out the result and diagnose information when board is not solved.
      */
-    public static void mainSolve(SudokuBoard board) {
+    public static void mainSolve(SudokuSolver solver) {
         System.out.println("Initial board");
-        board.printBoard();
+        solver.getBoard().printBoard();
 
-        if (!solve(board)) {
+        if (!solver.solve()) {
             System.out.println("Impossible to solve, potential candidate lists");
-            board.printUnfilledCellPossible();
+            solver.getBoard().printUnfilledCellPossible();
         }
 
         System.out.println("Final board");
-        board.printBoard();
+        solver.getBoard().printBoard();
     }
 
     public static void main(String[] args) {

@@ -4,19 +4,10 @@ import java.util.Arrays;
 import java.util.stream.IntStream;
 
 public class SudokuBoard {
-    private final short[][] possible = new short[9][9];
+    private final int[][] possible = new int[9][9];
     private final int[][] board = new int[9][9];
 
     private int numUnsolvedCell;
-
-    // copy constructor for snapshot of the SudokuBoard
-    public SudokuBoard(SudokuBoard other) {
-        Arrays.setAll(possible, r -> possible[r]);
-
-        Arrays.setAll(board, r -> other.board[r]);
-
-        this.numUnsolvedCell = other.numUnsolvedCell;
-    }
 
     public SudokuBoard() {
         this.numUnsolvedCell = Utils.MAX_NUM_UNSOLVED_CELL;
@@ -30,15 +21,6 @@ public class SudokuBoard {
         return numUnsolvedCell;
     }
 
-    /**
-     * @return copied instance of possible masks
-     */
-    public short[][] getCopyPossible() {
-        final short[][] copyPossible = new short[9][9];
-        Arrays.setAll(copyPossible, r -> possible[r]);
-        return copyPossible;
-    }
-
     public void setNumber(int r, int c, int n) {
         Utils.isValidIndex(r, c);
         Utils.isValidNumber(n);
@@ -47,10 +29,8 @@ public class SudokuBoard {
             board[r][c] = n;
             update(r, c, n);
             numUnsolvedCell--;
-        } else if (board[r][c] == n) {
-            // ignore
-        } else {
-            throw new IllegalArgumentException("impossible n value " + n);
+        } else if (board[r][c] != n) {
+            throw new IllegalArgumentException("impossible n value " + n + " for r " + r + " c " + c);
         }
     }
 
@@ -91,15 +71,15 @@ public class SudokuBoard {
         }
     }
 
-    public boolean unsetPossible(int r, int c, short set) {
+    public boolean unsetPossible(int r, int c, int set) {
         Utils.isValidIndex(r, c);
-        final short val = (short)(possible[r][c] & set);
-        final short mask = (short)((~set) & Utils.ALL);
+        final int val = (possible[r][c] & set);
+        final int mask = ((~set) & Utils.ALL);
         possible[r][c] &= mask;
         return val != 0;
     }
 
-    public short getPossibleMask(int r, int c) {
+    public int getPossibleMask(int r, int c) {
         Utils.isValidIndex(r, c);
         return possible[r][c];
     }

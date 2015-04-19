@@ -1,7 +1,7 @@
 package com.github.appocalypse.sudokusolver;
 
 public interface Utils {
-    short ALL = (1<<9)-1;
+    int ALL = (1<<9)-1;
     int MAX_NUM_UNSOLVED_CELL = 81;
 
     static void isValidIndex(int r, int c) {
@@ -20,15 +20,15 @@ public interface Utils {
         }
     }
 
-    static boolean isPossible(short[][] possible, int r, int c, int n) {
+    static boolean isPossible(int[][] possible, int r, int c, int n) {
         Utils.isValidIndex(r, c);
         Utils.isValidNumber(n);
-        final short mask = (short)(1<<(n-1));
+        final int mask = (1<<(n-1));
         return (possible[r][c] & mask) == mask;
     }
 
-    static void unsetPossible(short[][] possible, int r, int c, int n) {
-        final short mask = (short)((~(1<<(n-1))) & ALL);
+    static void unsetPossible(int[][] possible, int r, int c, int n) {
+        final int mask = ((~(1<<(n-1))) & ALL);
         possible[r][c] &= mask;
     }
 
@@ -36,7 +36,7 @@ public interface Utils {
         return (r/3 == otherR/3) && (c/3 == otherC/3);
     }
 
-    static int getNumber(short bitVector) {
+    static int getNumber(int bitVector) {
         return Integer.numberOfTrailingZeros(bitVector) + 1;
     }
 
@@ -49,14 +49,17 @@ public interface Utils {
         // fast check
         if (bits == 0) return 0;
 
-        final int m1  = 0x5555; //binary: 0101...
-        final int m2  = 0x3333; //binary: 00110011..
-        final int m4  = 0x0f0f; //binary:  4 zeros,  4 ones ...
-        final int m8  = 0x00ff; //binary:  8 zeros,  8 ones ..
+        final int m1  = 0x5555;     //binary: 0101...
+        final int m2  = 0x3333;     //binary: 00110011..
+        final int m4  = 0x0f0f;     //binary:  4 zeros,  4 ones ...
+        final int m8  = 0x00ff;     //binary:  8 zeros,  8 ones ..
+        final int m16 = 0x0000ffff; //binary: 16 zeros, 16 ones ...
+
         bits = (bits & m1 ) + ((bits >>  1) & m1 ); //put count of each  2 bits into those  2 bits
         bits = (bits & m2 ) + ((bits >>  2) & m2 ); //put count of each  4 bits into those  4 bits
         bits = (bits & m4 ) + ((bits >>  4) & m4 ); //put count of each  8 bits into those  8 bits
         bits = (bits & m8 ) + ((bits >>  8) & m8 ); //put count of each 16 bits into those 16 bits
+        bits = (bits & m16) + ((bits >> 16) & m16); //put count of each 32 bits into those 32 bits
         return bits;
     }
 
@@ -70,7 +73,9 @@ public interface Utils {
      *         a if a does not have any common with b
      *         a - b if a does have common with b
      */
-    static short difference(short a, short b) {
-        return (short)((a ^ b) & a);
+    static int difference(int a, int b) {
+        return ((a ^ b) & a);
     }
+
+
 }

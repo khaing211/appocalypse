@@ -15,7 +15,7 @@ public class HiddenSingleSolveStragety implements SudokuSolveStrategy {
             for (int c = 0; c < 9; c++) {
 
                 if (!board.isFilled(r, c)) {
-                    final short boxDifference = checkInBox(board, r, c);
+                    final int boxDifference = checkInBox(board, r, c);
 
                     // hidden single in box
                     if (Utils.popcount16(boxDifference) == 1) {
@@ -24,14 +24,14 @@ public class HiddenSingleSolveStragety implements SudokuSolveStrategy {
                     }
 
                     // hidden single in row
-                    final short rowDifference = checkInRow(board, r, c);
+                    final int rowDifference = checkInRow(board, r, c);
                     if (Utils.popcount16(rowDifference) == 1) {
                         board.setNumber(r, c, Utils.getNumber(rowDifference));
                         return true;
                     }
 
                     // hidden single in column
-                    final short colDifference = checkInColumn(board, r, c);
+                    final int colDifference = checkInColumn(board, r, c);
                     if (Utils.popcount16(colDifference) == 1) {
                         board.setNumber(r, c, Utils.getNumber(colDifference));
                         return true;
@@ -43,8 +43,8 @@ public class HiddenSingleSolveStragety implements SudokuSolveStrategy {
         return false;
     }
 
-    private short checkInBox(SudokuBoard board, int r, int c) {
-        short currentDifference = board.getPossibleMask(r, c);
+    private int checkInBox(SudokuBoard board, int r, int c) {
+        int currentDifference = board.getPossibleMask(r, c);
         final int bigR = r / 3;
         final int bigC = c / 3;
 
@@ -68,8 +68,8 @@ public class HiddenSingleSolveStragety implements SudokuSolveStrategy {
         return currentDifference;
     }
 
-    private short checkInRow(SudokuBoard board, int r, int c) {
-        short currentDifference = board.getPossibleMask(r, c);
+    private int checkInRow(SudokuBoard board, int r, int c) {
+        int currentDifference = board.getPossibleMask(r, c);
 
         for (int i = 0; i < 9; i++) {
             // check in row
@@ -81,8 +81,8 @@ public class HiddenSingleSolveStragety implements SudokuSolveStrategy {
         return currentDifference;
     }
 
-    private short checkInColumn(SudokuBoard board, int r, int c) {
-        short currentDifference = board.getPossibleMask(r, c);
+    private int checkInColumn(SudokuBoard board, int r, int c) {
+        int currentDifference = board.getPossibleMask(r, c);
 
         for (int i = 0; i < 9; i++) {
             // check in column

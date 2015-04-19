@@ -58,7 +58,7 @@ public class NakedPairSolveStrategy implements SudokuSolveStrategy {
             }
 
             if (hasUpdate) {
-                return hasUpdate;
+                return true;
             }
         }
 
@@ -118,10 +118,10 @@ public class NakedPairSolveStrategy implements SudokuSolveStrategy {
     private static class NakedPairCell {
         private final int r;
         private final int c;
-        private final short possible;
+        private final int possible;
 
 
-        public NakedPairCell(int r, int c, short possible) {
+        public NakedPairCell(int r, int c, int possible) {
             this.r = r;
             this.c = c;
             this.possible = possible;
@@ -136,7 +136,7 @@ public class NakedPairSolveStrategy implements SudokuSolveStrategy {
             return c;
         }
 
-        public short getPossible() {
+        public int getPossible() {
             return possible;
         }
 
