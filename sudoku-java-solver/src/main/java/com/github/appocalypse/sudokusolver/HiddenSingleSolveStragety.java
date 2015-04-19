@@ -11,39 +11,30 @@ public class HiddenSingleSolveStragety implements SudokuSolveStrategy {
     @Override
     public boolean update(SudokuBoard board) {
         // for each big cell
-        for (int bigR = 0; bigR < 3; bigR++) {
-            for (int bigC = 0; bigC < 3; bigC++) {
+        for (int r = 0; r < 9; r++) {
+            for (int c = 0; c < 9; c++) {
 
-                // for each small cell in big cell
-                for (int smallR = 0; smallR < 3; smallR++) {
-                    for (int smallC = 0; smallC < 3; smallC++) {
+                if (!board.isFilled(r, c)) {
+                    final short boxDifference = checkInBox(board, r, c);
 
-                        final int r = bigR * 3 + smallR;
-                        final int c = bigC * 3 + smallC;
+                    // hidden single in box
+                    if (Utils.popcount16(boxDifference) == 1) {
+                        board.setNumber(r, c, Utils.getNumber(boxDifference));
+                        return true;
+                    }
 
-                        if (!board.isFilled(r, c)) {
-                            final short boxDifference = checkInBox(board, r, c, bigR, bigC);
+                    // hidden single in row
+                    final short rowDifference = checkInRow(board, r, c);
+                    if (Utils.popcount16(rowDifference) == 1) {
+                        board.setNumber(r, c, Utils.getNumber(rowDifference));
+                        return true;
+                    }
 
-                            // hidden single in box
-                            if (Utils.popcount16(boxDifference) == 1) {
-                                board.setNumber(r, c, Utils.getNumber(boxDifference));
-                                return true;
-                            }
-
-                            // hidden single in row
-                            final short rowDifference = checkInRow(board, r, c);
-                            if (Utils.popcount16(rowDifference) == 1) {
-                                board.setNumber(r, c, Utils.getNumber(rowDifference));
-                                return true;
-                            }
-
-                            // hidden single in column
-                            final short colDifference = checkInColumn(board, r, c);
-                            if (Utils.popcount16(colDifference) == 1) {
-                                board.setNumber(r, c, Utils.getNumber(colDifference));
-                                return true;
-                            }
-                        }
+                    // hidden single in column
+                    final short colDifference = checkInColumn(board, r, c);
+                    if (Utils.popcount16(colDifference) == 1) {
+                        board.setNumber(r, c, Utils.getNumber(colDifference));
+                        return true;
                     }
                 }
             }
@@ -52,8 +43,10 @@ public class HiddenSingleSolveStragety implements SudokuSolveStrategy {
         return false;
     }
 
-    private short checkInBox(SudokuBoard board, int r, int c, int bigR, int bigC) {
+    private short checkInBox(SudokuBoard board, int r, int c) {
         short currentDifference = board.getPossibleMask(r, c);
+        final int bigR = r / 3;
+        final int bigC = c / 3;
 
         // compute against other cells in box
         for (int otherR = 0; otherR < 3; otherR++) {

@@ -9,10 +9,12 @@ import java.util.Scanner;
 public class SudokuSolver {
 
     public static SudokuSolveStrategy[] getStrategies() {
-        final SudokuSolveStrategy[] strategies = new SudokuSolveStrategy[3];
+        final SudokuSolveStrategy[] strategies = new SudokuSolveStrategy[5];
         strategies[0] = new NakedSingleSolveStrategy();
         strategies[1] = new HiddenSingleSolveStragety();
         strategies[2] = new NakedPairSolveStrategy();
+        strategies[3] = new NakedTripleSolveStrategy();
+        strategies[4] = new HiddenPairSolveStrategy();
         return strategies;
     }
 
