@@ -45,7 +45,7 @@ public interface Utils {
      *
      * http://en.wikipedia.org/wiki/Hamming_weight
      */
-    static int popcount16(int bits) {
+    static int popcount32(int bits) {
         // fast check
         if (bits == 0) return 0;
 
@@ -77,5 +77,8 @@ public interface Utils {
         return ((a ^ b) & a);
     }
 
-
+    static int unset(int possibleSet, int n) {
+        final int mask = ((~(1<<(n-1))) & ALL);
+        return possibleSet & mask;
+    }
 }

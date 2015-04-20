@@ -4,101 +4,108 @@ import java.util.Arrays;
 import java.util.stream.IntStream;
 
 public class SudokuBoard {
-    private final int[][] possible = new int[9][9];
-    private final int[][] board = new int[9][9];
+    private final Cell[] cells = new Cell[Utils.MAX_NUM_UNSOLVED_CELL];
 
     private int numUnsolvedCell;
 
     public SudokuBoard() {
         this.numUnsolvedCell = Utils.MAX_NUM_UNSOLVED_CELL;
-        Arrays.setAll(possible, r -> {
-            Arrays.fill(possible[r], Utils.ALL);
-            return possible[r];
-        });
+
+        IntStream.range(0, Utils.MAX_NUM_UNSOLVED_CELL)
+                .forEach(i -> cells[i] = new Cell(i / 9, i % 9));
+    }
+
+    // k = linear index of cells
+    private int getK(int r, int c) {
+        return r*9 + c;
+    }
+
+    private Cell getCell(int r, int c) {
+        final int k = getK(r, c);
+        return cells[k];
     }
 
     public int getNumUnsolvedCell() {
         return numUnsolvedCell;
     }
 
-    public void setNumber(int r, int c, int n) {
+    public void fill(int r, int c, int n) {
         Utils.isValidIndex(r, c);
         Utils.isValidNumber(n);
 
-        if (board[r][c] == 0 && isPossible(r,c,n)) {
-            board[r][c] = n;
+        final int k = getK(r, c);
+        final Cell cell = getCell(r, c);
+
+        if (cell.isNotFilled() && cell.isPossible(n)) {
+            cells[k] = new Cell(cell.getR(), cell.getC(), n);
             update(r, c, n);
             numUnsolvedCell--;
-        } else if (board[r][c] != n) {
+        } else if (cell.getN() == n) {
+            throw new IllegalArgumentException("n value " + n + " is already set for r " + r + " c " + c);
+        } else {
             throw new IllegalArgumentException("impossible n value " + n + " for r " + r + " c " + c);
         }
     }
 
-    public boolean isPossible(int r, int c, int n) {
-        return Utils.isPossible(possible, r, c, n);
-    }
-
     public boolean isFilled(int r, int c) {
         Utils.isValidIndex(r, c);
-        return board[r][c] != 0;
+        return getCell(r, c).isFilled();
     }
 
     private void update(final int r, final int c, final int n) {
+        int k;
+        Cell cell;
+        final int baseR = (r / 3) * 3;
+        final int baseC = (c / 3) * 3;
+
         for (int i = 0; i < 9; i++) {
             if (i != c) {
-                Utils.unsetPossible(possible, r, i, n);
+                k = getK(r, i);
+                cell = cells[k];
+                cells[k] = new Cell(r, i, Utils.unset(cell.getPossibleSet(), n), cell.getN());
             }
 
             if (i != r) {
-                Utils.unsetPossible(possible, i, c, n);
+                k = getK(i, c);
+                cell = cells[k];
+                cells[k] = new Cell(i, c, Utils.unset(cell.getPossibleSet(), n), cell.getN());
             }
 
-            if (i != n-1) {
-                Utils.unsetPossible(possible, r, c, i + 1);
-            }
-        }
-
-        final int baseR = (r / 3) * 3;
-        final int baseC = (c / 3) * 3;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                final int curR = baseR + i;
-                final int curC = baseC + j;
-                if (!(curR == r && curC == c)) {
-                    Utils.unsetPossible(possible, curR, curC, n);
-                }
+            final int curR = baseR + i/3;
+            final int curC = baseC + i%3;
+            if (!(curR == r && curC == c)) {
+                k = getK(curR, curC);
+                cell = cells[k];
+                cells[k] = new Cell(curR, curC, Utils.unset(cell.getPossibleSet(), n), cell.getN());
             }
         }
     }
 
     public boolean unsetPossible(int r, int c, int set) {
         Utils.isValidIndex(r, c);
-        final int val = (possible[r][c] & set);
+        final int k = getK(r, c);
+        final Cell cell = cells[k];
+        final int test = (cell.getPossibleSet() & set);
         final int mask = ((~set) & Utils.ALL);
-        possible[r][c] &= mask;
-        return val != 0;
+        final int newPossibleSet = cell.getPossibleSet() & mask;
+        cells[k] = new Cell(r, c, newPossibleSet, cell.getN(), cell.hasNakedPair(), cell.hasNakedTriple(), cell.hasNakedQuad(),
+            cell.hasHiddenPair(), cell.hasHiddenTriple(), cell.hasHiddenQuad());
+        return test != 0;
     }
 
-    public int getPossibleMask(int r, int c) {
+    public int getPossibleSet(int r, int c) {
         Utils.isValidIndex(r, c);
-        return possible[r][c];
+        return getCell(r, c).getPossibleSet();
     }
 
     public int[] getPossibles(int r, int c) {
         Utils.isValidIndex(r, c);
-        final int[] ret = new int[countPossibles(r,c)];
-        int j = 0;
-        for (int i = 1; i <= 9; i++) {
-            if (isPossible(r, c, i)) {
-                ret[j++] = i;
-            }
-        }
-        return ret;
+        return getCell(r, c).getPossibles();
     }
 
-    public int countPossibles(int r, int c) {
+    public int getPossibleSetSize(int r, int c) {
         Utils.isValidIndex(r, c);
-        return Utils.popcount16(possible[r][c]);
+        return getCell(r, c).getPossibleSetSize();
     }
 
     public void printPossible() {
@@ -109,7 +116,7 @@ public class SudokuBoard {
 
     public void printPossible(int r, int c) {
         Utils.isValidIndex(r, c);
-        System.out.println("[" + r + "," + c + "," + possible[r][c] + "]");
+        System.out.println("[" + r + "," + c + "," + getCell(r, c).getPossibleSet() + "]");
     }
 
     public void printNumberPossible() {
@@ -119,22 +126,45 @@ public class SudokuBoard {
     }
 
     public void printUnfilledCellPossible() {
-        IntStream.range(0, 9)
-                .forEachOrdered(r -> IntStream.range(0, 9)
-                        .forEachOrdered(c -> {
-                            if (!isFilled(r, c)) {
-                                printNumberPossible(r, c);
-                            }
-                        }));
+        IntStream.range(0, Utils.MAX_NUM_UNSOLVED_CELL)
+            .forEach(k -> {
+                final Cell cell = cells[k];
+                if (cell.isNotFilled()) {
+                    System.out.println("[" + cell.getR()
+                            + "," + cell.getC() + "]"
+                            + Arrays.toString(cell.getPossibles()));
+                }
+            });
     }
 
     public void printNumberPossible(int r, int c) {
         Utils.isValidIndex(r, c);
-        System.out.println("[" + r + "," + c + "]" + Arrays.toString(getPossibles(r, c)));
+        System.out.println("[" + r + "," + c + "]" + Arrays.toString(getCell(r,c).getPossibles()));
     }
 
     public void printBoard() {
-        IntStream.range(0, 9)
-                .forEachOrdered(r -> System.out.println(Arrays.toString(board[r])));
+        System.out.println(board('+'));
+    }
+
+    public String board(final char empty) {
+        // 81 char + 9 newline = 90 char capacity
+        final StringBuilder builder = new StringBuilder(90);
+        IntStream.range(0, Utils.MAX_NUM_UNSOLVED_CELL)
+            .forEachOrdered(k -> {
+                if (k != 0 && k % 9 == 0) {
+                    builder.append("\n");
+                }
+
+                final Cell cell = cells[k];
+                if (cell.isFilled()) {
+                    builder.append(Character.forDigit(cell.getN(), 10));
+                } else {
+                    builder.append(empty);
+                }
+            });
+
+        builder.append("\n");
+
+        return builder.toString();
     }
 }

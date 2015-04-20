@@ -2,7 +2,6 @@ package com.github.appocalypse.sudokusolver;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Optional;
 
 public class NakedPairSolveStrategy implements SudokuSolveStrategy {
     @Override
@@ -14,8 +13,8 @@ public class NakedPairSolveStrategy implements SudokuSolveStrategy {
         int numNakedPair = 0;
         for (int r = 0; r < 9; r++) {
             for (int c = 0; c < 9; c++) {
-                if (board.countPossibles(r, c) == 2) {
-                    nakedPairCells[numNakedPair++] = new NakedPairCell(r, c, board.getPossibleMask(r, c));
+                if (board.getPossibleSetSize(r, c) == 2) {
+                    nakedPairCells[numNakedPair++] = new NakedPairCell(r, c, board.getPossibleSet(r, c));
                 }
             }
         }

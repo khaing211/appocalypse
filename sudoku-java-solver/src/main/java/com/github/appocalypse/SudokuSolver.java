@@ -3,7 +3,6 @@ package com.github.appocalypse;
 import com.github.appocalypse.sudokusolver.*;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.Scanner;
 
 public class SudokuSolver {
@@ -65,7 +64,7 @@ public class SudokuSolver {
                     final char ch = row.charAt(j);
                     if (Character.isDigit(ch)) {
                         final int num = ch - '0';
-                        board.setNumber(i, j, num);
+                        board.fill(i, j, num);
                     }
                 }
             } catch (NoSuchElementException e) {
@@ -95,8 +94,6 @@ public class SudokuSolver {
     }
 
     public static void main(String[] args) {
-        //mainSolve(initialize(new Scanner(ClassLoader.getSystemResourceAsStream("easy_0.txt"))));
-        //mainSolve(initialize(new Scanner(ClassLoader.getSystemResourceAsStream("medium_0.txt"))));
         mainSolve(initialize(new Scanner(ClassLoader.getSystemResourceAsStream("hard_0.txt"))));
 
         //mainSolve(initialize(new Scanner(System.in)));
