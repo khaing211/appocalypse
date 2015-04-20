@@ -15,6 +15,12 @@ public class SudokuBoard {
                 .forEach(i -> cells[i] = new Cell(i / 9, i % 9));
     }
 
+    public SudokuBoard(SudokuBoard board) {
+        this.numUnsolvedCell = board.numUnsolvedCell;
+        IntStream.range(0, Utils.MAX_NUM_UNSOLVED_CELL)
+                .forEach(i -> cells[i] = board.cells[i]);
+    }
+
     // k = linear index of cells
     private int getK(int r, int c) {
         return r*9 + c;
@@ -108,44 +114,6 @@ public class SudokuBoard {
         return getCell(r, c).getPossibleSetSize();
     }
 
-    public void printPossible() {
-        IntStream.range(0, 9)
-                .forEachOrdered(r -> IntStream.range(0, 9)
-                        .forEachOrdered(c -> printPossible(r, c)));
-    }
-
-    public void printPossible(int r, int c) {
-        Utils.isValidIndex(r, c);
-        System.out.println("[" + r + "," + c + "," + getCell(r, c).getPossibleSet() + "]");
-    }
-
-    public void printNumberPossible() {
-        IntStream.range(0, 9)
-                .forEachOrdered(r -> IntStream.range(0, 9)
-                        .forEachOrdered(c -> printNumberPossible(r, c)));
-    }
-
-    public void printUnfilledCellPossible() {
-        IntStream.range(0, Utils.MAX_NUM_UNSOLVED_CELL)
-            .forEach(k -> {
-                final Cell cell = cells[k];
-                if (cell.isNotFilled()) {
-                    System.out.println("[" + cell.getR()
-                            + "," + cell.getC() + "]"
-                            + Arrays.toString(cell.getPossibles()));
-                }
-            });
-    }
-
-    public void printNumberPossible(int r, int c) {
-        Utils.isValidIndex(r, c);
-        System.out.println("[" + r + "," + c + "]" + Arrays.toString(getCell(r, c).getPossibles()));
-    }
-
-    public void printBoard() {
-        System.out.println(niceBoard());
-    }
-
     public String board(final char empty) {
         // 81 char + 9 newline = 90 char capacity
         final StringBuilder builder = new StringBuilder(90);
@@ -168,16 +136,33 @@ public class SudokuBoard {
         return builder.toString();
     }
 
-    public String niceBoard() {
-        // 37 char
-        final String HORIZONTAL_LINE = "+++++++++++++++++++++++++++++++++++++\n";
+    private static final String HORIZONTAL_LINE = "+++++++++++++++++++++++++++++++++++++";
 
-        final StringBuilder builder = new StringBuilder(1482);
+    public String niceBoard() {
+        return sideBySide(null);
+    }
+
+    /**
+     * this board print on the left
+     * Board is to the right
+     *
+     * @param board nullable
+     */
+    public String sideBySide(final SudokuBoard board) {
+        final StringBuilder builder = new StringBuilder(6400);
+        // 4 space in between
+        final String SPACE_IN_BETWEEN = "     ";
 
         for (int r = 0; r < 9; r++) {
             builder.append(HORIZONTAL_LINE);
+            if (board != null) {
+                builder.append(SPACE_IN_BETWEEN);
+                builder.append(HORIZONTAL_LINE);
+            }
+            builder.append('\n');
 
             for (int i = 0; i < 3; i++) {
+
                 builder.append('|');
 
                 for (int c = 0; c < 9; c++) {
@@ -201,12 +186,49 @@ public class SudokuBoard {
                     builder.append('|');
                 }
 
+                if (board != null) {
+                    builder.append(SPACE_IN_BETWEEN);
+                    builder.append('|');
+
+                    for (int c = 0; c < 9; c++) {
+                        final Cell cell = board.getCell(r, c);
+
+                        for (int j = 0; j < 3; j++) {
+                            if (cell.isNotFilled()) {
+                                final int n = i * 3 + j + 1;
+                                if (cell.isPossible(n)) {
+                                    builder.append(Character.forDigit(n, 10));
+                                } else {
+                                    builder.append(' ');
+                                }
+                            } else if (cell.isFilled() && i == 1 && j == 1) {
+                                builder.append(Character.forDigit(cell.getN(), 10));
+                            } else {
+                                builder.append(' ');
+                            }
+                        }
+
+                        builder.append('|');
+                    }
+                }
+
                 builder.append('\n');
             }
         }
 
         builder.append(HORIZONTAL_LINE);
+        if (board != null) {
+            builder.append(SPACE_IN_BETWEEN);
+            builder.append(HORIZONTAL_LINE);
+        }
+        builder.append('\n');
+
 
         return builder.toString();
+    }
+
+    @Override
+    public String toString() {
+        return niceBoard();
     }
 }

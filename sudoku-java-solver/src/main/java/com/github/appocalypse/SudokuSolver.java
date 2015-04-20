@@ -81,15 +81,15 @@ public class SudokuSolver {
      * Print out the result and diagnose information when board is not solved.
      */
     public static void mainSolve(SudokuSolver solver) {
-        System.out.println("Initial board");
-        solver.getBoard().printBoard();
+        final SudokuBoard initialBoard = new SudokuBoard(solver.getBoard());
 
-        if (!solver.solve()) {
-            System.out.println("Unable to solve, final board is partial result");
+        try {
+            if (!solver.solve()) {
+                System.out.println("Unable to solve, final board is partial result");
+            }
+        } finally {
+            System.out.println(initialBoard.sideBySide(solver.getBoard()));
         }
-
-        System.out.println("Final board");
-        solver.getBoard().printBoard();
     }
 
     public static void main(String[] args) {

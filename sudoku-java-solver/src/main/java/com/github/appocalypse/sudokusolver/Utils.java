@@ -20,24 +20,19 @@ public interface Utils {
         }
     }
 
-    static boolean isPossible(int[][] possible, int r, int c, int n) {
-        Utils.isValidIndex(r, c);
-        Utils.isValidNumber(n);
-        final int mask = (1<<(n-1));
-        return (possible[r][c] & mask) == mask;
-    }
-
-    static void unsetPossible(int[][] possible, int r, int c, int n) {
-        final int mask = ((~(1<<(n-1))) & ALL);
-        possible[r][c] &= mask;
-    }
-
     static boolean isInSameBox(int r, int c, int otherR, int otherC) {
         return (r/3 == otherR/3) && (c/3 == otherC/3);
     }
 
-    static int getNumber(int bitVector) {
-        return Integer.numberOfTrailingZeros(bitVector) + 1;
+    /**
+     * It is good to use when you only have 1 bit set
+     * This method will return number from possibleSet
+     *
+     * @param possibleSet
+     * @return n
+     */
+    static int getNumber(int possibleSet) {
+        return Integer.numberOfTrailingZeros(possibleSet) + 1;
     }
 
     /**
