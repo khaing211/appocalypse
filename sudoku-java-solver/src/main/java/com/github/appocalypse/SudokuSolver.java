@@ -85,8 +85,7 @@ public class SudokuSolver {
         solver.getBoard().printBoard();
 
         if (!solver.solve()) {
-            System.out.println("Impossible to solve, potential candidate lists");
-            solver.getBoard().printUnfilledCellPossible();
+            System.out.println("Unable to solve, final board is partial result");
         }
 
         System.out.println("Final board");

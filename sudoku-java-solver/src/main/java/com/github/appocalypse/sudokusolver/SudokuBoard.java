@@ -139,11 +139,11 @@ public class SudokuBoard {
 
     public void printNumberPossible(int r, int c) {
         Utils.isValidIndex(r, c);
-        System.out.println("[" + r + "," + c + "]" + Arrays.toString(getCell(r,c).getPossibles()));
+        System.out.println("[" + r + "," + c + "]" + Arrays.toString(getCell(r, c).getPossibles()));
     }
 
     public void printBoard() {
-        System.out.println(board('+'));
+        System.out.println(niceBoard());
     }
 
     public String board(final char empty) {
@@ -164,6 +164,48 @@ public class SudokuBoard {
             });
 
         builder.append("\n");
+
+        return builder.toString();
+    }
+
+    public String niceBoard() {
+        // 37 char
+        final String HORIZONTAL_LINE = "+++++++++++++++++++++++++++++++++++++\n";
+
+        final StringBuilder builder = new StringBuilder(1482);
+
+        for (int r = 0; r < 9; r++) {
+            builder.append(HORIZONTAL_LINE);
+
+            for (int i = 0; i < 3; i++) {
+                builder.append('|');
+
+                for (int c = 0; c < 9; c++) {
+                    final Cell cell = getCell(r, c);
+
+                    for (int j = 0; j < 3; j++) {
+                        if (cell.isNotFilled()) {
+                            final int n = i * 3 + j + 1;
+                            if (cell.isPossible(n)) {
+                                builder.append(Character.forDigit(n, 10));
+                            } else {
+                                builder.append(' ');
+                            }
+                        } else if (cell.isFilled() && i == 1 && j == 1) {
+                            builder.append(Character.forDigit(cell.getN(), 10));
+                        } else {
+                            builder.append(' ');
+                        }
+                    }
+
+                    builder.append('|');
+                }
+
+                builder.append('\n');
+            }
+        }
+
+        builder.append(HORIZONTAL_LINE);
 
         return builder.toString();
     }
