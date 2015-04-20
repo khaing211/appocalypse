@@ -1,5 +1,10 @@
 package com.github.appocalypse.sudokusolver;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.IntStream;
+
 public interface Utils {
     int ALL = (1<<9)-1;
     int MAX_NUM_UNSOLVED_CELL = 81;
@@ -75,5 +80,43 @@ public interface Utils {
     static int unset(int possibleSet, int n) {
         final int mask = ((~(1<<(n-1))) & ALL);
         return possibleSet & mask;
+    }
+
+    static List<int[]> choose(final int n, final int k) {
+        final List<int[]> sets = new ArrayList<int[]>();
+        final int[] set = IntStream.range(0, k).toArray();
+
+        do {
+            sets.add(Arrays.copyOf(set, k));
+        } while (next(set, n, k));
+
+        return sets;
+    }
+
+    static boolean next(int[] set, int n, int k) {
+        int i = k - 1;
+        while(i > 0) {
+            if (set[i] == n-1) {
+                set[i] = 0;
+                i--;
+            } else {
+                set[i]++;
+                for (; i < k-1; i++) {
+                    set[i+1] = set[i]+1;
+                }
+                return true;
+            }
+        }
+
+        if (set[i] == n-k) {
+            return false;
+        }
+
+        set[i]++;
+        for (; i < k-1; i++) {
+            set[i+1] = set[i]+1;
+        }
+
+        return true;
     }
 }
