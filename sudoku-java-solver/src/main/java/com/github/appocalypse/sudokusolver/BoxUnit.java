@@ -25,4 +25,19 @@ public class BoxUnit implements Unit {
     public ImmutableList<Cell> cells() {
         return cells;
     }
+
+    @Override
+    public ImmutableList<RowUnit> groupByRow() {
+        return null;
+    }
+
+    @Override
+    public ImmutableList<ColUnit> groupByCol() {
+        return null;
+    }
+
+    @Override
+    public ImmutableList<BoxUnit> groupByBox() {
+        return null;
+    }
 }

@@ -13,16 +13,9 @@ public interface Unit {
      */
     ImmutableList<Cell> cells();
 
-    default ImmutableList<ImmutableList<Cell>> groupByRow() {
-        return ImmutableList.of();
-    }
+    ImmutableList<RowUnit> groupByRow();
 
-    default ImmutableList<ImmutableList<Cell>> groupByCol() {
-        return ImmutableList.of();
-    }
+    ImmutableList<ColUnit> groupByCol();
 
-
-    default ImmutableList<ImmutableList<Cell>> groupByBox() {
-        return ImmutableList.of();
-    }
+    ImmutableList<BoxUnit> groupByBox();
 }

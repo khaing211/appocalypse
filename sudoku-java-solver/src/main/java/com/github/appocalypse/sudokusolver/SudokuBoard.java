@@ -1,9 +1,11 @@
 package com.github.appocalypse.sudokusolver;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
-public class SudokuBoard {
+public class SudokuBoard implements Unit {
     private final Cell[] cells = new Cell[Utils.MAX_NUM_UNSOLVED_CELL];
 
     private int numUnsolvedCell;
@@ -230,5 +232,28 @@ public class SudokuBoard {
     @Override
     public String toString() {
         return niceBoard();
+    }
+
+    @Override
+    public ImmutableList<Cell> cells() {
+        return ImmutableList.copyOf(cells);
+    }
+
+    @Override
+    public ImmutableList<RowUnit> groupByRow() {
+        // TODO:
+        return null;
+    }
+
+    @Override
+    public ImmutableList<ColUnit> groupByCol() {
+        // TODO:
+        return null;
+    }
+
+    @Override
+    public ImmutableList<BoxUnit> groupByBox() {
+        // TODO:
+        return null;
     }
 }
