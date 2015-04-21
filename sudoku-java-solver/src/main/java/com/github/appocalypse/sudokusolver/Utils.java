@@ -8,6 +8,9 @@ import java.util.stream.IntStream;
 public interface Utils {
     int ALL = (1<<9)-1;
     int MAX_NUM_UNSOLVED_CELL = 81;
+    List<Integer> TWO_BITS_SET = chooseBit(9, 2);
+    List<Integer> THREE_BITS_SET = chooseBit(9, 3);
+    List<Integer> FOUR_BITS_SET = chooseBit(9, 4);
 
     static void isValidIndex(int r, int c) {
         if (0 > r || r >= 9) {
@@ -118,5 +121,37 @@ public interface Utils {
         }
 
         return true;
+    }
+
+    /**
+     * http://stackoverflow.com/questions/1851134/generate-all-binary-strings-of-length-n-with-k-bits-set
+     *
+     * Suppose we have a pattern of N bits set to 1 in an integer and we want the
+     * next permutation of N 1 bits in a lexicographical sense.
+     *
+     * For example, if N is 3 and the bit pattern is 00010011, the next patterns would be
+     * 00010101, 00010110, 00011001, 00011010, 00011100, 00100011, and so forth.
+     *
+     * @param n between 0 and 31
+     */
+    static List<Integer> chooseBit(int n, int k) {
+        final List<Integer> sets = new ArrayList<Integer>();
+        final int mask = (1<<n)-1;
+        final int testMask = ~mask;
+
+        int v = (1<<k)-1; // current permutation of bits
+
+
+        do {
+            sets.add(v & mask);
+            // t gets v's least significant 0 bits set to 1
+            final int t = v | (v - 1);
+
+            // Next set to 1 the most significant bit to change,
+            // set to 0 the least significant ones, and add the necessary 1 bits.
+            v = (t + 1) | (((~t & -~t) - 1) >> (Integer.numberOfTrailingZeros(v) + 1));
+        } while((v & testMask) == 0);
+
+        return sets;
     }
 }

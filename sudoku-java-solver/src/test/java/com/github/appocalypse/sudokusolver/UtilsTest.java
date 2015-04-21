@@ -7,10 +7,16 @@ import java.util.List;
 
 public class UtilsTest {
     @Test
-    public void combination2() {
+    public void choose() {
         final List<int[]> combination = Utils.choose(4, 2);
         for (final int[] set : combination) {
             System.out.println(Arrays.toString(set));
         }
+    }
+
+    @Test
+    public void chooseBit() {
+        final List<Integer> combination = Utils.chooseBit(4, 2);
+        System.out.println(combination);
     }
 }
