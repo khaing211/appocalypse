@@ -241,19 +241,53 @@ public class SudokuBoard implements Unit {
 
     @Override
     public ImmutableList<RowUnit> groupByRow() {
-        // TODO:
-        return null;
+        final ImmutableList.Builder<RowUnit> builder = ImmutableList.builder();
+        final ImmutableList<Cell> cells = cells();
+        for (int i = 0; i < 9; i++) {
+            builder.add(new RowUnit(i, cells.subList(i * 9, (i+1) * 9)));
+        }
+
+        return builder.build();
     }
 
     @Override
     public ImmutableList<ColUnit> groupByCol() {
-        // TODO:
-        return null;
+        // create array arrange by col by row
+        final Cell[] cellsArray = new Cell[Utils.MAX_NUM_UNSOLVED_CELL];
+        for (int r = 0; r < 9; r++) {
+            for (int c = 0; c < 9; c++) {
+                cellsArray[getK(r, c)] = this.cells[getK(c, r)];
+            }
+        }
+
+        final ImmutableList<Cell> cells  = ImmutableList.copyOf(cellsArray);
+        final ImmutableList.Builder<ColUnit> builder = ImmutableList.builder();
+        for (int i = 0; i < 9; i++) {
+            builder.add(new ColUnit(i, cells.subList(i * 9, (i+1) * 9)));
+        }
+
+        return builder.build();
     }
 
     @Override
     public ImmutableList<BoxUnit> groupByBox() {
-        // TODO:
-        return null;
+        // create array arrange by box
+        final Cell[] cellsArray = new Cell[Utils.MAX_NUM_UNSOLVED_CELL];
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                int r = (i/3)*3 + (j/3);
+                int c = (i%3)*3 + (j%3);
+                cellsArray[getK(i, j)] = this.cells[getK(r, c)];
+            }
+        }
+
+        final ImmutableList<Cell> cells  = ImmutableList.copyOf(cellsArray);
+
+        final ImmutableList.Builder<BoxUnit> builder = ImmutableList.builder();
+        for (int i = 0; i < 9; i++) {
+            builder.add(new BoxUnit(i / 3, i % 3, cells.subList(i * 9, (i+1) * 9)));
+        }
+
+        return builder.build();
     }
 }
