@@ -15,13 +15,17 @@ public class SudokuSolver {
     }
 
     public static SudokuSolveStrategy[] getStrategies() {
-        final SudokuSolveStrategy[] strategies = new SudokuSolveStrategy[6];
+        final SudokuSolveStrategy[] strategies = new SudokuSolveStrategy[10];
         strategies[0] = new NakedSingleSolveStrategy();
         strategies[1] = new HiddenSingleSolveStragety();
         strategies[2] = new NakedPairSolveStrategy();
         strategies[3] = new NakedTripleSolveStrategy();
         strategies[4] = new HiddenPairSolveStrategy();
         strategies[5] = new HiddenTripleSolveStrategy();
+        strategies[6] = new NakedQuadSolveStrategy();
+        strategies[7] = new HiddenQuadSolveStrategy();
+        strategies[8] = new PointingPairSolveStrategy();
+        strategies[9] = new BoxLineReductionSolveStrategy();
         return strategies;
     }
 
@@ -93,8 +97,6 @@ public class SudokuSolver {
     }
 
     public static void main(String[] args) {
-        mainSolve(initialize(new Scanner(ClassLoader.getSystemResourceAsStream("hard_0.txt"))));
-
-        //mainSolve(initialize(new Scanner(System.in)));
+        mainSolve(initialize(new Scanner(System.in)));
     }
 }

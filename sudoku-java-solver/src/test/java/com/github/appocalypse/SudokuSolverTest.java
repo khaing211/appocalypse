@@ -17,4 +17,9 @@ public class SudokuSolverTest {
     public void testMedium_0() {
         assertTrue(SudokuSolver.initialize(new Scanner(ClassLoader.getSystemResourceAsStream("medium_0.txt"))).solve());
     }
+
+    @Test
+    public void testHard_0() {
+        SudokuSolver.mainSolve(SudokuSolver.initialize(new Scanner(ClassLoader.getSystemResourceAsStream("hard_0.txt"))));
+    }
 }
