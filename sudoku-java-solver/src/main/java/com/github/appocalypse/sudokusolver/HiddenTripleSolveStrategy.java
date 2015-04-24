@@ -35,7 +35,6 @@ public class HiddenTripleSolveStrategy implements SudokuSolveStrategy {
                 }
 
                 if (!skip && i == 3) {
-                    // clear every other candidates for 2 cells
                     final int candidateSetToUnset = ((~candidateSet3) & Utils.ALL);
                     hasUpdate = hasUpdate || board.unsetCandidate(cellSet[0].getR(), cellSet[0].getC(), candidateSetToUnset);
                     hasUpdate = hasUpdate || board.unsetCandidate(cellSet[1].getR(), cellSet[1].getC(), candidateSetToUnset);
