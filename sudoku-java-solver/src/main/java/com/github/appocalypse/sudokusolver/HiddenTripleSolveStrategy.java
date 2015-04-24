@@ -2,6 +2,10 @@ package com.github.appocalypse.sudokusolver;
 
 import com.google.common.collect.ImmutableList;
 
+/**
+ * Hidden Triples will be disguised by other candidates on those cells so
+ * we have to prise them out by ensuing the Triple applies to at least on unit.
+ */
 public class HiddenTripleSolveStrategy implements SudokuSolveStrategy {
     @Override
     public boolean update(final SudokuBoard board) {
@@ -18,7 +22,6 @@ public class HiddenTripleSolveStrategy implements SudokuSolveStrategy {
                 boolean skip = false;
 
                 for (Cell cell : cells) {
-
                     if (!cell.hasHiddenTriple() &&
                         cell.isNotFilled() &&
                         Utils.isIn(sizes, Utils.size(cell.getCandidateSet() & candidateSet3))) {
@@ -36,12 +39,11 @@ public class HiddenTripleSolveStrategy implements SudokuSolveStrategy {
                     final int candidateSetToUnset = ((~candidateSet3) & Utils.ALL);
                     hasUpdate = hasUpdate || board.unsetCandidate(cellSet[0].getR(), cellSet[0].getC(), candidateSetToUnset);
                     hasUpdate = hasUpdate || board.unsetCandidate(cellSet[1].getR(), cellSet[1].getC(), candidateSetToUnset);
-                    hasUpdate = hasUpdate || board.unsetCandidate(cellSet[2].getR(), cellSet[1].getC(), candidateSetToUnset);
+                    hasUpdate = hasUpdate || board.unsetCandidate(cellSet[2].getR(), cellSet[2].getC(), candidateSetToUnset);
 
                     board.markHiddenTriple(cellSet[0], cellSet[1], cellSet[2]);
                 }
             }
-
         }
 
         return hasUpdate;

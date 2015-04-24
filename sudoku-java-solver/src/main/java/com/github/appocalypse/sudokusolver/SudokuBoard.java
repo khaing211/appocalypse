@@ -339,4 +339,30 @@ public class SudokuBoard implements Unit {
                 .withHasHiddenTriple(true)
                 .build();
     }
+
+    public void markNakedQuad(Cell c0, Cell c1, Cell c2, Cell c3) {
+        int k = getK(c0.getR(), c0.getC());
+        cells[k] = Cell.copy(cells[k])
+                .withHasNakedQuad(true)
+                .withHasHiddenQuad(true)
+                .build();
+
+        k = getK(c1.getR(), c1.getC());
+        cells[k] = Cell.copy(cells[k])
+                .withHasNakedQuad(true)
+                .withHasHiddenQuad(true)
+                .build();
+
+        k = getK(c2.getR(), c2.getC());
+        cells[k] = Cell.copy(cells[k])
+                .withHasNakedQuad(true)
+                .withHasHiddenQuad(true)
+                .build();
+
+        k = getK(c3.getR(), c3.getC());
+        cells[k] = Cell.copy(cells[k])
+                .withHasNakedQuad(true)
+                .withHasHiddenQuad(true)
+                .build();
+    }
 }
