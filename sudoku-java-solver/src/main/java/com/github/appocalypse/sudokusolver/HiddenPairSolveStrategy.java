@@ -20,7 +20,6 @@ public class HiddenPairSolveStrategy implements SudokuSolveStrategy {
         boolean hasUpdate = false;
 
         for (final Unit unit : units) {
-            final Map<Integer, Long> candidateSetToCount = new HashMap<>();
             final ImmutableList<Cell> cells = unit.cells();
             for (final int candidateSet2 : Utils.CHOOSE_2_BIT_SET) {
                 int i = 0;
@@ -40,7 +39,7 @@ public class HiddenPairSolveStrategy implements SudokuSolveStrategy {
                 }
 
                 if (!skip && i == 2) {
-                    // clear every other possible for 2 cells
+                    // clear every other candidates for 2 cells
                     final int candidateSetToUnset = ((~candidateSet2) & Utils.ALL);
                     hasUpdate = hasUpdate || board.unsetCandidate(cellSet[0].getR(), cellSet[0].getC(), candidateSetToUnset);
                     hasUpdate = hasUpdate || board.unsetCandidate(cellSet[1].getR(), cellSet[1].getC(), candidateSetToUnset);

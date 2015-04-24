@@ -18,7 +18,8 @@ public class SudokuSolverTest {
                 "easy_0.txt",
                 "easy_1.txt",
                 "medium_0.txt",
-                "medium_1.txt");
+                "medium_1.txt",
+                "hard_0.txt");
     }
 
     @Parameterized.Parameter

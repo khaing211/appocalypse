@@ -116,6 +116,11 @@ public interface Utils {
         return true;
     }
 
+    static boolean isAllTrue(boolean[] check) {
+        for (boolean b : check) if (!b) return false;
+        return true;
+    }
+
     /**
      * Calculate number of bits in the vector
      *

@@ -307,16 +307,36 @@ public class SudokuBoard implements Unit {
         int k = getK(c0.getR(), c0.getC());
         cells[k] = Cell.copy(cells[k])
                 .withHasNakedTriple(true)
+                .withHasHiddenTriple(true)
                 .build();
 
         k = getK(c1.getR(), c1.getC());
         cells[k] = Cell.copy(cells[k])
                 .withHasNakedTriple(true)
+                .withHasHiddenTriple(true)
                 .build();
 
         k = getK(c2.getR(), c2.getC());
         cells[k] = Cell.copy(cells[k])
                 .withHasNakedTriple(true)
+                .withHasHiddenTriple(true)
+                .build();
+    }
+
+    public void markHiddenTriple(Cell c0, Cell c1, Cell c2) {
+        int k = getK(c0.getR(), c0.getC());
+        cells[k] = Cell.copy(cells[k])
+                .withHasHiddenTriple(true)
+                .build();
+
+        k = getK(c1.getR(), c1.getC());
+        cells[k] = Cell.copy(cells[k])
+                .withHasHiddenTriple(true)
+                .build();
+
+        k = getK(c2.getR(), c2.getC());
+        cells[k] = Cell.copy(cells[k])
+                .withHasHiddenTriple(true)
                 .build();
     }
 }

@@ -1,7 +1,9 @@
 package com.github.appocalypse;
 
 import com.github.appocalypse.sudokusolver.*;
+import com.google.common.collect.ImmutableList;
 
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -54,6 +56,28 @@ public class SudokuSolver {
         return board;
     }
 
+    public boolean validateBoard() {
+        final ImmutableList<Unit> units = board.getAllUnits();
+        final boolean[] check = new boolean[9];
+
+        for (final Unit unit : units) {
+            Arrays.fill(check, false);
+            final ImmutableList<Cell> cells = unit.cells();
+            if (cells.size() != 9) return false;
+
+            for (int i = 0; i < 9; i++) {
+                final Cell cell = cells.get(i);
+                if (cell.isNotFilled()) return false;
+                check[cell.getN()-1] = true;
+            }
+
+            if (!Utils.isAllTrue(check)) return false;
+        }
+
+        return true;
+    }
+
+
     /**
      * @param scanner to initalize the board
      * @return SudokuBoard from scanner input
@@ -90,6 +114,8 @@ public class SudokuSolver {
         try {
             if (!solver.solve()) {
                 System.out.println("Unable to solve, final board is partial result");
+            } else {
+                System.out.println("Solve and validation result: " + solver.validateBoard());
             }
         } finally {
             System.out.println(initialBoard.sideBySide(solver.getBoard()));
