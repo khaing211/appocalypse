@@ -6,7 +6,7 @@ package com.github.appocalypse.sudokusolver;
 public class Cell {
     private final int r;
     private final int c;
-    private final int possibleSet;
+    private final int candidateSet;
     private final int n;
     private final boolean hasNakedPair;
     private final boolean hasNakedTriple;
@@ -15,12 +15,12 @@ public class Cell {
     private final boolean hasHiddenTriple;
     private final boolean hasHiddenQuad;
 
-    public Cell(int r, int c, int possibleSet, int n,
+    public Cell(int r, int c, int candidateSet, int n,
                 boolean hasNakedPair, boolean hasNakedTriple, boolean hasNakedQuad,
                 boolean hasHiddenPair, boolean hasHiddenTriple, boolean hasHiddenQuad) {
         this.r = r;
         this.c = c;
-        this.possibleSet = possibleSet;
+        this.candidateSet = candidateSet;
         this.n = n;
         this.hasNakedPair = hasNakedPair;
         this.hasNakedTriple = hasNakedTriple;
@@ -30,8 +30,8 @@ public class Cell {
         this.hasHiddenQuad = hasHiddenQuad;
     }
 
-    public Cell(int r, int c, int possibleSet, int n) {
-        this(r, c, possibleSet, n, false, false, false, false, false, false);
+    public Cell(int r, int c, int candidateSet, int n) {
+        this(r, c, candidateSet, n, false, false, false, false, false, false);
     }
 
     public Cell(int r, int c, int n) {
@@ -66,19 +66,19 @@ public class Cell {
         return getBoxC() * 3;
     }
 
-    public int getPossibleSet() {
-        return possibleSet;
+    public int getCandidateSet() {
+        return candidateSet;
     }
 
-    public int getPossibleSetSize() {
-        return Utils.size(possibleSet);
+    public int getCandidateSetSize() {
+        return Utils.size(candidateSet);
     }
 
-    public int[] getPossibles() {
-        final int[] ret = new int[getPossibleSetSize()];
+    public int[] getCandidates() {
+        final int[] ret = new int[getCandidateSetSize()];
         int j = 0;
         for (int i = 1; i <= 9; i++) {
-            if (isPossible(i)) {
+            if (isCandidate(i)) {
                 ret[j++] = i;
             }
         }
@@ -97,9 +97,9 @@ public class Cell {
         return !isFilled();
     }
 
-    public boolean isPossible(int n) {
+    public boolean isCandidate(int n) {
         final int mask = (1<<(n-1));
-        return (possibleSet & mask) == mask;
+        return (candidateSet & mask) == mask;
     }
 
     public boolean hasNakedPair() {
@@ -131,7 +131,7 @@ public class Cell {
         return "Cell{" +
                 "r=" + r +
                 ", c=" + c +
-                ", possibleSet=" + possibleSet +
+                ", candidateSet=" + candidateSet +
                 ", n=" + n +
                 ", hasNakedPair=" + hasNakedPair +
                 ", hasNakedTriple=" + hasNakedTriple +
@@ -151,7 +151,7 @@ public class Cell {
                 .withR(cell.getR())
                 .withC(cell.getC())
                 .withN(cell.getN())
-                .withPossibleSet(cell.getPossibleSet())
+                .withCandidateSet(cell.getCandidateSet())
                 .withHasNakedPair(cell.hasNakedPair())
                 .withHasNakedTriple(cell.hasNakedTriple())
                 .withHasNakedQuad(cell.hasNakedQuad())
@@ -163,7 +163,7 @@ public class Cell {
     public static class Builder {
         private int r;
         private int c;
-        private int possibleSet;
+        private int candidateSet;
         private int n;
         private boolean hasNakedPair;
         private boolean hasNakedTriple;
@@ -182,8 +182,8 @@ public class Cell {
             return this;
         }
 
-        public Builder withPossibleSet(int possibleSet) {
-            this.possibleSet = possibleSet;
+        public Builder withCandidateSet(int candidateSet) {
+            this.candidateSet = candidateSet;
             return this;
         }
 
@@ -223,7 +223,7 @@ public class Cell {
         }
 
         public Cell build() {
-            return new Cell(r, c, possibleSet, n, hasNakedPair, hasNakedTriple,
+            return new Cell(r, c, candidateSet, n, hasNakedPair, hasNakedTriple,
                     hasNakedQuad, hasHiddenPair, hasHiddenTriple, hasHiddenQuad);
         }
     }

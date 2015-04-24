@@ -7,9 +7,9 @@ import java.util.Map;
 
 /**
  * A Hidden Pair is a set of two cells of a common unit containing a same set of two candidates that
- * other cells in the unit has in possible set
+ * other cells in the unit has in candidate set
  *
- * It is clear up all other possible beside the two candidates in the two cells.
+ * It is clear up all other candidate(s) beside the two candidates in the two cells.
  */
 public class HiddenPairSolveStrategy implements SudokuSolveStrategy {
     @Override
@@ -20,16 +20,16 @@ public class HiddenPairSolveStrategy implements SudokuSolveStrategy {
         boolean hasUpdate = false;
 
         for (final Unit unit : units) {
-            final Map<Integer, Long> possibleSetToCount = new HashMap<>();
+            final Map<Integer, Long> candidateSetToCount = new HashMap<>();
             final ImmutableList<Cell> cells = unit.cells();
-            for (final int possibleSet2Bit : Utils.CHOOSE_2_BIT_SET) {
+            for (final int candidateSet2 : Utils.CHOOSE_2_BIT_SET) {
                 int i = 0;
                 boolean skip = false;
 
                 for (Cell cell : cells) {
                     if (!cell.hasHiddenPair() &&
                         cell.isNotFilled() &&
-                        (cell.getPossibleSet() & possibleSet2Bit) == possibleSet2Bit) {
+                        (cell.getCandidateSet() & candidateSet2) == candidateSet2) {
                         if (i < 2) {
                             cellSet[i++] = cell;
                         } else {
@@ -41,9 +41,9 @@ public class HiddenPairSolveStrategy implements SudokuSolveStrategy {
 
                 if (!skip && i == 2) {
                     // clear every other possible for 2 cells
-                    final int possibleSetToUnset = ((~possibleSet2Bit) & Utils.ALL);
-                    hasUpdate = hasUpdate || board.unsetPossible(cellSet[0].getR(), cellSet[0].getC(), possibleSetToUnset);
-                    hasUpdate = hasUpdate || board.unsetPossible(cellSet[1].getR(), cellSet[1].getC(), possibleSetToUnset);
+                    final int candidateSetToUnset = ((~candidateSet2) & Utils.ALL);
+                    hasUpdate = hasUpdate || board.unsetCandidate(cellSet[0].getR(), cellSet[0].getC(), candidateSetToUnset);
+                    hasUpdate = hasUpdate || board.unsetCandidate(cellSet[1].getR(), cellSet[1].getC(), candidateSetToUnset);
 
                     board.markHiddenPair(cellSet[0], cellSet[1]);
                 }

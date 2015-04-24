@@ -71,23 +71,27 @@ public interface Utils {
 
     /**
      * It is good to use when you only have 1 bit set
-     * This method will return number from possibleSet
+     * This method will return number from candidateSet
      *
-     * @param possibleSet
+     * @param candidateSet
      * @return n
      */
-    static int getNumber(int possibleSet) {
-        return Integer.numberOfTrailingZeros(possibleSet) + 1;
+    static int getNumber(int candidateSet) {
+        return Integer.numberOfTrailingZeros(candidateSet) + 1;
     }
-
 
     /**
      * Alias for popcount32
-     * @param possibleSet
+     * @param candidateSet
      * @return
      */
-    static int size(int possibleSet) {
-        return popcount32(possibleSet);
+    static int size(int candidateSet) {
+        return popcount32(candidateSet);
+    }
+
+    static int unset(int candidateSet, int n) {
+        final int mask = ((~(1<<(n-1))) & ALL);
+        return candidateSet & mask;
     }
 
     static boolean isNotIn(final int[] set, int needle) {
@@ -147,11 +151,6 @@ public interface Utils {
      */
     static int difference(int a, int b) {
         return ((a ^ b) & a);
-    }
-
-    static int unset(int possibleSet, int n) {
-        final int mask = ((~(1<<(n-1))) & ALL);
-        return possibleSet & mask;
     }
 
     static List<int[]> choose(final int n, final int k) {

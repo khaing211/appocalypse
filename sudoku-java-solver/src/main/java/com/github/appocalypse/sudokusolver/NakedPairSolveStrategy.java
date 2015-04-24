@@ -26,22 +26,25 @@ public class NakedPairSolveStrategy implements SudokuSolveStrategy {
                 final Cell c1 = cells.get(set[1]);
 
                 if (!(c0.hasNakedPair() || c1.hasNakedPair()) &&
-                    c0.getPossibleSetSize() == 2 &&
-                    c1.getPossibleSetSize() == 2 &&
-                    c0.getPossibleSet() == c1.getPossibleSet()) {
+                    c0.getCandidateSetSize() == 2 &&
+                    c1.getCandidateSetSize() == 2 &&
+                    c0.getCandidateSet() == c1.getCandidateSet()) {
 
                     board.markNakedPair(c0, c1);
 
                     if (Utils.isInSameRow(c0, c1)) {
-                        hasUpdate = hasUpdate || eliminatePossibleFromRow(board, c0, c1);
+                        hasUpdate = hasUpdate || NakedSolveStrategy.eliminateCandidateFromRow(board,
+                                c0.getCandidateSet(), c0.getR(), c0, c1);
                     }
 
                     if (Utils.isInSameCol(c0, c1)) {
-                        hasUpdate = hasUpdate || eliminatePossibleFromColumn(board, c0, c1);
+                        hasUpdate = hasUpdate || NakedSolveStrategy.eliminateCandidateFromCol(board,
+                                c0.getCandidateSet(), c0.getC(), c0, c1);
                     }
 
                     if (Utils.isInSameBox(c0, c1)) {
-                        hasUpdate = hasUpdate || eliminatePossibleFromBox(board, c0, c1);
+                        hasUpdate = hasUpdate || NakedSolveStrategy.eliminateCandidateFromBox(board,
+                                c0.getCandidateSet(), c0.getBaseR(), c0.getBaseC(), c0, c1);
                     }
                 }
             }
@@ -50,31 +53,31 @@ public class NakedPairSolveStrategy implements SudokuSolveStrategy {
         return hasUpdate;
     }
 
-    private boolean eliminatePossibleFromRow(final SudokuBoard board, final Cell c0, final Cell c1) {
+    private boolean eliminateCandidateFromRow(final SudokuBoard board, final Cell c0, final Cell c1) {
         boolean hasUpdate = false;
         for (int i = 0; i < 9; i++) {
             final Cell cell = board.getCell(c0.getR(), i);
             if (cell.isNotFilled() && Utils.isNot(cell, c0, c1)) {
-                hasUpdate = hasUpdate || board.unsetPossible(c0.getR(), i, c0.getPossibleSet());
+                hasUpdate = hasUpdate || board.unsetCandidate(c0.getR(), i, c0.getCandidateSet());
             }
         }
 
         return hasUpdate;
     }
 
-    private boolean eliminatePossibleFromColumn(final SudokuBoard board, final Cell c0, final Cell c1) {
+    private boolean eliminateCandidateFromCol(final SudokuBoard board, final Cell c0, final Cell c1) {
         boolean hasUpdate = false;
         for (int i = 0; i < 9; i++) {
             final Cell cell = board.getCell(i, c0.getC());
             if (cell.isNotFilled() && Utils.isNot(cell, c0, c1)) {
-                hasUpdate = hasUpdate || board.unsetPossible(i, c0.getC(), c0.getPossibleSet());
+                hasUpdate = hasUpdate || board.unsetCandidate(i, c0.getC(), c0.getCandidateSet());
             }
         }
 
         return hasUpdate;
     }
 
-    private boolean eliminatePossibleFromBox(final SudokuBoard board, final Cell c0, final Cell c1) {
+    private boolean eliminateCandidateFromBox(final SudokuBoard board, final Cell c0, final Cell c1) {
         boolean hasUpdate = false;
         final int baseR = c0.getBaseR();
         final int baseC = c0.getBaseC();
@@ -84,7 +87,7 @@ public class NakedPairSolveStrategy implements SudokuSolveStrategy {
                 final int c = baseC + smallC;
                 final Cell cell = board.getCell(r, c);
                 if (cell.isNotFilled() && Utils.isNot(cell, c0, c1)) {
-                    hasUpdate = hasUpdate || board.unsetPossible(r, c, c0.getPossibleSet());
+                    hasUpdate = hasUpdate || board.unsetCandidate(r, c, c0.getCandidateSet());
                 }
             }
         }

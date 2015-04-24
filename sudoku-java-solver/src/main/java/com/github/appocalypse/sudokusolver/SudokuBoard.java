@@ -2,7 +2,6 @@ package com.github.appocalypse.sudokusolver;
 
 import com.google.common.collect.ImmutableList;
 
-import java.util.Arrays;
 import java.util.stream.IntStream;
 
 public class SudokuBoard implements Unit {
@@ -44,7 +43,7 @@ public class SudokuBoard implements Unit {
         final int k = getK(r, c);
         final Cell cell = getCell(r, c);
 
-        if (cell.isNotFilled() && cell.isPossible(n)) {
+        if (cell.isNotFilled() && cell.isCandidate(n)) {
             cells[k] = new Cell(cell.getR(), cell.getC(), n);
             update(r, c, n);
             numUnsolvedCell--;
@@ -65,13 +64,13 @@ public class SudokuBoard implements Unit {
             if (i != c) {
                 k = getK(r, i);
                 cell = cells[k];
-                cells[k] = Cell.copy(cells[k]).withPossibleSet(Utils.unset(cell.getPossibleSet(), n)).build();
+                cells[k] = Cell.copy(cells[k]).withCandidateSet(Utils.unset(cell.getCandidateSet(), n)).build();
             }
 
             if (i != r) {
                 k = getK(i, c);
                 cell = cells[k];
-                cells[k] = Cell.copy(cells[k]).withPossibleSet(Utils.unset(cell.getPossibleSet(), n)).build();
+                cells[k] = Cell.copy(cells[k]).withCandidateSet(Utils.unset(cell.getCandidateSet(), n)).build();
             }
 
             final int curR = baseR + i/3;
@@ -79,19 +78,19 @@ public class SudokuBoard implements Unit {
             if (!(curR == r && curC == c)) {
                 k = getK(curR, curC);
                 cell = cells[k];
-                cells[k] = Cell.copy(cells[k]).withPossibleSet(Utils.unset(cell.getPossibleSet(), n)).build();
+                cells[k] = Cell.copy(cells[k]).withCandidateSet(Utils.unset(cell.getCandidateSet(), n)).build();
             }
         }
     }
 
-    public boolean unsetPossible(int r, int c, int set) {
+    public boolean unsetCandidate(int r, int c, int set) {
         Utils.isValidIndex(r, c);
         final int k = getK(r, c);
         final Cell cell = cells[k];
-        final int test = (cell.getPossibleSet() & set);
+        final int test = (cell.getCandidateSet() & set);
         final int mask = ((~set) & Utils.ALL);
-        final int newPossibleSet = cell.getPossibleSet() & mask;
-        cells[k] = Cell.copy(cells[k]).withPossibleSet(newPossibleSet).build();
+        final int newCandidateSet = cell.getCandidateSet() & mask;
+        cells[k] = Cell.copy(cells[k]).withCandidateSet(newCandidateSet).build();
         return test != 0;
     }
 
@@ -152,7 +151,7 @@ public class SudokuBoard implements Unit {
                     for (int j = 0; j < 3; j++) {
                         if (cell.isNotFilled()) {
                             final int n = i * 3 + j + 1;
-                            if (cell.isPossible(n)) {
+                            if (cell.isCandidate(n)) {
                                 builder.append(Character.forDigit(n, 10));
                             } else {
                                 builder.append(' ');
@@ -177,7 +176,7 @@ public class SudokuBoard implements Unit {
                         for (int j = 0; j < 3; j++) {
                             if (cell.isNotFilled()) {
                                 final int n = i * 3 + j + 1;
-                                if (cell.isPossible(n)) {
+                                if (cell.isCandidate(n)) {
                                     builder.append(Character.forDigit(n, 10));
                                 } else {
                                     builder.append(' ');

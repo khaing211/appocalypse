@@ -13,8 +13,8 @@ public class NakedSingleSolveStrategy implements SudokuSolveStrategy {
 
         boolean hasUpdate = false;
         for (Cell cell : cells) {
-            if (cell.isNotFilled() && cell.getPossibleSetSize() == 1) {
-                board.fill(cell.getR(), cell.getC(), cell.getPossibles()[0]);
+            if (cell.isNotFilled() && cell.getCandidateSetSize() == 1) {
+                board.fill(cell.getR(), cell.getC(), cell.getCandidates()[0]);
                 hasUpdate = hasUpdate || true;
             }
         }
