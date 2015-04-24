@@ -1,5 +1,7 @@
 package com.github.appocalypse.sudokusolver;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,9 +10,12 @@ import java.util.stream.IntStream;
 public interface Utils {
     int ALL = (1<<9)-1;
     int MAX_NUM_UNSOLVED_CELL = 81;
-    List<Integer> TWO_BITS_SET = chooseBit(9, 2);
-    List<Integer> THREE_BITS_SET = chooseBit(9, 3);
-    List<Integer> FOUR_BITS_SET = chooseBit(9, 4);
+    List<Integer> CHOOSE_2_BIT_SET = chooseBit(9, 2);
+    List<Integer> CHOOSE_3_BIT_SET = chooseBit(9, 3);
+    List<Integer> CHOOSE_4_BIT_SET = chooseBit(9, 4);
+    List<int[]> CHOOSE_2_SET = choose(9, 2);
+    List<int[]> CHOOSE_3_SET = choose(9, 3);
+    List<int[]> CHOOSE_4_SET = choose(9, 4);
 
     static void isValidIndex(int r, int c) {
         if (0 > r || r >= 9) {
@@ -41,6 +46,16 @@ public interface Utils {
      */
     static int getNumber(int possibleSet) {
         return Integer.numberOfTrailingZeros(possibleSet) + 1;
+    }
+
+
+    /**
+     * Alias for popcount32
+     * @param possibleSet
+     * @return
+     */
+    static int size(int possibleSet) {
+        return popcount32(possibleSet);
     }
 
     /**
@@ -86,21 +101,23 @@ public interface Utils {
     }
 
     static List<int[]> choose(final int n, final int k) {
-        final List<int[]> sets = new ArrayList<int[]>();
-        final int[] set = IntStream.range(0, k).toArray();
+        if (k < 0 || n < 0 || k > n) {
+            return ImmutableList.of();
+        }
 
+        final ImmutableList.Builder<int[]> sets = ImmutableList.builder();
+        final int[] set = IntStream.range(0, k).toArray();
         do {
             sets.add(Arrays.copyOf(set, k));
         } while (next(set, n, k));
 
-        return sets;
+        return sets.build();
     }
 
     static boolean next(int[] set, int n, int k) {
         int i = k - 1;
-        while(i > 0) {
-            if (set[i] == n-1) {
-                set[i] = 0;
+        while (i >= 0) {
+            if (set[i] == n-k+i) {
                 i--;
             } else {
                 set[i]++;
@@ -111,16 +128,7 @@ public interface Utils {
             }
         }
 
-        if (set[i] == n-k) {
-            return false;
-        }
-
-        set[i]++;
-        for (; i < k-1; i++) {
-            set[i+1] = set[i]+1;
-        }
-
-        return true;
+        return false;
     }
 
     /**
@@ -135,7 +143,7 @@ public interface Utils {
      * @param n between 0 and 31
      */
     static List<Integer> chooseBit(int n, int k) {
-        final List<Integer> sets = new ArrayList<Integer>();
+        final ImmutableList.Builder<Integer> sets = ImmutableList.builder();
         final int mask = (1<<n)-1;
         final int testMask = ~mask;
 
@@ -152,6 +160,6 @@ public interface Utils {
             v = (t + 1) | (((~t & -~t) - 1) >> (Integer.numberOfTrailingZeros(v) + 1));
         } while((v & testMask) == 0);
 
-        return sets;
+        return sets.build();
     }
 }

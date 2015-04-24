@@ -71,7 +71,7 @@ public class Cell {
     }
 
     public int getPossibleSetSize() {
-        return Utils.popcount32(possibleSet);
+        return Utils.size(possibleSet);
     }
 
     public int[] getPossibles() {
