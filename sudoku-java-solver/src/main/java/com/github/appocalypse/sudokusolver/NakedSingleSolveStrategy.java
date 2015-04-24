@@ -1,23 +1,24 @@
 package com.github.appocalypse.sudokusolver;
 
+import com.google.common.collect.ImmutableList;
+
 /**
  * NakedSingle is to eliminate cells with only one last remaining candidate.
  */
 public class NakedSingleSolveStrategy implements SudokuSolveStrategy {
     @Override
     public boolean update(SudokuBoard board) {
-        for (int r = 0; r < 9; r++) {
-            for (int c = 0; c < 9; c++) {
-                if (!board.isFilled(r, c)) {
-                    if (board.getPossibleSetSize(r, c) == 1) {
-                        final int[] possibles = board.getPossibles(r, c);
-                        board.fill(r, c, possibles[0]);
-                        return true;
-                    }
-                }
+        // snapshot of the cells
+        final ImmutableList<Cell> cells = board.cells();
+
+        boolean hasUpdate = false;
+        for (Cell cell : cells) {
+            if (cell.isNotFilled() && cell.getPossibleSetSize() == 1) {
+                board.fill(cell.getR(), cell.getC(), cell.getPossibles()[0]);
+                hasUpdate = hasUpdate || true;
             }
         }
 
-        return false;
+        return hasUpdate;
     }
 }

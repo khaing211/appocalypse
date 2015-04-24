@@ -290,4 +290,12 @@ public class SudokuBoard implements Unit {
 
         return builder.build();
     }
+
+    public ImmutableList<Unit> getAllUnits() {
+        final ImmutableList.Builder<Unit> builder = ImmutableList.builder();
+        groupByBox().stream().forEach(builder::add);
+        groupByCol().stream().forEach(builder::add);
+        groupByRow().stream().forEach(builder::add);
+        return builder.build();
+    }
 }
