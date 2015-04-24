@@ -28,9 +28,9 @@ public class SudokuBoard implements Unit {
         return r*9 + c;
     }
 
-    private Cell getCell(int r, int c) {
-        final int k = getK(r, c);
-        return cells[k];
+    public Cell getCell(int r, int c) {
+        Utils.isValidIndex(r, c);
+        return cells[getK(r, c)];
     }
 
     public int getNumUnsolvedCell() {
@@ -55,11 +55,6 @@ public class SudokuBoard implements Unit {
         }
     }
 
-    public boolean isFilled(int r, int c) {
-        Utils.isValidIndex(r, c);
-        return getCell(r, c).isFilled();
-    }
-
     private void update(final int r, final int c, final int n) {
         int k;
         Cell cell;
@@ -70,13 +65,13 @@ public class SudokuBoard implements Unit {
             if (i != c) {
                 k = getK(r, i);
                 cell = cells[k];
-                cells[k] = new Cell(r, i, Utils.unset(cell.getPossibleSet(), n), cell.getN());
+                cells[k] = Cell.copy(cells[k]).withPossibleSet(Utils.unset(cell.getPossibleSet(), n)).build();
             }
 
             if (i != r) {
                 k = getK(i, c);
                 cell = cells[k];
-                cells[k] = new Cell(i, c, Utils.unset(cell.getPossibleSet(), n), cell.getN());
+                cells[k] = Cell.copy(cells[k]).withPossibleSet(Utils.unset(cell.getPossibleSet(), n)).build();
             }
 
             final int curR = baseR + i/3;
@@ -84,7 +79,7 @@ public class SudokuBoard implements Unit {
             if (!(curR == r && curC == c)) {
                 k = getK(curR, curC);
                 cell = cells[k];
-                cells[k] = new Cell(curR, curC, Utils.unset(cell.getPossibleSet(), n), cell.getN());
+                cells[k] = Cell.copy(cells[k]).withPossibleSet(Utils.unset(cell.getPossibleSet(), n)).build();
             }
         }
     }
@@ -96,24 +91,8 @@ public class SudokuBoard implements Unit {
         final int test = (cell.getPossibleSet() & set);
         final int mask = ((~set) & Utils.ALL);
         final int newPossibleSet = cell.getPossibleSet() & mask;
-        cells[k] = new Cell(r, c, newPossibleSet, cell.getN(), cell.hasNakedPair(), cell.hasNakedTriple(), cell.hasNakedQuad(),
-            cell.hasHiddenPair(), cell.hasHiddenTriple(), cell.hasHiddenQuad());
+        cells[k] = Cell.copy(cells[k]).withPossibleSet(newPossibleSet).build();
         return test != 0;
-    }
-
-    public int getPossibleSet(int r, int c) {
-        Utils.isValidIndex(r, c);
-        return getCell(r, c).getPossibleSet();
-    }
-
-    public int[] getPossibles(int r, int c) {
-        Utils.isValidIndex(r, c);
-        return getCell(r, c).getPossibles();
-    }
-
-    public int getPossibleSetSize(int r, int c) {
-        Utils.isValidIndex(r, c);
-        return getCell(r, c).getPossibleSetSize();
     }
 
     public String board(final char empty) {
@@ -297,5 +276,48 @@ public class SudokuBoard implements Unit {
         groupByCol().stream().forEach(builder::add);
         groupByRow().stream().forEach(builder::add);
         return builder.build();
+    }
+
+    public void markNakedPair(Cell c0, Cell c1) {
+        int k = getK(c0.getR(), c0.getC());
+        cells[k] = Cell.copy(cells[k])
+                .withHasNakedPair(true)
+                .withHasHiddenPair(true)
+                .build();
+
+        k = getK(c1.getR(), c1.getC());
+        cells[k] = Cell.copy(cells[k])
+                .withHasNakedPair(true)
+                .withHasHiddenPair(true)
+                .build();
+    }
+
+    public void markHiddenPair(Cell c0, Cell c1) {
+        int k = getK(c0.getR(), c0.getC());
+        cells[k] = Cell.copy(cells[k])
+                .withHasHiddenPair(true)
+                .build();
+
+        k = getK(c1.getR(), c1.getC());
+        cells[k] = Cell.copy(cells[k])
+                .withHasHiddenPair(true)
+                .build();
+    }
+
+    public void markNakedTriple(Cell c0, Cell c1, Cell c2) {
+        int k = getK(c0.getR(), c0.getC());
+        cells[k] = Cell.copy(cells[k])
+                .withHasNakedTriple(true)
+                .build();
+
+        k = getK(c1.getR(), c1.getC());
+        cells[k] = Cell.copy(cells[k])
+                .withHasNakedTriple(true)
+                .build();
+
+        k = getK(c2.getR(), c2.getC());
+        cells[k] = Cell.copy(cells[k])
+                .withHasNakedTriple(true)
+                .build();
     }
 }

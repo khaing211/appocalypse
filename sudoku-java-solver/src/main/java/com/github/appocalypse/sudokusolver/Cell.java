@@ -141,4 +141,90 @@ public class Cell {
                 ", hasHiddenQuad=" + hasHiddenQuad +
                 '}';
     }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static Builder copy(Cell cell) {
+        return new Builder()
+                .withR(cell.getR())
+                .withC(cell.getC())
+                .withN(cell.getN())
+                .withPossibleSet(cell.getPossibleSet())
+                .withHasNakedPair(cell.hasNakedPair())
+                .withHasNakedTriple(cell.hasNakedTriple())
+                .withHasNakedQuad(cell.hasNakedQuad())
+                .withHasHiddenPair(cell.hasHiddenPair())
+                .withHasHiddenTriple(cell.hasHiddenTriple())
+                .withHasHiddenQuad(cell.hasHiddenQuad());
+    }
+
+    public static class Builder {
+        private int r;
+        private int c;
+        private int possibleSet;
+        private int n;
+        private boolean hasNakedPair;
+        private boolean hasNakedTriple;
+        private boolean hasNakedQuad;
+        private boolean hasHiddenPair;
+        private boolean hasHiddenTriple;
+        private boolean hasHiddenQuad;
+
+        public Builder withR(int r) {
+            this.r = r;
+            return this;
+        }
+
+        public Builder withC(int c) {
+            this.c = c;
+            return this;
+        }
+
+        public Builder withPossibleSet(int possibleSet) {
+            this.possibleSet = possibleSet;
+            return this;
+        }
+
+        public Builder withN(int n) {
+            this.n = n;
+            return this;
+        }
+
+        public Builder withHasNakedPair(boolean hasNakedPair) {
+            this.hasNakedPair = hasNakedPair;
+            return this;
+        }
+
+        public Builder withHasNakedTriple(boolean hasNakedTriple) {
+            this.hasNakedTriple = hasNakedTriple;
+            return this;
+        }
+
+        public Builder withHasNakedQuad(boolean hasNakedQuad) {
+            this.hasNakedQuad = hasNakedQuad;
+            return this;
+        }
+
+        public Builder withHasHiddenPair(boolean hasHiddenPair) {
+            this.hasHiddenPair = hasHiddenPair;
+            return this;
+        }
+
+        public Builder withHasHiddenTriple(boolean hasHiddenTriple) {
+            this.hasHiddenTriple = hasHiddenTriple;
+            return this;
+        }
+
+        public Builder withHasHiddenQuad(boolean hasHiddenQuad) {
+            this.hasHiddenQuad = hasHiddenQuad;
+            return this;
+        }
+
+        public Cell build() {
+            return new Cell(r, c, possibleSet, n, hasNakedPair, hasNakedTriple,
+                    hasNakedQuad, hasHiddenPair, hasHiddenTriple, hasHiddenQuad);
+        }
+    }
 }

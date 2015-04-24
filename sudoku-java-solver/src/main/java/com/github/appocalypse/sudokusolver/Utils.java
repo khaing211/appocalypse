@@ -33,8 +33,40 @@ public interface Utils {
         }
     }
 
-    static boolean isInSameBox(int r, int c, int otherR, int otherC) {
-        return (r/3 == otherR/3) && (c/3 == otherC/3);
+    static boolean isInSameBox(Cell c0, Cell c1) {
+        return c0.getBoxR() == c1.getBoxR() && c0.getBoxC() == c1.getBoxC();
+    }
+
+    static boolean isInSameBox(Cell c0, Cell c1, Cell ... cells) {
+        if (!isInSameBox(c0, c1)) return false;
+        for (Cell cell : cells) {
+            if (!isInSameBox(c0, cell)) return false;
+        }
+        return true;
+    }
+
+    static boolean isInSameRow(Cell c0, Cell c1) {
+        return c0.getR() == c1.getBoxR();
+    }
+
+    static boolean isInSameRow(Cell c0, Cell c1, Cell ... cells) {
+        if (!isInSameRow(c0, c1)) return false;
+        for (Cell cell : cells) {
+            if (!isInSameRow(c0, cell)) return false;
+        }
+        return true;
+    }
+
+    static boolean isInSameCol(Cell c0, Cell c1) {
+        return c0.getC() == c1.getC();
+    }
+
+    static boolean isInSameCol(Cell c0, Cell c1, Cell ... cells) {
+        if (!isInSameCol(c0, c1)) return false;
+        for (Cell cell : cells) {
+            if (!isInSameCol(c0, cell)) return false;
+        }
+        return true;
     }
 
     /**
@@ -56,6 +88,28 @@ public interface Utils {
      */
     static int size(int possibleSet) {
         return popcount32(possibleSet);
+    }
+
+    static boolean isNotIn(final int[] set, int needle) {
+        return !isIn(set, needle);
+    }
+
+    static boolean isIn(final int[] set, int needle) {
+        for (final int i : set) {
+            if (i == needle) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static boolean isNot(final Cell thisCell, final Cell ... cells) {
+        for (final Cell otherCell : cells) {
+            if (otherCell.getR() == thisCell.getR() && otherCell.getC() == thisCell.getC()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
