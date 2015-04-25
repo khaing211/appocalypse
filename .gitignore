@@ -8,8 +8,8 @@
 *.jar
 *.war
 *.ear
-/bin
-/build
+bin
+build
 
 # gradle
 .gradle
@@ -22,3 +22,6 @@ lib
 *.iml
 *.ipr
 *.iws
+
+#tmp
+*~
