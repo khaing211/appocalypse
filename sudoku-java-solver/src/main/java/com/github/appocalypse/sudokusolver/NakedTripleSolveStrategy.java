@@ -26,7 +26,7 @@ public class NakedTripleSolveStrategy implements SudokuSolveStrategy {
                 final Cell c1 = cells.get(set[1]);
                 final Cell c2 = cells.get(set[2]);
 
-                final int combineCandidateSet = c0.getCandidateSet() & c1.getCandidateSet() & c2.getCandidateSet();
+                final int combineCandidateSet = c0.getCandidateSet() | c1.getCandidateSet() | c2.getCandidateSet();
 
                 if (!(c0.hasNakedTriple() || c1.hasNakedTriple() || c2.hasNakedTriple()) &&
                     Utils.isIn(sizes, c0.getCandidateSetSize()) &&

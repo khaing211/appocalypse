@@ -26,9 +26,9 @@ public class NakedQuadSolveStrategy implements SudokuSolveStrategy {
                 final Cell c3 = cells.get(set[3]);
 
                 final int combineCandidateSet = c0.getCandidateSet()
-                        & c1.getCandidateSet()
-                        & c2.getCandidateSet()
-                        & c3.getCandidateSet();
+                        | c1.getCandidateSet()
+                        | c2.getCandidateSet()
+                        | c3.getCandidateSet();
 
                 if (!(c0.hasNakedQuad() || c1.hasNakedQuad() || c2.hasNakedQuad() || c3.hasNakedQuad()) &&
                         Utils.isIn(sizes, c0.getCandidateSetSize()) &&

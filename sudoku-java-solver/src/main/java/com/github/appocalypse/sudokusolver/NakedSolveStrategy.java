@@ -6,9 +6,17 @@ import java.util.List;
 
 public interface NakedSolveStrategy {
 
-    static boolean hasNakedPair(Cell[] chooseCells) {
+    /**
+     * @param chooseCells
+     * @return true if either cells has naked marked
+     */
+    static boolean anyHasNakedMark(Cell[] chooseCells) {
         for (int i = 0; i < chooseCells.length; i++) {
-            if (chooseCells[i].hasNakedPair()) return true;
+            switch (chooseCells.length) {
+                case 2: if (chooseCells[i].hasNakedPair()) return true;
+                case 3: if (chooseCells[i].hasNakedTriple()) return true;
+                case 4: if (chooseCells[i].hasNakedQuad()) return true;
+            }
         }
         return false;
     }
@@ -23,7 +31,14 @@ public interface NakedSolveStrategy {
         return true;
     }
 
-    default boolean update(final SudokuBoard board, final List<int[]> chooseSets) {
+    static boolean anyIsFilled(Cell[] chooseCells) {
+        for (int i = 0; i < chooseCells.length; i++) {
+            if (chooseCells[i].isFilled()) return true;
+        }
+        return false;
+    }
+
+    default boolean update(final SudokuBoard board, final List<int[]> chooseSets, final int[] sizes, final int combineSize) {
         final ImmutableList<Unit> units = board.getAllUnits();
 
         boolean hasUpdate = false;
@@ -34,31 +49,35 @@ public interface NakedSolveStrategy {
 
             for (final int[] set : chooseSets) {
 
+                int combineCandidateSet = 0;
                 final Cell[] chooseCells = new Cell[set.length];
-                for (int i = 0; i < set.length; i++) chooseCells[i] = cells.get(set[i]);
+                for (int i = 0; i < set.length; i++) {
+                    chooseCells[i] = cells.get(set[i]);
+                    combineCandidateSet |= chooseCells[i].getCandidateSet();
+                }
 
-                Cell c0 = chooseCells[0];
-                Cell c1 = chooseCells[1];
+                final Cell c0 = chooseCells[0];
 
-                if (!hasNakedPair(chooseCells) &&
-                    hasSize(chooseCells, new int[]{2}) &&
-                    c0.getCandidateSet() == c1.getCandidateSet()) {
+                if (!anyHasNakedMark(chooseCells) &&
+                    !anyIsFilled(chooseCells) &&
+                    hasSize(chooseCells, sizes) &&
+                    Utils.size(combineCandidateSet) == combineSize) {
 
-                    board.markNakedPair(c0, c1);
+                    board.markNaked(chooseCells);
 
-                    if (Utils.isInSameRow(c0, c1)) {
-                        hasUpdate = hasUpdate || NakedSolveStrategy.eliminateCandidateFromRow(board,
-                                c0.getCandidateSet(), c0.getR(), c0, c1);
+                    if (Utils.isInSameRow(chooseCells)) {
+                        hasUpdate = hasUpdate || eliminateCandidateFromRow(board,
+                                c0.getCandidateSet(), c0.getR(), chooseCells);
                     }
 
-                    if (Utils.isInSameCol(c0, c1)) {
-                        hasUpdate = hasUpdate || NakedSolveStrategy.eliminateCandidateFromCol(board,
-                                c0.getCandidateSet(), c0.getC(), c0, c1);
+                    if (Utils.isInSameCol(chooseCells)) {
+                        hasUpdate = hasUpdate || eliminateCandidateFromCol(board,
+                                c0.getCandidateSet(), c0.getC(), chooseCells);
                     }
 
-                    if (Utils.isInSameBox(c0, c1)) {
-                        hasUpdate = hasUpdate || NakedSolveStrategy.eliminateCandidateFromBox(board,
-                                c0.getCandidateSet(), c0.getBaseR(), c0.getBaseC(), c0, c1);
+                    if (Utils.isInSameBox(chooseCells)) {
+                        hasUpdate = hasUpdate || eliminateCandidateFromBox(board,
+                                c0.getCandidateSet(), c0.getBaseR(), c0.getBaseC(), chooseCells);
                     }
                 }
             }

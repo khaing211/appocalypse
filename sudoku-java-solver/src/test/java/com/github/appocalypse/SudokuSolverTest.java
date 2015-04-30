@@ -28,6 +28,8 @@ public class SudokuSolverTest {
     @Test
     public void testSudoku() {
         System.out.println("Testing " + sudokuFile);
-        assertTrue(SudokuSolver.initialize(new Scanner(ClassLoader.getSystemResourceAsStream(sudokuFile))).solve());
+        final SudokuSolver solver = SudokuSolver.initialize(new Scanner(ClassLoader.getSystemResourceAsStream(sudokuFile)));
+        assertTrue(solver.solve());
+        assertTrue(solver.validateBoard());
     }
 }

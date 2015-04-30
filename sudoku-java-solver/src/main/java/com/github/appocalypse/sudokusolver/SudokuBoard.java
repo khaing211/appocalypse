@@ -387,4 +387,12 @@ public class SudokuBoard implements Unit {
                 .withHasHiddenQuad(true)
                 .build();
     }
+
+    public void markNaked(Cell[] cells) {
+
+    }
+
+    public void markHidden(Cell[] cells) {
+
+    }
 }
