@@ -6,6 +6,23 @@ import java.util.List;
 
 public interface NakedSolveStrategy {
 
+    static boolean hasNakedPair(Cell[] chooseCells) {
+        for (int i = 0; i < chooseCells.length; i++) {
+            if (chooseCells[i].hasNakedPair()) return true;
+        }
+        return false;
+    }
+
+    /**
+     * @return true if all chooseCells  has one of the sizes
+     */
+    static boolean hasSize(Cell[] chooseCells, int[] sizes) {
+        for (int i = 0; i < chooseCells.length; i++) {
+            if (!Utils.isIn(sizes, chooseCells[i].getCandidateSetSize())) return false;
+        }
+        return true;
+    }
+
     default boolean update(final SudokuBoard board, final List<int[]> chooseSets) {
         final ImmutableList<Unit> units = board.getAllUnits();
 
@@ -17,13 +34,15 @@ public interface NakedSolveStrategy {
 
             for (final int[] set : chooseSets) {
 
-                final Cell c0 = cells.get(set[0]);
-                final Cell c1 = cells.get(set[1]);
+                final Cell[] chooseCells = new Cell[set.length];
+                for (int i = 0; i < set.length; i++) chooseCells[i] = cells.get(set[i]);
 
-                if (!(c0.hasNakedPair() || c1.hasNakedPair()) &&
-                        c0.getCandidateSetSize() == 2 &&
-                        c1.getCandidateSetSize() == 2 &&
-                        c0.getCandidateSet() == c1.getCandidateSet()) {
+                Cell c0 = chooseCells[0];
+                Cell c1 = chooseCells[1];
+
+                if (!hasNakedPair(chooseCells) &&
+                    hasSize(chooseCells, new int[]{2}) &&
+                    c0.getCandidateSet() == c1.getCandidateSet()) {
 
                     board.markNakedPair(c0, c1);
 

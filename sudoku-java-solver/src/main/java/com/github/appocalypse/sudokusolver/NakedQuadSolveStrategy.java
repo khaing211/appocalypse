@@ -31,10 +31,10 @@ public class NakedQuadSolveStrategy implements SudokuSolveStrategy {
                         & c3.getCandidateSet();
 
                 if (!(c0.hasNakedQuad() || c1.hasNakedQuad() || c2.hasNakedQuad() || c3.hasNakedQuad()) &&
-                        Utils.isIn(sizes, c0.getCandidateSet()) &&
-                        Utils.isIn(sizes, c1.getCandidateSet()) &&
-                        Utils.isIn(sizes, c2.getCandidateSet()) &&
-                        Utils.isIn(sizes, c3.getCandidateSet()) &&
+                        Utils.isIn(sizes, c0.getCandidateSetSize()) &&
+                        Utils.isIn(sizes, c1.getCandidateSetSize()) &&
+                        Utils.isIn(sizes, c2.getCandidateSetSize()) &&
+                        Utils.isIn(sizes, c3.getCandidateSetSize()) &&
                         Utils.size(combineCandidateSet) == 4) {
 
                     board.markNakedQuad(c0, c1, c2, c3);
