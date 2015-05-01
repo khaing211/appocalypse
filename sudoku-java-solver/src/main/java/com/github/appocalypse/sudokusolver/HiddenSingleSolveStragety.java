@@ -12,13 +12,13 @@ public class HiddenSingleSolveStragety implements SudokuSolveStrategy {
     public boolean update(SudokuBoard board) {
         final ImmutableList<Unit> units = board.getAllUnits();
 
-        boolean hasUpdate = false;
-
         for (Unit unit : units) {
-            hasUpdate = hasUpdate || checkUnitAndFill(unit, board);
+            if (checkUnitAndFill(unit, board)) {
+                return true;
+            }
         }
 
-        return hasUpdate;
+        return false;
     }
 
     private boolean checkUnitAndFill(final Unit unit, final SudokuBoard board) {

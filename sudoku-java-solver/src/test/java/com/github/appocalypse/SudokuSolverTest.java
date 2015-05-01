@@ -29,7 +29,7 @@ public class SudokuSolverTest {
     public void testSudoku() {
         System.out.println("Testing " + sudokuFile);
         final SudokuSolver solver = SudokuSolver.initialize(new Scanner(ClassLoader.getSystemResourceAsStream(sudokuFile)));
-        assertTrue(solver.solve());
-        assertTrue(solver.validateBoard());
+        assertTrue("unable to solve " + sudokuFile, solver.solve());
+        assertTrue("solution is not valid for " + sudokuFile, solver.validateBoard());
     }
 }

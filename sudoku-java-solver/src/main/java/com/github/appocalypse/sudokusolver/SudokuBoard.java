@@ -388,7 +388,7 @@ public class SudokuBoard implements Unit {
                 .build();
     }
 
-    public void markNaked(Cell[] cells) {
+    public void markNaked(Cell... cells) {
         switch (cells.length) {
             case 2: markNakedPair(cells[0], cells[1]); return;
             case 3: markNakedTriple(cells[0], cells[1], cells[2]); return;
@@ -397,7 +397,12 @@ public class SudokuBoard implements Unit {
         }
     }
 
-    public void markHidden(Cell[] cells) {
-
+    public void markHidden(Cell... cells) {
+        switch (cells.length) {
+            case 2: markHiddenPair(cells[0], cells[1]); return;
+            case 3: markHiddenTriple(cells[0], cells[1], cells[2]); return;
+            case 4: markHiddenQuad(cells[0], cells[1], cells[2], cells[3]); return;
+            default: throw new IllegalArgumentException("there is no hidden "  + cells.length + " group");
+        }
     }
 }

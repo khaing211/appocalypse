@@ -14,6 +14,8 @@ import java.util.Map;
 public class HiddenPairSolveStrategy implements SudokuSolveStrategy {
     @Override
     public boolean update(final SudokuBoard board) {
+        //return HiddenSolveStrategy.update(board, Utils.CHOOSE_2_BIT_SET, 2, new int[] {2});
+
         final ImmutableList<Unit> units = board.getAllUnits();
         final Cell[] cellSet = new Cell[2];
 
