@@ -38,16 +38,16 @@ public interface NakedSolveStrategy {
         return false;
     }
 
-    default boolean update(final SudokuBoard board, final List<int[]> chooseSets, final int[] sizes, final int combineSize) {
+    static boolean update(final SudokuBoard board, final List<int[]> chooseSets, final int[] sizes, final int combineSize) {
         final ImmutableList<Unit> units = board.getAllUnits();
-
-        boolean hasUpdate = false;
 
         for (final Unit unit : units) {
 
             final ImmutableList<Cell> cells = unit.cells();
 
             for (final int[] set : chooseSets) {
+
+                boolean hasUpdate = false;
 
                 int combineCandidateSet = 0;
                 final Cell[] chooseCells = new Cell[set.length];
@@ -79,11 +79,15 @@ public interface NakedSolveStrategy {
                         hasUpdate = hasUpdate || eliminateCandidateFromBox(board,
                                 c0.getCandidateSet(), c0.getBaseR(), c0.getBaseC(), chooseCells);
                     }
+
+                    if (hasUpdate) {
+                        return true;
+                    }
                 }
             }
         }
 
-        return hasUpdate;
+        return false;
     }
 
     static boolean eliminateCandidateFromRow(final SudokuBoard board, final int candidateSet, final int r,

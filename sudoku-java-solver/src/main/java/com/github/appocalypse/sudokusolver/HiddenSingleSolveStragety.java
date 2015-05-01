@@ -10,8 +10,6 @@ public class HiddenSingleSolveStragety implements SudokuSolveStrategy {
 
     @Override
     public boolean update(SudokuBoard board) {
-        // snapshot of the unit
-
         final ImmutableList<Unit> units = board.getAllUnits();
 
         boolean hasUpdate = false;

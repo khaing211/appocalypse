@@ -389,7 +389,12 @@ public class SudokuBoard implements Unit {
     }
 
     public void markNaked(Cell[] cells) {
-
+        switch (cells.length) {
+            case 2: markNakedPair(cells[0], cells[1]); return;
+            case 3: markNakedTriple(cells[0], cells[1], cells[2]); return;
+            case 4: markNakedQuad(cells[0], cells[1], cells[2], cells[3]); return;
+            default: throw new IllegalArgumentException("there is no naked "  + cells.length + " group");
+        }
     }
 
     public void markHidden(Cell[] cells) {
