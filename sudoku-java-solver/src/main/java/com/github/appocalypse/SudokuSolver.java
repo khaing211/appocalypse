@@ -12,8 +12,12 @@ public class SudokuSolver {
     private final SudokuSolveStrategy[] strategies;
 
     public SudokuSolver(final SudokuBoard board) {
+        this(board, getStrategies());
+    }
+
+    public SudokuSolver(final SudokuBoard board, SudokuSolveStrategy[] strategies) {
         this.board = board;
-        this.strategies = getStrategies();
+        this.strategies = strategies;
     }
 
     public static SudokuSolveStrategy[] getStrategies() {
@@ -92,7 +96,9 @@ public class SudokuSolver {
                     final char ch = row.charAt(j);
                     if (Character.isDigit(ch)) {
                         final int num = ch - '0';
-                        board.fill(i, j, num);
+                        if (num != 0) {
+                            board.fill(i, j, num);
+                        }
                     }
                 }
             } catch (NoSuchElementException e) {
