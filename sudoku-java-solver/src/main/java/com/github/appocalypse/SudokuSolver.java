@@ -23,7 +23,7 @@ public class SudokuSolver {
     public static SudokuSolveStrategy[] getStrategies() {
         final SudokuSolveStrategy[] strategies = new SudokuSolveStrategy[10];
         strategies[0] = new NakedSingleSolveStrategy();
-        strategies[1] = new HiddenSingleSolveStragety();
+        strategies[1] = new HiddenSingleSolveStrategy();
         strategies[2] = new NakedPairSolveStrategy();
         strategies[3] = new NakedTripleSolveStrategy();
         strategies[4] = new HiddenPairSolveStrategy();

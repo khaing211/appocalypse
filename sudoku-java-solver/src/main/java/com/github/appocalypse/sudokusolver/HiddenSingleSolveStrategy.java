@@ -6,7 +6,7 @@ import com.google.common.collect.ImmutableList;
  * HiddenSingle is to eliminate cells that has a candidate X that can't go anywhere else
  * in (exclusive) either row, column or box i.e. it must go here in the cell
  */
-public class HiddenSingleSolveStragety implements SudokuSolveStrategy {
+public class HiddenSingleSolveStrategy implements SudokuSolveStrategy {
 
     @Override
     public boolean update(SudokuBoard board) {
