@@ -2,31 +2,29 @@ package com.github.appocalypse.substitutioncipher.v1;
 
 import com.github.appocalypse.substitutioncipher.CharacterTable;
 
-import java.util.Comparator;
-import java.util.NavigableSet;
-import java.util.Scanner;
-import java.util.TreeSet;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
+import java.util.*;
+import java.util.function.BiFunction;
 
 public class Dictionary {
-    private final TreeSet<String> words;
+    private final HashMap<Integer, ArrayList<String>> words;
 
-    public Dictionary(TreeSet<String> words) {
+    public Dictionary(HashMap<Integer, ArrayList<String>> words) {
         this.words = words;
     }
 
     /**
      * @param encryptWord assume to be all lowercase
      * @param table current table
-     * @param predicate post-test the new table after decrypt the encryptWord
+     * @param decrypter post-test the new table after decrypt the encryptWord
      */
-    public void tryDecrypt(final String encryptWord, final CharacterTable table, final Predicate<CharacterTable> predicate) {
-        final NavigableSet<String> wordsWithSameLength = words.subSet(encryptWord, true, encryptWord, true);
+    public void tryDecrypt(final String encryptWord, final CharacterTable table, final SubstitutionCipher.Decrypter decrypter) {
+        final ArrayList<String> wordsWithSameLength = words.get(encryptWord.length());
 
-        while (!wordsWithSameLength.isEmpty()) {
+        //System.out.println(wordsWithSameLength);
+
+        for (int i = 0; i < wordsWithSameLength.size(); i++) {
             // current candidate for the encryptWord
-            final String potentialWord = wordsWithSameLength.pollFirst();
+            final String potentialWord = wordsWithSameLength.get(i);
 
             // build a new map table from the old table
             final CharacterTable newTable = new CharacterTable(table);
@@ -35,7 +33,7 @@ public class Dictionary {
             // new table will be filled and pass into predicate for further
             // test table for other encryptWord
             if (tryDecrypt(encryptWord, potentialWord, newTable)) {
-                if (predicate.test(newTable)) {
+                if (decrypter.test(newTable)) {
                     break;
                 }
             }
@@ -59,11 +57,21 @@ public class Dictionary {
     }
 
     public static Dictionary initialize(final Scanner scanner) {
-        // ordered the set by length of the word
-        final TreeSet<String> words = new TreeSet<String>(Comparator.comparingInt(String::length));
+        // bucket all the words by length
+        final HashMap<Integer, ArrayList<String>> words = new HashMap<>();
+
         while (scanner.hasNextLine()) {
-            words.add(scanner.nextLine().toLowerCase());
+            final String word = scanner.nextLine().toLowerCase();
+
+            words.compute(word.length(), (key, value) -> {
+                    if (value == null) {
+                        value = new ArrayList<>();
+                    }
+                    value.add(word);
+                    return value;
+                });
         }
+
         return new Dictionary(words);
     }
 }

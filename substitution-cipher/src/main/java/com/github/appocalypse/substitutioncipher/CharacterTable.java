@@ -26,6 +26,9 @@ public class CharacterTable {
 
     public boolean isMapped(Character source) {
         final int index = source - 'a';
+        if (index < 0 || index >= table.length)
+            System.out.println(source);
+
         return table[index] != null;
     }
 
@@ -34,5 +37,21 @@ public class CharacterTable {
             throw new IllegalArgumentException(source + " is not mapped to any character");
         }
         return table[source - 'a'];
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder().append("{");
+        for (int i = 0; i < table.length; i++) {
+            if (table[i] != null) {
+                builder.append("[")
+                        .append(Character.toChars('a' + i))
+                        .append("->")
+                        .append(table[i])
+                        .append("]");
+            }
+        }
+        builder.append("}");
+        return builder.toString();
     }
 }
