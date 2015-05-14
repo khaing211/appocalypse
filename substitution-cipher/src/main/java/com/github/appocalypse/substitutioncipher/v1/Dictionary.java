@@ -2,8 +2,9 @@ package com.github.appocalypse.substitutioncipher.v1;
 
 import com.github.appocalypse.substitutioncipher.CharacterTable;
 
-import java.util.*;
-import java.util.function.BiFunction;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
 
 public class Dictionary {
     private final HashMap<Integer, ArrayList<String>> words;
