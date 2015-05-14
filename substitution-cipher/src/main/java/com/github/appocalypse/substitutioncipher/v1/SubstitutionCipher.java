@@ -30,8 +30,10 @@ public class SubstitutionCipher {
         // there is no words, only punctuations in the sentence
         if (uniqWords.length == 0) return Arrays.asList(encryptSentence);
 
-        // TODO: sort in increasing order number of words of same length
-        // sort them in order of length, in decreasing order
+        // sort in decreasing order number of words of same length
+        //Arrays.sort(uniqWords, Comparator.comparingInt((String it) -> dictionary.getFrequency(it.length())).reversed());
+
+        // sort in decreasing order of string length
         Arrays.sort(uniqWords, Comparator.comparingInt(String::length).reversed());
 
         //System.out.println(Arrays.toString(uniqWords));

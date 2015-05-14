@@ -3,14 +3,20 @@ package com.github.appocalypse.substitutioncipher.v1;
 import com.github.appocalypse.substitutioncipher.CharacterTable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Scanner;
 
 public class Dictionary {
+    private final static ArrayList<String> EMPTY_ARRAY_LIST = new  ArrayList<>();
     private final HashMap<Integer, ArrayList<String>> words;
 
     public Dictionary(HashMap<Integer, ArrayList<String>> words) {
         this.words = words;
+    }
+
+    public int getFrequency(int stringLength) {
+        return words.getOrDefault(stringLength, EMPTY_ARRAY_LIST).size();
     }
 
     /**
