@@ -1,19 +1,19 @@
-package com.github.appocalypse.substitutioncipher.v1;
+package com.github.appocalypse.substitutioncipher.impl;
 
-import org.junit.Before;
+import com.github.appocalypse.substitutioncipher.impl.RecursiveSubstitutionDecrypter;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
 import java.util.Scanner;
 
-public class SubstitutionCipherTest {
+public class SubstitutionDecrypterTest {
 
-    private static SubstitutionCipher cipher;
+    private static RecursiveSubstitutionDecrypter cipher;
 
     @BeforeClass
     public static void before() {
-        cipher = SubstitutionCipher.initialize(new Scanner(ClassLoader.getSystemResourceAsStream("wordsEn.txt")));
+        cipher = RecursiveSubstitutionDecrypter.initialize(new Scanner(ClassLoader.getSystemResourceAsStream("wordsEn.txt")));
     }
 
     @Test
