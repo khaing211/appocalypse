@@ -19,9 +19,10 @@ public class TrieDictionary {
     private static void transverse(Node[] nodes, StringBuilder builder, Consumer<String> consumer) {
         for (int i = 0; i < nodes.length; i++) {
             if (nodes[i] != null) {
+                final int currentIndex = builder.length();
+
                 final char ch = (char)('a' + i);
                 builder.append(ch);
-                final int currentLength = builder.length();
                 if (nodes[i].terminal) {
                     consumer.accept(builder.toString());
                 }
@@ -29,7 +30,7 @@ public class TrieDictionary {
                 transverse(nodes[i].next, builder, consumer);
 
                 // delete new char in the buffer to reuse
-                builder.delete(currentLength, builder.length());
+                builder.deleteCharAt(currentIndex);
             }
         }
     }
@@ -53,7 +54,7 @@ public class TrieDictionary {
         if (root.next[zeroIndex] == null)  {
             root.next[zeroIndex] = new Node(word.length() == 1);
         } else {
-            root.next[zeroIndex].terminal = word.length() == 1;
+            root.next[zeroIndex].terminal = root.next[zeroIndex].terminal || word.length() == 1;
         }
 
         // node always store last node
@@ -62,12 +63,11 @@ public class TrieDictionary {
         for (int i = 1; i < word.length(); i++) {
             final char ch = word.charAt(i);
             final int index = ch - 'a';
-            if (index < 0) System.out.println(word);
 
             if (node.next[index] == null) {
                 node.next[index] = new Node(word.length() == i+1);
             } else {
-                node.next[index].terminal = word.length() == i+1;
+                node.next[index].terminal = node.next[index].terminal || word.length() == i+1;
             }
 
             node = node.next[index];
