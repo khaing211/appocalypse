@@ -26,6 +26,13 @@ public class SubstitutionDecrypterTest {
         decrypt("giuifg cei iprc tpnn du cei qprcni");
     }
 
+    @Test
+    public void testGiveUpLiberty() {
+        decrypt("QCKPE WCK WKUHT BDVE UL EPPEJQDMH HDAEOQY QK " +
+                "LUOSCMPE M HDQQHE QEILKOMOY PMREQY TEPEOVE " +
+                "JEDQCEO HDAEOQY JKO PMREQY");
+    }
+
     private void decrypt(String encryptSentence) {
         List<String> result = cipher.decrypt(encryptSentence);
         result.stream().forEach(System.out::println);

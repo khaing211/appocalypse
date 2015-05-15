@@ -31,15 +31,16 @@ public class RecursiveSubstitutionDecrypter implements SubstitutionDecrypter {
         // there is no words, only punctuations in the sentence
         if (uniqWords.length == 0) return Collections.emptyList();
 
-        // sort in decreasing order of string length
+        // sort in decreasing order of frequency of string length
         Arrays.sort(uniqWords, Comparator.comparingInt(String::length).reversed());
 
-        //System.out.println(Arrays.toString(uniqWords));
+        System.out.println(Arrays.toString(uniqWords));
 
         final AllPossibleSentenceDecrypter sentenceDecrypter = new AllPossibleSentenceDecrypter(encryptSentence);
 
         Decrypter decrypter = sentenceDecrypter;
 
+        // order of decrypt (last word last)
         for (int i = uniqWords.length-1; i > 0; i--) {
             decrypter = new WordDecrypter(uniqWords[i], decrypter);
         }
@@ -121,6 +122,10 @@ public class RecursiveSubstitutionDecrypter implements SubstitutionDecrypter {
         public void tryDecrypt(final String encryptWord, final CharacterTable table, final Decrypter decrypter) {
             final ArrayList<String> wordsWithSameLength = words.get(encryptWord.length());
 
+            if (wordsWithSameLength == null) {
+                System.out.println("Unable to find words in dictionary having same length as " + encryptWord);
+            }
+
             //System.out.println(wordsWithSameLength);
 
             for (int i = 0; i < wordsWithSameLength.size(); i++) {
@@ -174,6 +179,13 @@ public class RecursiveSubstitutionDecrypter implements SubstitutionDecrypter {
             }
 
             return new Dictionary(words);
+        }
+
+        @Override
+        public String toString() {
+            return "Dictionary{" +
+                    "words=" + words +
+                    '}';
         }
     }
 }

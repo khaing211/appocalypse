@@ -45,7 +45,7 @@ public class CharacterTable {
         for (int i = 0; i < table.length; i++) {
             if (table[i] != null) {
                 builder.append("[")
-                        .append(Character.toChars('a' + i))
+                        .append((char)('a' + i))
                         .append("->")
                         .append(table[i])
                         .append("]");
