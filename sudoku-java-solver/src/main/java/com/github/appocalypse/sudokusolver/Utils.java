@@ -47,7 +47,7 @@ public interface Utils {
     }
 
     static boolean isInSameRow(Cell c0, Cell c1) {
-        return c0.getR() == c1.getBoxR();
+        return c0.getR() == c1.getR();
     }
 
     static boolean isInSameRow(Cell ... cells) {

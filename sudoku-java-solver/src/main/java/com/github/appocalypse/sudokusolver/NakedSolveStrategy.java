@@ -65,6 +65,7 @@ public interface NakedSolveStrategy {
 
                     board.markNaked(chooseCells);
 
+
                     if (Utils.isInSameRow(chooseCells)) {
                         hasUpdate = hasUpdate || eliminateCandidateFromRow(board,
                                 c0.getCandidateSet(), c0.getR(), chooseCells);

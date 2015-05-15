@@ -16,6 +16,7 @@ public class NakedTripleSolveStrategyTest {
     @Test
     public void testNakedTriples1() {
         SudokuBoard board = SolveStratetgyTest.getBoard("naked_triples_1.txt");
-        assertTrue(strategy.update(board));
+        SudokuBoard testBoard = new SudokuBoard(board);
+        assertTrue("\n" + board.sideBySide(testBoard), strategy.update(testBoard));
     }
 }
