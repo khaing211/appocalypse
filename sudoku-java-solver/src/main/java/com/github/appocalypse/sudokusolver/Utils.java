@@ -41,7 +41,7 @@ public interface Utils {
         if (cells.length < 2) return true;
         final Cell c0 = cells[0];
         for (Cell cell : cells) {
-            if (!isInSameBox(c0, cell)) return false;
+            if (cell != null && !isInSameBox(c0, cell)) return false;
         }
         return true;
     }
@@ -54,7 +54,7 @@ public interface Utils {
         if (cells.length < 2) return true;
         final Cell c0 = cells[0];
         for (Cell cell : cells) {
-            if (!isInSameRow(c0, cell)) return false;
+            if (cell != null && !isInSameRow(c0, cell)) return false;
         }
         return true;
     }
@@ -67,7 +67,7 @@ public interface Utils {
         if (cells.length < 2) return true;
         final Cell c0 = cells[0];
         for (Cell cell : cells) {
-            if (!isInSameCol(c0, cell)) return false;
+            if (cell != null && !isInSameCol(c0, cell)) return false;
         }
         return true;
     }

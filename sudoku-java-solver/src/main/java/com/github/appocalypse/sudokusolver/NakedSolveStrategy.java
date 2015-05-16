@@ -67,18 +67,18 @@ public interface NakedSolveStrategy {
 
 
                     if (Utils.isInSameRow(chooseCells)) {
-                        hasUpdate = hasUpdate || eliminateCandidateFromRow(board,
-                                c0.getCandidateSet(), c0.getR(), chooseCells);
+                        hasUpdate = eliminateCandidateFromRow(board,
+                                c0.getCandidateSet(), c0.getR(), chooseCells) || hasUpdate;
                     }
 
                     if (Utils.isInSameCol(chooseCells)) {
-                        hasUpdate = hasUpdate || eliminateCandidateFromCol(board,
-                                c0.getCandidateSet(), c0.getC(), chooseCells);
+                        hasUpdate = eliminateCandidateFromCol(board,
+                                c0.getCandidateSet(), c0.getC(), chooseCells) || hasUpdate;
                     }
 
                     if (Utils.isInSameBox(chooseCells)) {
-                        hasUpdate = hasUpdate || eliminateCandidateFromBox(board,
-                                c0.getCandidateSet(), c0.getBaseR(), c0.getBaseC(), chooseCells);
+                        hasUpdate = eliminateCandidateFromBox(board,
+                                c0.getCandidateSet(), c0.getBaseR(), c0.getBaseC(), chooseCells) || hasUpdate;
                     }
 
                     if (hasUpdate) {
@@ -97,7 +97,7 @@ public interface NakedSolveStrategy {
         for (int i = 0; i < 9; i++) {
             final Cell cell = board.getCell(r, i);
             if (cell.isNotFilled() && Utils.isNot(cell, cells)) {
-                hasUpdate = hasUpdate || board.unsetCandidate(r, i, candidateSet);
+                hasUpdate = board.unsetCandidate(r, i, candidateSet) || hasUpdate;
             }
         }
 
@@ -110,7 +110,7 @@ public interface NakedSolveStrategy {
         for (int i = 0; i < 9; i++) {
             final Cell cell = board.getCell(i, c);
             if (cell.isNotFilled() && Utils.isNot(cell, cells)) {
-                hasUpdate = hasUpdate || board.unsetCandidate(i, c, candidateSet);
+                hasUpdate = board.unsetCandidate(i, c, candidateSet) || hasUpdate;
             }
         }
 
@@ -126,7 +126,7 @@ public interface NakedSolveStrategy {
                 final int c = baseC + smallC;
                 final Cell cell = board.getCell(r, c);
                 if (cell.isNotFilled() && Utils.isNot(cell, cells)) {
-                    hasUpdate = hasUpdate || board.unsetCandidate(r, c, candidateSet);
+                    hasUpdate = board.unsetCandidate(r, c, candidateSet) || hasUpdate;
                 }
             }
         }

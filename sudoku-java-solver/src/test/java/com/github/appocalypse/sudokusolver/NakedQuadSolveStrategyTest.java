@@ -9,7 +9,6 @@ public class NakedQuadSolveStrategyTest {
 
     @Test
     public void testNakedQuad0() {
-        SudokuBoard board = SolveStratetgyTest.getBoard("naked_quad_0.txt");
-        assertTrue(strategy.update(board));
+        SudokuSolveStratetgyTestUtils.assertUpdate("naked_quad_0.txt", strategy);
     }
 }

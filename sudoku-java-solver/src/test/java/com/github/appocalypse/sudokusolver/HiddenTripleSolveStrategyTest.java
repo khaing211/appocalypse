@@ -9,7 +9,6 @@ public class HiddenTripleSolveStrategyTest {
 
     @Test
     public void testHiddenTriples0() {
-        SudokuBoard board = SolveStratetgyTest.getBoard("hidden_triples_0.txt");
-        assertTrue(strategy.update(board));
+        SudokuSolveStratetgyTestUtils.assertUpdate("hidden_triples_0.txt", strategy);
     }
 }

@@ -10,13 +10,11 @@ public class HiddenPairSolveStrategyTest {
 
     @Test
     public void testHiddenPair0() {
-        SudokuBoard board = SolveStratetgyTest.getBoard("hidden_pair_0.txt");
-        assertTrue(strategy.update(board));
+        SudokuSolveStratetgyTestUtils.assertUpdate("hidden_pair_0.txt", strategy);
     }
 
     @Test
     public void testHiddenPair1() {
-        SudokuBoard board = SolveStratetgyTest.getBoard("hidden_pair_1.txt");
-        assertTrue(strategy.update(board));
+        SudokuSolveStratetgyTestUtils.assertUpdate("hidden_pair_1.txt", strategy);
     }
 }

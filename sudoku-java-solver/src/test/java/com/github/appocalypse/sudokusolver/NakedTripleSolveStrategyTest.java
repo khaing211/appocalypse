@@ -9,14 +9,11 @@ public class NakedTripleSolveStrategyTest {
 
     @Test
     public void testNakedTriples0() {
-        SudokuBoard board = SolveStratetgyTest.getBoard("naked_triples_0.txt");
-        assertTrue(strategy.update(board));
+        SudokuSolveStratetgyTestUtils.assertUpdate("naked_triples_0.txt", strategy);
     }
 
     @Test
     public void testNakedTriples1() {
-        SudokuBoard board = SolveStratetgyTest.getBoard("naked_triples_1.txt");
-        SudokuBoard testBoard = new SudokuBoard(board);
-        assertTrue("\n" + board.sideBySide(testBoard), strategy.update(testBoard));
+        SudokuSolveStratetgyTestUtils.assertUpdate("naked_triples_1.txt", strategy);
     }
 }

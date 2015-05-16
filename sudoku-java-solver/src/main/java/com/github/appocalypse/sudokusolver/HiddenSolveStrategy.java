@@ -49,7 +49,7 @@ public interface HiddenSolveStrategy {
                     boolean hasUpdate = false;
 
                     for (int j = 0; j < candidateSetSize; j++) {
-                        hasUpdate = hasUpdate || board.unsetCandidate(cellSet[j].getR(), cellSet[j].getC(), candidateSetToUnset);
+                        hasUpdate = board.unsetCandidate(cellSet[j].getR(), cellSet[j].getC(), candidateSetToUnset) || hasUpdate;
                     }
 
                     if (hasUpdate) {

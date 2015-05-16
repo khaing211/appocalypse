@@ -9,13 +9,11 @@ public class HiddenQuadSolveStrategyTest {
 
     @Test
     public void testHiddenQuad0() {
-        SudokuBoard board = SolveStratetgyTest.getBoard("hidden_quad_0.txt");
-        assertTrue(strategy.update(board));
+        SudokuSolveStratetgyTestUtils.assertUpdate("hidden_quad_0.txt", strategy);
     }
 
     @Test
     public void testHiddenQuad1() {
-        SudokuBoard board = SolveStratetgyTest.getBoard("hidden_quad_1.txt");
-        assertTrue(strategy.update(board));
+        SudokuSolveStratetgyTestUtils.assertUpdate("hidden_quad_1.txt", strategy);
     }
 }

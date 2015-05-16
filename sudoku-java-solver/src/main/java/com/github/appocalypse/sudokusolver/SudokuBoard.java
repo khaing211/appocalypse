@@ -77,6 +77,14 @@ public class SudokuBoard implements Unit {
         }
     }
 
+    public boolean unsetSingleCandidate(int r, int c, int n) {
+        Utils.isValidIndex(r, c);
+        Utils.isValidNumber(n);
+
+        final int candidateSet = 1<<(n-1);
+        return unsetCandidateInternal(r, c, candidateSet);
+    }
+
     public boolean unsetCandidate(int r, int c, int set) {
         Utils.isValidIndex(r, c);
         return unsetCandidateInternal(r, c, set);
