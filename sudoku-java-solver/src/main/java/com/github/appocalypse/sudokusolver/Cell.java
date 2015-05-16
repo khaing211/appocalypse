@@ -75,14 +75,7 @@ public class Cell {
     }
 
     public int[] getCandidates() {
-        final int[] ret = new int[getCandidateSetSize()];
-        int j = 0;
-        for (int i = 1; i <= 9; i++) {
-            if (isCandidate(i)) {
-                ret[j++] = i;
-            }
-        }
-        return ret;
+        return Utils.candidates(candidateSet);
     }
 
     public int getN() {
@@ -98,8 +91,8 @@ public class Cell {
     }
 
     public boolean isCandidate(int n) {
-        final int mask = (1<<(n-1));
-        return (candidateSet & mask) == mask;
+        Utils.isValidNumber(n);
+        return Utils.isCandidate(candidateSet, n);
     }
 
     public boolean hasNakedPair() {

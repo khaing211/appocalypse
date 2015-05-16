@@ -2,6 +2,7 @@ package com.github.appocalypse.sudokusolver;
 
 import com.google.common.collect.ImmutableList;
 
+import java.util.Arrays;
 import java.util.stream.IntStream;
 
 public class SudokuBoard implements Unit {
@@ -55,41 +56,42 @@ public class SudokuBoard implements Unit {
     }
 
     private void update(final int r, final int c, final int n) {
-        int k;
-        Cell cell;
         final int baseR = (r / 3) * 3;
         final int baseC = (c / 3) * 3;
+        final int candidateSet = 1<<(n-1);
 
         for (int i = 0; i < 9; i++) {
             if (i != c) {
-                k = getK(r, i);
-                cell = cells[k];
-                cells[k] = Cell.copy(cells[k]).withCandidateSet(Utils.unset(cell.getCandidateSet(), n)).build();
+                unsetCandidateInternal(r, i, candidateSet);
             }
 
             if (i != r) {
-                k = getK(i, c);
-                cell = cells[k];
-                cells[k] = Cell.copy(cells[k]).withCandidateSet(Utils.unset(cell.getCandidateSet(), n)).build();
+                unsetCandidateInternal(i, c, candidateSet);
             }
 
             final int curR = baseR + i/3;
             final int curC = baseC + i%3;
             if (!(curR == r && curC == c)) {
-                k = getK(curR, curC);
-                cell = cells[k];
-                cells[k] = Cell.copy(cells[k]).withCandidateSet(Utils.unset(cell.getCandidateSet(), n)).build();
+                unsetCandidateInternal(curR, curC, candidateSet);
             }
         }
     }
 
     public boolean unsetCandidate(int r, int c, int set) {
         Utils.isValidIndex(r, c);
+        return unsetCandidateInternal(r, c, set);
+    }
+
+    private boolean unsetCandidateInternal(int r, int c, int set) {
         final int k = getK(r, c);
         final Cell cell = cells[k];
         final int test = (cell.getCandidateSet() & set);
         final int mask = ((~set) & Utils.ALL);
         final int newCandidateSet = cell.getCandidateSet() & mask;
+        if (Utils.size(newCandidateSet) == 0) {
+            throw new IllegalArgumentException("Unable to unsetCandidates at r="+r + " c=" + c + " candidates=" + Arrays.toString(Utils.candidates(set)));
+        }
+
         cells[k] = Cell.copy(cells[k]).withCandidateSet(newCandidateSet).build();
         return test != 0;
     }

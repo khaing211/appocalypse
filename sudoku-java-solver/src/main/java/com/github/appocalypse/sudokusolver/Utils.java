@@ -72,6 +72,22 @@ public interface Utils {
         return true;
     }
 
+    static int[] candidates(int candidateSet) {
+        final int[] ret = new int[size(candidateSet)];
+        int j = 0;
+        for (int i = 1; i <= 9; i++) {
+            if (isCandidate(candidateSet, i)) {
+                ret[j++] = i;
+            }
+        }
+        return ret;
+    }
+
+    static boolean isCandidate(int candidateSet, int n) {
+        final int mask = (1<<(n-1));
+        return (candidateSet & mask) == mask;
+    }
+
     /**
      * It is good to use when you only have 1 bit set
      * This method will return number from candidateSet
@@ -90,11 +106,6 @@ public interface Utils {
      */
     static int size(int candidateSet) {
         return popcount32(candidateSet);
-    }
-
-    static int unset(int candidateSet, int n) {
-        final int mask = ((~(1<<(n-1))) & ALL);
-        return candidateSet & mask;
     }
 
     static boolean isNotIn(final int[] set, int needle) {

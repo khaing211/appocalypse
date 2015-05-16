@@ -26,7 +26,7 @@ public interface NakedSolveStrategy {
      */
     static boolean hasSize(Cell[] chooseCells, int[] sizes) {
         for (int i = 0; i < chooseCells.length; i++) {
-            if (!Utils.isIn(sizes, chooseCells[i].getCandidateSetSize())) return false;
+            if (Utils.isNotIn(sizes, chooseCells[i].getCandidateSetSize())) return false;
         }
         return true;
     }
