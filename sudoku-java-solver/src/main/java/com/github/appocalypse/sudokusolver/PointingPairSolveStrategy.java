@@ -9,7 +9,7 @@ import java.util.Arrays;
  *
  * A Pair or Triple in a box - if they are aligned on a column, n can be removed from the rest of the column.
  */
-public class PointingPairOrTripleSolveStrategy implements SudokuSolveStrategy {
+public class PointingPairSolveStrategy implements SudokuSolveStrategy {
     @Override
     public boolean update(final SudokuBoard board) {
         final ImmutableList<BoxUnit> boxUnits = board.groupByBox();
@@ -17,7 +17,6 @@ public class PointingPairOrTripleSolveStrategy implements SudokuSolveStrategy {
         final Cell[] foundCells = new Cell[3];
         int foundCellIndex = 0;
 
-        boolean hasUpdate = false;
 
         for (int i = 0; i < boxUnits.size(); i++) {
             final ImmutableList<Cell> boxUnitCells = boxUnits.get(i).cells();
@@ -49,17 +48,14 @@ public class PointingPairOrTripleSolveStrategy implements SudokuSolveStrategy {
                 }
 
                 if (2 <= foundCellIndex &&  foundCellIndex <= 3) {
+                    boolean hasUpdate = false;
+
                     if (Utils.isInSameRow(foundCells)) {
 
                         final int r = foundCells[0].getR();
-                        final int[] ignoreCol = new int[foundCellIndex];
-
-                        for (int j = 0; j < foundCellIndex; j++) {
-                            ignoreCol[j] = foundCells[j].getC();
-                        }
 
                         for (int c = 0; c < 9; c++) {
-                            if (Utils.isNotIn(ignoreCol, c)) {
+                            if (Utils.isNot(board.getCell(r, c), foundCells)) {
                                 hasUpdate = board.unsetSingleCandidate(r, c, n) || hasUpdate;
                             }
                         }
@@ -67,22 +63,22 @@ public class PointingPairOrTripleSolveStrategy implements SudokuSolveStrategy {
                     } else if (Utils.isInSameCol(foundCells)) {
 
                         final int c = foundCells[0].getC();
-                        final int[] ignoreRow = new int[foundCellIndex];
-
-                        for (int j = 0; j < foundCellIndex; j++) {
-                            ignoreRow[j] = foundCells[j].getR();
-                        }
 
                         for (int r = 0; r < 9; r++) {
-                            if (Utils.isNotIn(ignoreRow, r)) {
+                            if (Utils.isNot(board.getCell(r, c), foundCells)) {
                                 hasUpdate = board.unsetSingleCandidate(r, c, n) || hasUpdate;
                             }
                         }
                     }
+
+                    if (hasUpdate) {
+                        return true;
+                    }
+
                 }
             }
         }
 
-        return hasUpdate;
+        return false;
     }
 }

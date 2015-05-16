@@ -123,7 +123,7 @@ public interface Utils {
 
     static boolean isNot(final Cell thisCell, final Cell ... cells) {
         for (final Cell otherCell : cells) {
-            if (otherCell.getR() == thisCell.getR() && otherCell.getC() == thisCell.getC()) {
+            if (otherCell != null && otherCell.getR() == thisCell.getR() && otherCell.getC() == thisCell.getC()) {
                 return false;
             }
         }

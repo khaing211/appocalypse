@@ -30,7 +30,7 @@ public class SudokuSolver {
         strategies[5] = new HiddenTripleSolveStrategy();
         strategies[6] = new NakedQuadSolveStrategy();
         strategies[7] = new HiddenQuadSolveStrategy();
-        strategies[8] = new PointingPairOrTripleSolveStrategy();
+        strategies[8] = new PointingPairSolveStrategy();
         strategies[9] = new BoxLineReductionSolveStrategy();
         return strategies;
     }

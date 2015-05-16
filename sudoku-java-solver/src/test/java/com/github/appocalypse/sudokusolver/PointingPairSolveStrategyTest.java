@@ -4,9 +4,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
-public class PointingPairOrTripleSolveStrategyTest {
+public class PointingPairSolveStrategyTest {
 
-    private final PointingPairOrTripleSolveStrategy strategy = new PointingPairOrTripleSolveStrategy();
+    private final PointingPairSolveStrategy strategy = new PointingPairSolveStrategy();
 
     @Test
     public void testPointingPair0() {
