@@ -2,7 +2,6 @@ package com.github.appocalypse.sudokusolver.strategy;
 
 import com.github.appocalypse.sudokusolver.Cell;
 import com.github.appocalypse.sudokusolver.SudokuBoard;
-import com.github.appocalypse.sudokusolver.SudokuSolveStrategy;
 import com.google.common.collect.ImmutableList;
 
 /**

@@ -1,7 +1,6 @@
 package com.github.appocalypse.sudokusolver.strategy;
 
 import com.github.appocalypse.sudokusolver.SudokuBoard;
-import com.github.appocalypse.sudokusolver.SudokuSolveStrategy;
 import com.github.appocalypse.sudokusolver.Utils;
 
 /**
