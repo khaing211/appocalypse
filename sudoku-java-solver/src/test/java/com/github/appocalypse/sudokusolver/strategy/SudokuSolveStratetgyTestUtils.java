@@ -1,6 +1,8 @@
-package com.github.appocalypse.sudokusolver;
+package com.github.appocalypse.sudokusolver.strategy;
 
 import com.github.appocalypse.SudokuSolver;
+import com.github.appocalypse.sudokusolver.SudokuBoard;
+import com.github.appocalypse.sudokusolver.SudokuSolveStrategy;
 
 import java.util.Scanner;
 

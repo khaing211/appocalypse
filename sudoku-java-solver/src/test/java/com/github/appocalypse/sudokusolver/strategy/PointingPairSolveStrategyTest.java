@@ -1,4 +1,4 @@
-package com.github.appocalypse.sudokusolver;
+package com.github.appocalypse.sudokusolver.strategy;
 
 import org.junit.Test;
 

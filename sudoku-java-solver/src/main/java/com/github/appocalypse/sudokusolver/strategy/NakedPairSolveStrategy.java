@@ -1,6 +1,8 @@
-package com.github.appocalypse.sudokusolver;
+package com.github.appocalypse.sudokusolver.strategy;
 
-import com.google.common.collect.ImmutableList;
+import com.github.appocalypse.sudokusolver.SudokuBoard;
+import com.github.appocalypse.sudokusolver.SudokuSolveStrategy;
+import com.github.appocalypse.sudokusolver.Utils;
 
 /**
  * A Naked Pair is a set of two candidate numbers sited in two cells that belong to at least one unit in common.

@@ -1,6 +1,7 @@
 package com.github.appocalypse;
 
 import com.github.appocalypse.sudokusolver.*;
+import com.github.appocalypse.sudokusolver.strategy.*;
 import com.google.common.collect.ImmutableList;
 
 import java.util.Arrays;

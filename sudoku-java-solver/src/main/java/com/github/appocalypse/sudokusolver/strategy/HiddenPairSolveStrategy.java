@@ -1,9 +1,8 @@
-package com.github.appocalypse.sudokusolver;
+package com.github.appocalypse.sudokusolver.strategy;
 
-import com.google.common.collect.ImmutableList;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.github.appocalypse.sudokusolver.SudokuBoard;
+import com.github.appocalypse.sudokusolver.SudokuSolveStrategy;
+import com.github.appocalypse.sudokusolver.Utils;
 
 /**
  * A Hidden Pair is a set of two cells of a common unit containing a same set of two candidates that

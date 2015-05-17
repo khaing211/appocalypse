@@ -1,6 +1,8 @@
-package com.github.appocalypse.sudokusolver;
+package com.github.appocalypse.sudokusolver.strategy;
 
-import com.google.common.collect.ImmutableList;
+import com.github.appocalypse.sudokusolver.SudokuBoard;
+import com.github.appocalypse.sudokusolver.SudokuSolveStrategy;
+import com.github.appocalypse.sudokusolver.Utils;
 
 /**
  * Hidden Triples will be disguised by other candidates on those cells so

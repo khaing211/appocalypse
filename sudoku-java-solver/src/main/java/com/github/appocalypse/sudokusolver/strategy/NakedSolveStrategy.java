@@ -1,5 +1,9 @@
-package com.github.appocalypse.sudokusolver;
+package com.github.appocalypse.sudokusolver.strategy;
 
+import com.github.appocalypse.sudokusolver.Cell;
+import com.github.appocalypse.sudokusolver.SudokuBoard;
+import com.github.appocalypse.sudokusolver.Unit;
+import com.github.appocalypse.sudokusolver.Utils;
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;

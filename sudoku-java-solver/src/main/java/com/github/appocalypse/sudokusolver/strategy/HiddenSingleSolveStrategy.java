@@ -1,5 +1,6 @@
-package com.github.appocalypse.sudokusolver;
+package com.github.appocalypse.sudokusolver.strategy;
 
+import com.github.appocalypse.sudokusolver.*;
 import com.google.common.collect.ImmutableList;
 
 /**
