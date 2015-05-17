@@ -25,6 +25,14 @@ public class BoardEvent {
         return newCell;
     }
 
+    @Override
+    public String toString() {
+        return "BoardEvent{" +
+                "type=" + type +
+                ", oldCell=" + oldCell +
+                ", newCell=" + newCell +
+                '}';
+    }
 
     public enum Type {
         FILL_EVENT,
