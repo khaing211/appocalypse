@@ -1,5 +1,7 @@
 package com.github.appocalypse.sudokusolver;
 
+import com.github.appocalypse.sudokusolver.report.BoardEvent;
+import com.github.appocalypse.sudokusolver.report.BoardReporter;
 import com.google.common.collect.ImmutableList;
 
 import java.util.Arrays;
@@ -8,6 +10,7 @@ import java.util.stream.IntStream;
 public class SudokuBoard implements Unit {
     private final Cell[] cells = new Cell[Utils.MAX_NUM_UNSOLVED_CELL];
 
+    private BoardReporter reporter;
     private int numUnsolvedCell;
 
     public SudokuBoard() {
@@ -33,6 +36,16 @@ public class SudokuBoard implements Unit {
         return cells[getK(r, c)];
     }
 
+    public void setReporter(BoardReporter reporter) {
+        this.reporter = reporter;
+    }
+
+    private void sendUpdate(BoardEvent event) {
+        if (reporter != null) {
+            reporter.onUpdate(event);
+        }
+    }
+
     public int getNumUnsolvedCell() {
         return numUnsolvedCell;
     }
@@ -46,7 +59,11 @@ public class SudokuBoard implements Unit {
 
         if (cell.isNotFilled() && cell.isCandidate(n)) {
             cells[k] = new Cell(cell.getR(), cell.getC(), n);
+
+            sendUpdate(new BoardEvent(BoardEvent.Type.FILL_EVENT, cell, cells[k]));
+
             update(r, c, n);
+
             numUnsolvedCell--;
         } else if (cell.getN() == n) {
             throw new IllegalArgumentException("n value " + n + " is already set for r " + r + " c " + c);
@@ -94,6 +111,9 @@ public class SudokuBoard implements Unit {
         final int k = getK(r, c);
         final Cell cell = cells[k];
         final int test = (cell.getCandidateSet() & set);
+
+        if (test == 0) return false;
+
         final int mask = ((~set) & Utils.ALL);
         final int newCandidateSet = cell.getCandidateSet() & mask;
         if (Utils.size(newCandidateSet) == 0) {
@@ -101,7 +121,10 @@ public class SudokuBoard implements Unit {
         }
 
         cells[k] = Cell.copy(cells[k]).withCandidateSet(newCandidateSet).build();
-        return test != 0;
+
+        sendUpdate(new BoardEvent(BoardEvent.Type.UPDATE_CANDIDATES_EVENT, cell, cells[k]));
+
+        return true;
     }
 
     public String board(final char empty) {
