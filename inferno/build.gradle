@@ -1,9 +1,0 @@
-apply plugin: 'java-project'
-
-dependencies {
-	compile project(':antlr4-grammars')
-	compile group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: jgitVersion
-	compile group: 'org.eclipse.jgit', name: 'org.eclipse.jgit.ui', version: jgitVersion
-	
-	testCompile group: 'org.eclipse.jgit', name: 'org.eclipse.jgit.junit', version: jgitVersion
-}
