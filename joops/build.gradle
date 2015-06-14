@@ -1,1 +1,5 @@
 apply plugin: 'java-project'
+
+dependencies {
+    compile group: 'asm', name: 'asm', version: asm3Version
+}
