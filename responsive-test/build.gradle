@@ -1,4 +1,4 @@
-apply from: "$rootDir/gradle/groovyProject.gradle"
+apply plugin: 'groovy-project'
 
 dependencies {
 	compile group: 'org.gebish', name: 'geb-core', version: gebVersion

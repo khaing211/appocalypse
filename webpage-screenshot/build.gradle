@@ -1,4 +1,4 @@
-apply from: "$rootDir/gradle/groovyProject.gradle"
+apply plugin: 'groovy-project'
 apply from: "$rootDir/gradle/oneJar.gradle"
 
 dependencies {

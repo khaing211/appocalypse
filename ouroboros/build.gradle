@@ -1,4 +1,4 @@
-apply from: "$rootDir/gradle/javaProject.gradle"
+apply plugin: 'java-project'
 
 dependencies {
     compile group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: jgitVersion

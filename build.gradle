@@ -1,19 +1,19 @@
 buildscript {
 	repositories {
-		jcenter()
-		mavenCentral()
-		maven { url 'http://repo.spring.io/plugins-release' }
-	}
+		mavenLocal()
+        maven {
+            url "https://raw.github.com/khaing211/maven-repo/master/releases"
+        }
 
-	dependencies {
-		classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.7'
+        dependencies {
+            classpath group: 'com.github.kn.gradle-integration', name: 'java-project-plugin', version: javaProjectPluginVersion
+            classpath group: 'com.github.kn.gradle-integration', name: 'groovy-project-plugin', version: groovyProjectPluginVersion
+        }
 	}
 }
 
 apply plugin: 'idea'
 apply plugin: 'eclipse'
-apply plugin: 'java'
-apply plugin: 'maven'
 
 apply from: 'gradle/wrapper.gradle'
 
