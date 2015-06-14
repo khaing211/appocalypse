@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import com.github.appocalypse.guava.extra.GuavaCollectors;
+import com.github.kn.commons.guava.extra.GuavaCollectors;
 import com.github.appocalypse.pandemic.event.Event;
 import com.github.appocalypse.pandemic.token.Token;
 import com.google.common.collect.ImmutableList;

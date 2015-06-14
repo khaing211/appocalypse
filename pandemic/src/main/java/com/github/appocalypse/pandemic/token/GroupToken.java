@@ -1,6 +1,6 @@
 package com.github.appocalypse.pandemic.token;
 
-import com.github.appocalypse.guava.extra.GuavaCollectors;
+import com.github.kn.commons.guava.extra.GuavaCollectors;
 import com.google.common.collect.ImmutableList;
 
 public class GroupToken implements Token {

@@ -2,7 +2,7 @@ package com.github.appocalypse.pandemic.token;
 
 import java.util.Arrays;
 
-import com.github.appocalypse.guava.extra.GuavaCollectors;
+import com.github.kn.commons.guava.extra.GuavaCollectors;
 import com.github.appocalypse.pandemic.Cities;
 import com.github.appocalypse.pandemic.City;
 import com.google.common.collect.ImmutableList;

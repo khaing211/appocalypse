@@ -6,7 +6,7 @@ import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.junit.Test;
 
-import com.github.appocalypse.guava.extra.GuavaCollectors;
+import com.github.kn.commons.guava.extra.GuavaCollectors;
 import com.github.appocalypse.pandemic.grammars.PandemicParser.ActionContext;
 import com.github.appocalypse.pandemic.grammars.PandemicParser.BuildActionContext;
 import com.github.appocalypse.pandemic.grammars.PandemicParser.CharterFlightActionContext;

@@ -2,7 +2,7 @@ package com.github.appocalypse.pandemic.action;
 
 import java.util.Arrays;
 
-import com.github.appocalypse.guava.extra.GuavaCollectors;
+import com.github.kn.commons.guava.extra.GuavaCollectors;
 import com.github.appocalypse.pandemic.event.Event;
 import com.google.common.collect.ImmutableList;
 

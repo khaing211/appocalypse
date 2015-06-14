@@ -13,7 +13,7 @@ dependencies {
 	
 	compile group: 'jline', name: 'jline', version: jlineVersion
 	compile group: 'commons-cli', name: 'commons-cli', version: commonsCliVersion
-	compile group: 'com.github.kn.commons', name: 'jdk-extra', version: guavaExtraVersion
+	compile group: 'com.github.kn.commons', name: 'guava-extra', version: guavaExtraVersion
 }
 
 task buildPandemic(type: OneJar) {
