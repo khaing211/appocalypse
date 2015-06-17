@@ -1,7 +1,6 @@
 include 'installer'
 include 'responsive-test'
 include 'webpage-screenshot'
-include 'antlr4-grammars'
 include 'http-trace'
 include 'show-map'
 include 'rest-shorten-url'
