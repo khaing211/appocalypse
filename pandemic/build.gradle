@@ -3,17 +3,12 @@ apply from: "$rootDir/gradle/oneJar.gradle"
 
 defaultTasks 'clean', 'buildPandemic'
 
-configurations {
-	antlr4
-	compile.extendsFrom antlr4
-}
-
 dependencies {
-	antlr4 group: 'org.antlr', name: 'antlr4', version: '4.3'
-	
 	compile group: 'jline', name: 'jline', version: jlineVersion
 	compile group: 'commons-cli', name: 'commons-cli', version: commonsCliVersion
 	compile group: 'com.github.kn.commons', name: 'guava-extra', version: guavaExtraVersion
+	compile group: 'org.parboiled', name: 'parboiled-java', version: parboiledVersion
+
 }
 
 task buildPandemic(type: OneJar) {
