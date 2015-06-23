@@ -1,6 +1,7 @@
 package com.github.appocalypse.pandemic.action;
 
 import java.util.Arrays;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -10,9 +11,11 @@ import com.github.appocalypse.pandemic.token.Token;
 import com.google.common.collect.ImmutableList;
 
 public class Action {
-	final private String representation;
-	final private ActionStrategy actionStragety;
-	final private ImmutableList<Token> tokens;
+    private final static Pattern WHITESPACE = Pattern.compile("^(\\s+)");
+
+    private final String representation;
+	private final ActionStrategy actionStragety;
+	private final ImmutableList<Token> tokens;
 	
 	public Action(String representation, ActionStrategy actionStragety, ImmutableList<Token> tokens) {
 		this.representation = representation;
@@ -34,31 +37,39 @@ public class Action {
 	
 	/**
 	 * @param buffer
-	 * @return token of the buffer if match completely or zero-element list if not match completely
-	 */
-	public ImmutableList<String> tokenize(String buffer) {
-		final String[] stringTokens = buffer.split(" ");
-		if (stringTokens.length != tokens.size()) {
-			return ImmutableList.of();
-		} else {
-			for (int i = 0; i < stringTokens.length; i++) {
-				Token token = tokens.get(i);
-				String stringToken = stringTokens[i];
-				if (token.values(stringToken).size() != 1) {
-					return ImmutableList.of();
-				}
-			}
-			
-			return Arrays.stream(stringTokens).collect(GuavaCollectors.toImmutableList());
-		}
-	}
-	
-	/**
-	 * @param buffer
 	 * @return true for complete match
 	 */
 	public boolean match(String buffer) {
-		return tokenize(buffer).size() != 0;
+        for (int i = 0; i < tokens.size() - 1 ; i++) {
+            final Token token = tokens.get(i);
+            final ImmutableList<String> values = token.values(buffer);
+            //  match only one
+            if (values.size() != 1) {
+                return false;
+            }
+
+            // remove token
+            final String value = values.get(0);
+            if (value.length() > buffer.length()) {
+                return false;
+            }
+
+            buffer = buffer.substring(value.length());
+
+            // find whitespace
+            final Matcher matcher = WHITESPACE.matcher(buffer);
+            if (!matcher.find()) {
+                return false;
+            }
+
+            // remove whtiespace
+            buffer = buffer.substring(matcher.group().length());
+        }
+
+        // remove the check in !matcher.find() by checking lastToken specifically
+        final Token lastToken = tokens.get(tokens.size() - 1);
+        final ImmutableList<String> values = lastToken.values(buffer);
+        return values.size() == 1;
 	}
 	
 	/**
@@ -66,37 +77,45 @@ public class Action {
 	 * @return suggestions for partial match
 	 */
 	public ImmutableList<String> next(String buffer) {
-		Stream<String> streamTokens = Pattern.compile(" ")
-				.splitAsStream(buffer);
-		
-		if (buffer.endsWith(" ")) {
-			streamTokens = Stream.concat(streamTokens, Stream.of(""));
-		}
-		
-		ImmutableList<String> stringTokens = streamTokens
-				.collect(GuavaCollectors.toImmutableList());
-		
-		if (stringTokens.size() > tokens.size()) {
-			return ImmutableList.of();
-		} else {
-			
-			for (int i = 0; i < stringTokens.size() - 1; i++) {
-				Token token = tokens.get(i);
-				String stringToken = stringTokens.get(i);
-				
-				ImmutableList<String> suggestions = token.values(stringToken);
-				
-				if (suggestions.size() != 1) {
-					return ImmutableList.of();
-				}
-			}
-			
-			final int lastIndex = stringTokens.size() - 1;
-			Token token = tokens.get(Math.max(0, lastIndex));
-			String stringToken = lastIndex < 0 ? "" : stringTokens.get(lastIndex);
-			
-			return token.values(stringToken);
-		}
+        ImmutableList<String> ret  = ImmutableList.of();
+
+        int tokenIndex = 0;
+
+        while (!buffer.isEmpty() && tokenIndex < tokens.size()) {
+            // we don't handle tree of prefixes
+            if (ret.size() > 1) {
+                return ImmutableList.of();
+            }
+
+            final Token token = tokens.get(tokenIndex);
+            ret = token.values(buffer);
+            //  should match more than 1
+            if (ret.size() == 0) {
+                return ImmutableList.of();
+            }
+
+            // remove token
+            final String value = ret.get(0);
+            if (value.length() > buffer.length()) break;
+
+            // value is longer than buffer
+            buffer = buffer.substring(value.length());
+
+            // find whitespace
+            final Matcher matcher = WHITESPACE.matcher(buffer);
+            if (!matcher.find()) {
+                if (!buffer.isEmpty()) {
+                    return ImmutableList.of();
+                }
+            } else {
+                // remove whtiespace
+                buffer = buffer.substring(matcher.group().length());
+            }
+
+            tokenIndex++;
+        }
+
+        return ret;
 	}
 	
 	@Override

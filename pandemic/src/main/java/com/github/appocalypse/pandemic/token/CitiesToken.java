@@ -10,11 +10,12 @@ import com.google.common.collect.ImmutableList;
 public enum CitiesToken implements Token {
 	INSTANCE;
 	
-	final private Token delegate;
+	private final Token delegate;
 	
-	private CitiesToken() {
+	CitiesToken() {
 		delegate = new GroupToken(Arrays.stream(Cities.values())
 				.map(City::getName)
+				.map(StringToken::new)
 				.collect(GuavaCollectors.toImmutableList()));
 	}
 	

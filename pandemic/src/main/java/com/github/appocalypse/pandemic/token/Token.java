@@ -4,9 +4,8 @@ import com.google.common.collect.ImmutableList;
 
 public interface Token {
 	/**
-	 * @param prefix
-	 * @return a list of values with that prefix
+	 * @param buffer
+	 * @return a list of values that buffer.startsWith()
 	 */
-	public ImmutableList<String> values(String prefix);
-	
+	ImmutableList<String> values(String buffer);
 }

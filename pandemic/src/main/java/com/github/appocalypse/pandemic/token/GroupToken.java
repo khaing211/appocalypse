@@ -5,15 +5,17 @@ import com.google.common.collect.ImmutableList;
 
 public class GroupToken implements Token {
 
-	final private ImmutableList<String> values;
+	final private ImmutableList<Token> tokens;
 	
-	public GroupToken(ImmutableList<String> values) {
-		this.values = values;
+	public GroupToken(ImmutableList<Token> tokens) {
+		this.tokens = tokens;
 	}
 	
 	@Override
-	public ImmutableList<String> values(String prefix) {
-		return values.stream().filter(it -> it.startsWith(prefix)).collect(GuavaCollectors.toImmutableList());
+	public ImmutableList<String> values(String buffer) {
+		return tokens.stream()
+				.map(it -> it.values(buffer))
+				.collect(GuavaCollectors.flattenImmutableList());
 	}
 
 }

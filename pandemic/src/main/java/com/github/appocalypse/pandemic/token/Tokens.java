@@ -29,7 +29,7 @@ public class Tokens {
 		return CitiesToken.INSTANCE;
 	}
 	
-	public static ImmutableList<Token> action(Token ... tokens) {
+	public static ImmutableList<Token> tokens(Token... tokens) {
 		return Arrays.stream(tokens)
 			.collect(GuavaCollectors.toImmutableList());
 	}

@@ -10,11 +10,12 @@ import com.google.common.collect.ImmutableList;
 public enum RolesToken implements Token {
 	INSTANCE;
 
-	final private Token delegate;
+	private final Token delegate;
 
-	private RolesToken() {
+	RolesToken() {
 		delegate = new GroupToken(Arrays.stream(Roles.values())
 				.map(Role::getName)
+				.map(StringToken::new)
 				.collect(GuavaCollectors.toImmutableList()));
 	}
 	

@@ -10,8 +10,8 @@ public class StringToken implements Token {
 	}
 
 	@Override
-	public ImmutableList<String> values(String prefix) {
-		if (value.startsWith(prefix)) {
+	public ImmutableList<String> values(String buffer) {
+		if (value.startsWith(buffer) || buffer.startsWith(value)) {
 			return ImmutableList.of(value);
 		} else {
 			return ImmutableList.of();
