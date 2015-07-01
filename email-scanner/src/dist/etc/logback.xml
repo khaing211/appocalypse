@@ -1,0 +1,28 @@
+<configuration scan="true" scanPeriod="30 seconds">
+
+    <shutdownHook/>
+    <jmxConfigurator />
+
+    <appender name="APP" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.dir}/var/log/app.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${log.dir}/var/log/app.%d{yyyy-MM-dd}.log</fileNamePattern>
+
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>[%d{HH:mm:ss.SSS}][%-5level][%thread][%logger{36}] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ASYNC-APP" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="APP" />
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="ASYNC-APP" />
+    </root>
+</configuration>

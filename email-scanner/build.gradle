@@ -1,0 +1,56 @@
+apply plugin: 'java-project'
+apply plugin: 'application'
+
+dependencies {
+    compile group: 'com.google.api-client', name: 'google-api-client', version: '1.20.0'
+    compile group: 'com.google.oauth-client', name: 'google-oauth-client-jetty', version: '1.20.0'
+    compile group: 'com.google.apis', name: 'google-api-services-gmail', version: 'v1-rev29-1.20.0'
+
+    compile group: 'org.springframework', name: 'spring-core', version: springVersion
+    compile group: 'org.springframework', name: 'spring-context', version: springVersion
+    compile group: 'org.springframework', name: 'spring-beans', version: springVersion
+    compile group: 'javax.inject', name: 'javax.inject', version: '1'
+}
+
+mainClassName = "com.github.kn.appocalypse.EmailScanner"
+
+// TODO: fix start scripts
+applicationDefaultJvmArgs = [
+        "-server",
+        // memory opts
+        "-Xms512m",
+        "-Xmx512m",
+        // gc opts
+        "-XX:+UseConcMarkSweepGC",
+        "-XX:+CMSParallelRemarkEnabled",
+        "-XX:+ScavengeBeforeFullGC",
+        "-XX:+CMSScavengeBeforeRemark",
+        "-XX:+HeapDumpOnOutOfMemoryError",
+        //'-XX:HeapDumpPath=$APP_HOME/var/log/`date`.hprof',
+        // network opts
+        "-Dnetworkaddress.cache.ttl=60",  // 60 seconds, dns cache
+        "-Dnetworkaddress.cache.negative.ttl=60", // 60 seconds, negative dns cache
+        "-Dsun.net.inetaddr.ttl=60", // 60 seconds, dns cache
+        "-Dsun.net.inetaddr.negative.ttl=60", // 60 seconds, negative dns cache
+        "-Djava.net.preferIPv4Stack=true",
+        // jmx opts
+        "-Dcom.sun.management.jmxremote.port=9001",
+        "-Dcom.sun.management.jmxremote.authenticate=false",
+        "-Dcom.sun.management.jmxremote.ssl=false",
+        // app opts
+        '-Dfile.encoding=UTF-8',
+        '-Duser.timezone=UTC',
+        '-Dlog.dir=var/log',
+        '-Dcredential.dir=var/credential'
+]
+
+// edit classpath
+startScripts {
+    classpath += files('src/dist/etc/logback.xml', 'src/dist/etc/client-secret.json')
+    doLast {
+        def windowsScriptFile = file(getWindowsScript())
+        def unixScriptFile = file(getUnixScript())
+        windowsScriptFile.text = windowsScriptFile.text.replace('%APP_HOME%\\lib\\etc', '%APP_HOME%\\etc')
+        unixScriptFile.text = unixScriptFile.text.replace('$APP_HOME/lib/etc', '$APP_HOME/etc')
+    }
+}
