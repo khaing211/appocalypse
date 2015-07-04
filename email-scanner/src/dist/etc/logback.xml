@@ -4,10 +4,10 @@
     <jmxConfigurator />
 
     <appender name="APP" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${log.dir}/var/log/app.log</file>
+        <file>${app.logdir}/var/log/app.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
-            <fileNamePattern>${log.dir}/var/log/app.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${app.logdir}/var/log/app.%d{yyyy-MM-dd}.log</fileNamePattern>
 
             <!-- keep 30 days' worth of history -->
             <maxHistory>30</maxHistory>

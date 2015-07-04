@@ -3,7 +3,6 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-
     <bean id="jsonFactory" class="com.google.api.client.json.jackson2.JacksonFactory"
           factory-method="getDefaultInstance"/>
 
@@ -11,9 +10,11 @@
           factory-method="newTrustedTransport"/>
 
     <bean id="dataStoreFactory" class="com.google.api.client.util.store.FileDataStoreFactory">
-        <constructor-arg value="${credential.dir}" />
+        <constructor-arg value="${app.data.dir}/credential" />
     </bean>
 
-    <bean id="gmailScanner" class="com.github.kn.appocalypse.emailscanner.GmailScanner" />
+    <bean id="gmailServiceFactory" class="com.github.kn.appocalypse.emailscanner.GmailServiceFactory" />
+
+    <bean id="gmailService" factory-bean="gmailServiceFactory" factory-method="getService" />
 
 </beans>

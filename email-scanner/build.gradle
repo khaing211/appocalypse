@@ -10,6 +10,7 @@ dependencies {
     compile group: 'org.springframework', name: 'spring-context', version: springVersion
     compile group: 'org.springframework', name: 'spring-beans', version: springVersion
     compile group: 'javax.inject', name: 'javax.inject', version: '1'
+    compile group: 'commons-io', name: 'commons-io', version: commonsIoVersion
 }
 
 mainClassName = "com.github.kn.appocalypse.EmailScanner"
