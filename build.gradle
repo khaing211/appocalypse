@@ -1,15 +1,15 @@
 buildscript {
-	repositories {
-		mavenLocal()
-        maven {
-            url "https://raw.github.com/khaing211/maven-repo/master/releases"
-        }
+  repositories {
+      mavenLocal()
+      maven {
+          url "https://raw.github.com/khaing211/maven-repo/master/releases"
+      }
 
-        dependencies {
-            classpath group: 'com.github.kn.gradle-integration', name: 'java-project-plugin', version: javaProjectPluginVersion
-            classpath group: 'com.github.kn.gradle-integration', name: 'groovy-project-plugin', version: groovyProjectPluginVersion
-        }
-	}
+      dependencies {
+          classpath group: 'com.github.kn.gradle-integration', name: 'java-project-plugin', version: javaProjectPluginVersion
+          classpath group: 'com.github.kn.gradle-integration', name: 'groovy-project-plugin', version: groovyProjectPluginVersion
+      }
+  }
 }
 
 apply plugin: 'idea'
