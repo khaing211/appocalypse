@@ -13,7 +13,7 @@ import com.github.kn.appocalypse.joops.annotations.TestTypeAnnotation;
 public class Permutations {
     FieldTypeReference fieldRef;
     @TestMemberAnnotation({ClassArrayInAnnotation.class}) String annotationTest = "";
-    Enumeration e = Enumeration.blah;
+    EnumerationTest e = EnumerationTest.blah;
     InnerClass c = new InnerClass();
 
     public ReturnTypeReference someMethod() {
