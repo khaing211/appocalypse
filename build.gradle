@@ -1,13 +1,12 @@
 buildscript {
   repositories {
       mavenLocal()
-      maven {
-          url "https://raw.github.com/khaing211/maven-repo/master/releases"
-      }
+      maven { url "https://raw.github.com/khaing211/maven-repo/master/releases" }
+      maven { url 'https://plugins.gradle.org/m2/' }
 
       dependencies {
-          classpath group: 'com.github.kn.gradle-integration', name: 'java-project-plugin', version: javaProjectPluginVersion
-          classpath group: 'com.github.kn.gradle-integration', name: 'groovy-project-plugin', version: groovyProjectPluginVersion
+          classpath group: 'com.kn.forge', name: 'java-project-plugin', version: forgeVersion
+          classpath group: 'com.kn.forge', name: 'groovy-project-plugin', version: forgeVersion
       }
   }
 }
