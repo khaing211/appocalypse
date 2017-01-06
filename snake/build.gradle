@@ -1,0 +1,8 @@
+apply plugin: 'java-project'
+apply from: "$rootDir/gradle/oneJar.gradle"
+
+defaultTasks 'clean', 'buildSnake'
+
+task buildSnake(type: OneJar) {
+    mainClass = 'com.github.kn.appocalypse.Snake'
+}
