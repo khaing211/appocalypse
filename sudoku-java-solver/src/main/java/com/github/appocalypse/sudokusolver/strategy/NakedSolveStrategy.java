@@ -1,12 +1,12 @@
 package com.github.appocalypse.sudokusolver.strategy;
 
+import java.util.List;
+
 import com.github.appocalypse.sudokusolver.Cell;
 import com.github.appocalypse.sudokusolver.SudokuBoard;
 import com.github.appocalypse.sudokusolver.Unit;
 import com.github.appocalypse.sudokusolver.Utils;
 import com.google.common.collect.ImmutableList;
-
-import java.util.List;
 
 public interface NakedSolveStrategy {
 
@@ -14,12 +14,18 @@ public interface NakedSolveStrategy {
      * @param chooseCells
      * @return true if either cells has naked marked
      */
-    static boolean anyHasNakedMark(Cell[] chooseCells) {
+    static boolean anyHasNakedMark(final Cell[] chooseCells) {
         for (int i = 0; i < chooseCells.length; i++) {
             switch (chooseCells.length) {
-                case 2: if (chooseCells[i].hasNakedPair()) return true;
-                case 3: if (chooseCells[i].hasNakedTriple()) return true;
-                case 4: if (chooseCells[i].hasNakedQuad()) return true;
+                case 2: if (chooseCells[i].hasNakedPair()) {
+                  return true;
+                } break;
+                case 3: if (chooseCells[i].hasNakedTriple()) {
+                  return true;
+                } break;
+                case 4: if (chooseCells[i].hasNakedQuad()) {
+                  return true;
+                } break;
             }
         }
         return false;
@@ -28,16 +34,20 @@ public interface NakedSolveStrategy {
     /**
      * @return true if all chooseCells  has one of the sizes
      */
-    static boolean hasSize(Cell[] chooseCells, int[] sizes) {
+    static boolean hasSize(final Cell[] chooseCells, final int[] sizes) {
         for (int i = 0; i < chooseCells.length; i++) {
-            if (Utils.isNotIn(sizes, chooseCells[i].getCandidateSetSize())) return false;
+            if (Utils.isNotIn(sizes, chooseCells[i].getCandidateSetSize())) {
+              return false;
+            }
         }
         return true;
     }
 
-    static boolean anyIsFilled(Cell[] chooseCells) {
+    static boolean anyIsFilled(final Cell[] chooseCells) {
         for (int i = 0; i < chooseCells.length; i++) {
-            if (chooseCells[i].isFilled()) return true;
+            if (chooseCells[i].isFilled()) {
+              return true;
+            }
         }
         return false;
     }
